@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>我的生活</title>
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1">
+	<link rel="shortcut icon" href="/favicon.ico">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+	<link rel="stylesheet" href="common/original/css/style.css"></head>
+<body>
+	<div class="page-group">
+        <div class="page page-current">
+        	<div class="login_content">
+        	    <div class="xx">
+        	        <div class="top">
+        	            <div class="tx">
+        	                <img src="{wghd:$company.logourl}">
+        	            </div>
+        	        </div>
+        	        <form id="form1" name="form1" method="post" action="#">
+        	            <div class="text"> <i class="icon1 iconfont">&#xe601;</i>
+        	                <input name="username" id="username" type="text" class="name" value="" placeholder="请输入手机号"/>
+        	            </div>
+        	            <div class="text"> <i class="icon1 iconfont">&#xe600;</i>
+        	                <input name="password" id="password" type="text" class="name" value="" placeholder="请输入密码"/>
+        	            </div>
+        	            <input type="hidden" name="nologin" id="nologin" />
+        	        </form>
+        	        <div class="clear"></div>
+        	        <div class="text1">
+        	            <input type="button" class="tj" id="form-submit" value="登陆"/>
+        	        </div>
+        	        <p style="text-align: center;line-height: 37px;color: #ffffff;">
+        	            <a href="{wghd::U('Distribution/register')}">注册账号</a>
+        	        </p>
+        	    </div>
+        	</div>
+        </div>
+    </div>
+</body>
+</html>
+<script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
+<script>
+	$('.name').click(function(){
+		$(this).parent('.text').addClass('text_active').siblings('.text').removeClass('text_active');
+	})
+</script>

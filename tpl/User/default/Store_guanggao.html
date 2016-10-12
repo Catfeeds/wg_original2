@@ -1,0 +1,57 @@
+<include file="Public:head"/>
+<link rel="stylesheet" type="text/css" href="{wghd::RES}/css/cymain.css" />  
+ <div class="content">
+<div class="cLineB">
+<h4 class="left">广告位管理</h4>
+<div class="clr"></div>
+</div>
+<include file="Store:tab"/>
+<div class="cLine">
+<div class="pageNavigator left">
+<a href="{wghd::U('Store/guanggaoAdd', array('token' => $token, 'catid' => $catid))}" title="添加" class="btnGrayS vm bigbtn">
+<img src="{wghd::RES}/images/product/add.png" width="16" class="vm">添加广告位</a>
+</div>
+<div class="clr"></div>
+</div>
+<div class="msgWrap">
+<form method="post" action="" id="info">
+<input name="delall" type="hidden" value="">
+<input name="wxid" type="hidden" value="">
+<table class="ListProduct" border="0" cellspacing="0" cellpadding="0" width="100%">
+<thead>
+<tr>
+<th >名称</th>
+<th width="100">图片</th>
+<th width="200">URL链接</th>
+<th width="200">排序值</th>
+<th width="120">创建时间</th>
+<th width="200" class="norightborder">操作</th>
+</tr>
+</thead>
+<tbody>
+<tr></tr>
+<volist name="list" id="hostlist"> 
+<tr>
+<td>{wghd:$hostlist.name}</td>
+<td><img src="{wghd:$hostlist.picurl}" width="100"></td>
+<td>{wghd:$hostlist.url}</td>
+<td>{wghd:$hostlist.sort}</td>
+<td>{wghd:$hostlist.addtime|date="Y-m-d H:i:s",###}</td> 
+<td class="norightborder">
+	<a href="{wghd::U('Store/guanggaoSet',array('token'=>$token,'id'=>$hostlist['id']))}">修改</a>
+	<a href="javascript:drop_confirm('您确定要删除吗?', '{wghd::U('Store/guanggaoDel',array('id'=>$hostlist['id'],'token'=>$token))}');">删除</a>
+</td>
+</tr>
+</volist>
+</tbody>
+</table>
+</form>
+</div>
+<div class="cLine">
+<div class="pageNavigator right">
+<div class="pages">{wghd:$page}</div>
+</div>
+<div class="clr"></div>
+</div>
+</div>
+<include file="Public:footer"/>

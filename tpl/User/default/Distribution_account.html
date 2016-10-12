@@ -1,0 +1,102 @@
+<include file="Public:head"/>
+<link rel="stylesheet" type="text/css" href="{wghd::RES}/css/cymain.css" />  
+<script src="{wghd::STATICS}/artDialog/jquery.artDialog.js?skin=default"></script>
+<script src="{wghd::STATICS}/artDialog/plugins/iframeTools.js"></script>
+
+<div class="content">
+         
+          <div class="cLineB">
+			<h4 class="left">账号列表</h4>
+			</div>
+                <div class="cLine">
+                  <div class="pageNavigator">
+        　　      <span>
+                    <form action="" method="post">
+                    关键词：
+                    <input type="text" name="name" class="px" value="{wghd:$Think.request.name}" placeholder="输入账号名">
+                    <input type="submit" class="btnGrayS" value="搜索">
+                     </form>
+                  </span>
+                   
+                  </div>
+                
+                  <div class="clr"></div>
+                </div>
+          <div class="msgWrap">
+          <form method="post" action="index.php?ac=vote-manage&amp;id=9878" id="info">
+          <input name="delall" type="hidden" value="del">
+           <input name="wxid" type="hidden" value="gh_423dwjkewad">
+            <table class="ListProduct" border="0" cellspacing="0" cellpadding="0" width="100%">
+              <thead>
+                <tr>
+					<th>账号ID</th>
+          <th>账号名</th>
+          <th>真实姓名</th>
+          <th>会员等级</th>
+          <!-- <th>注册人</th> -->
+          <th>上级姓名</th>
+          <!-- <th>当前登陆人</th> -->
+          <th>注册时间</th>
+          <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr></tr>
+                  <volist id="list" name="list">
+                <tr>
+                  <td>{wghd:$list.id}</td>
+                  <td>{wghd:$list.username}</td>
+                  <td>{wghd:$list.nickname}</td>
+                  <td>{wghd:$list.level.name|default="游客"}</td>
+                  <!-- <td>{wghd:$list.creater}</td> -->
+                  <td>{wghd:$list.bindac.nickname}</td>
+                  <!-- <td>{wghd:$list.member.nickname}</td> -->
+                  <td>{wghd:$list.addtime|date='Y-m-d',###}</td>
+                  <td class="norightborder">
+                    <a href="{wghd::U('Distribution/account',array('id'=>$list['id'],'type'=>'detail','p'=>$_GET['p']))}" title="详细">详细</a> | 
+                    <neq name="list.lid" value="1">
+                      <a href="{wghd::U('Distribution/account',array('id'=>$list['id'],'type'=>'upgrade','p'=>$_GET['p']))}" title="设置等级">设置等级</a> | 
+                    </neq>
+                    <a href="{wghd::U('Distribution/account',array('id'=>$list['id'],'type'=>'topup','p'=>$_GET['p']))}" title="充值金币">充值金币</a> | 
+                    <a href="{wghd::U('Distribution/account',array('id'=>$list['id'],'type'=>'topupmoney','p'=>$_GET['p']))}" title="充值金币">充值现金</a>
+                    <if condition="($list.lid neq 2) AND ($list.lid neq 1)">
+                     | <a href="javascript:;" onclick="bindupaccount({wghd:$list.id})" title="设置上级">设置上级</a>
+                    </if>
+                    | <a href="javascript:drop_confirm('您确定要删除吗?', '{wghd::U('Distribution/deleteAccount',array('id'=>$list['id']))}');" title="设置上级">删除</a>
+                  </td>
+                </tr>
+                  </volist>
+      			         <script>
+                  function bindupaccount(id){
+                    art.dialog.open('{wghd::U('Distribution/bindupaccount',array('token'=>$token,'dining'=>$isDining,'id'=>"'+id+'"))}',{lock:false,title:'设置上级',width:1000,height:620,yesText:'关闭',background: '#000',opacity: 0.87,close: function(){location.reload();}});
+                  }
+                  </script>          
+                  
+              </tbody>
+            </table>
+           </form> 
+           <script>
+   function checkvotethis() {
+var aa=document.getElementsByName('del_id[]');
+var mnum = aa.length;
+j=0;
+for(i=0;i<mnum;i++){
+if(aa[i].checked){
+j++;
+}
+}
+if(j>0) {
+document.getElementById('info').submit();
+} else {
+alert('未选中内容！')
+}
+}</script>
+   </div> 
+          <div class="cLine">
+            <div class="pageNavigator right">
+                 <div class="pages">{wghd:$page}</div>
+              </div>
+            <div class="clr"></div>
+          </div>
+  </div>
+<include file="Public:footer"/>
