@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>注册页面</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/??sm.min.css,sm-extend.min.css">
+    <link rel="stylesheet" href="common/original/css/style.css"></head>
+<body>
+    <div class="page-group">
+        <div class="page">
+            <div class="content">
+                <div class="login_content register_content">
+                    <div class="xx">
+                        <form id="register_from" method="post">
+                            <div class="wg_form_message_wrap">
+                                <div class="wg_item_icon_input"> 
+                                    <i class="icon1 iconfont">&#xe601;</i>
+                                    <input name="username" id="username" type="text" class="name validation" value="" placeholder="请输入手机号"/>
+                                    <div class="clear"></div>
+                                </div>
+                            </div>
+                            <div class="wg_form_message_wrap">
+                                <div class="wg_item_icon_input" style="float: left; width: 70%;"> 
+                                    <i class="icon1 iconfont">&#xe603;</i>
+                                    <input name="img_code" type="text" class="name validation" value="" placeholder="请输入图形验证码"/>
+                                    <div class="clear"></div>
+                                </div>
+                                <img style="width: 28%;margin: 0 0 0 2%;float: right; height:40px;" id="imgCheckB" src="http://127.0.0.1/wg_original2/index.php?g=Wap&m=Distribution&a=verify" onClick="this.src='http://127.0.0.1/wg_original2/index.php?g=Wap&m=Distribution&a=verify&' + new Date().getTime();" />
+                                <div class="clear"></div>
+                            </div>
+                            <div class="wg_form_message_wrap">
+                                <div class="wg_item_icon_input" style="float: left; width: 70%;"> 
+                                    <i class="icon1 iconfont">&#xe602;</i>
+                                    <input name="msg_code" type="text" class="name validation" value="" placeholder="请输入短信验证码"/>
+                                    <div class="clear"></div>
+                                </div>
+                                <button class="wg_button_type1 bgc_blue1" style="float: right; width: 28%; font-size: 12px; font-weight: 700;">获取验证码</button>
+                                <div class="clear"></div>
+                            </div>  
+                            <div class="wg_form_message_wrap">
+                                <div class="wg_item_icon_input"> 
+                                    <i class="icon1 iconfont">&#xe600;</i>
+                                    <input name="password" type="text" class="name validation" value="" placeholder="请设置密码"/>
+                                    <div class="clear"></div>
+                                </div>
+                            </div>
+                            <div class="wg_form_message_wrap">
+                                <div class="wg_item_icon_input"> 
+                                    <i class="icon1 iconfont">&#xe600;</i>
+                                    <input name="repassword" type="text" class="name validation" value="" placeholder="请确认密码"/>
+                                    <div class="clear"></div>
+                                </div>
+                            </div>
+                        </form>
+                        <input type="button" class="wg_button_type1 tj bgc_blue1" id="register-submit" value="完成注册"/>
+                    </div>
+                </div>
+        <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/??sm.min.css,sm-extend.min.css">
+        <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+        <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/??sm.min.js,sm-extend.min.js' charset='utf-8'></script>
+        <script>
+            $('.wg_form_message_wrap').click(function(){
+                $(this).find('input').focus();
+                $(this).addClass('wg_item_icon_input_active').siblings('.wg_form_message_wrap').removeClass('wg_item_icon_input_active');
+            })
+            $('#register-submit').click(function(){
+                var validation = $('.validation');
+                var val = 1;
+                validation.each(function(index, el) {
+                    if($(this).val() == ''){
+                        var warn = $(this).attr('placeholder');
+                        $.alert(warn);
+                        val = 0;
+                        return false;
+                    }
+                });
+                if(val == 1){
+                    var data = $('#register_from').serialize();
+                    $.ajax({
+                        url:'http://127.0.0.1/wg_original2/index.php?g=Wap&m=Distribution&a=register',
+                        data:{data:data},
+                        dataType:'json',
+                        type:'post',
+                        success:function(data){
+                            console.log(data);
+                            $.alert(data.info,function(){
+                                console.log('aa');
+                            })
+                        }
+                    })
+                }
+            })
+        </script>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
