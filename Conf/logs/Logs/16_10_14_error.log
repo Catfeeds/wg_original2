@@ -1,0 +1,4 @@
+[ 2016-10-14T11:22:25+08:00 ] ERR: (ThinkException) Champ '' inconnu dans field list
+ [ SQL语句 ] : UPDATE `pigcms_distribution_account` SET ``='' WHERE ( `username` = '1' )
+[ 2016-10-14T11:22:55+08:00 ] ERR: (ThinkException) Champ '' inconnu dans field list
+ [ SQL语句 ] : UPDATE `pigcms_distribution_account` SET ``='' WHERE ( `username` = '1' )

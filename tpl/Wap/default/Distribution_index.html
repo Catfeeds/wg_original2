@@ -1,56 +1,84 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>我的生活</title>
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
-    <link rel="shortcut icon" href="/favicon.ico">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-	  <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/??sm.min.css,sm-extend.min.css">
-  </head>
-  <body>
-  	<div class="content">
-  	  <div class="buttons-tab">
-  	    <a href="#tab1" class="tab-link active button">全部</a>
-  	    <a href="#tab2" class="tab-link button">待付款</a>
-  	  </div>
-  	  <div class="content-block">
-  	    <div class="tabs">
-  	      <div id="tab1" class="tab active">
-  	        <div class="content-block">
-  	          <p>This is tab 1 content</p>
-  	        </div>
-  	      </div>
-  	      <div id="tab2" class="tab">
-  	        <div class="content-block">
-  	          <p>This is tab 2 content</p>
-  	        </div>
-  	      </div>
-  	    </div>
-  	  </div>
-  	</div>
-	<nav class="bar bar-tab">
-	  <a class="tab-item external active" href="#">
-	    <span class="icon icon-home"></span>
-	    <span class="tab-label">展示</span>
-	  </a>
-	  <a class="tab-item external" href="#">
-	    <span class="icon icon-star"></span>
-	    <span class="tab-label">预约</span>
-	    <!-- <span class="badge">2</span> -->
-	  </a>
-	  <a class="tab-item external" href="#">
-	    <span class="icon icon-cart"></span>
-	    <span class="tab-label">订单</span>
-	  </a>
-	  <a class="tab-item external" href="#">
-	    <span class="icon icon-me"></span>
-	    <span class="tab-label">我的</span>
-	  </a>
-	</nav>
-  </body>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>个人中心</title>
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <link rel="stylesheet" href="common/original/css/sm.min.css">
+  <link rel="stylesheet" href="common/original/css/sm-extend.css">
+  <link rel="stylesheet" href="common/original/css/style.css">
+</head>
+<body>
+  <div class="page-group">
+    <div class="page page-current">
+      <header class="bar bar-nav">
+        <h1 class="title">个人中心</h1>
+      </header>
+      <div class="content">
+        <div class="list-block">
+          <ul>
+            <a id="myInfo_page" href="myInfo.html">
+              <li class="item-content item-link">
+                <div class="item-inner">
+                  <div class="item-title">预约资料</div>
+                </div>
+              </li>
+            </a>
+
+            <a href="#">
+              <li class="item-content item-link">
+                <div class="item-inner">
+                  <div class="item-title">低价卷</div>
+                  <div class="item-after">0张可用</div>
+                </div>
+              </li>
+            </a>
+            <a href="changePassword.html">
+              <li class="item-content item-link">
+                <div class="item-inner">
+                  <div class="item-title">修改密码</div>
+                </div>
+              </li>
+            </a>
+            <a href="#">
+              <li class="item-content item-link">
+                <div class="item-inner">
+                  <div class="item-title">意见反馈</div>
+                </div>
+              </li>
+            </a>
+            <a href="#">
+              <li class="item-content item-link">
+                <div class="item-inner">
+                  <div class="item-title">预约协议</div>
+                </div>
+              </li>
+            </a>
+          </ul>
+        </div>
+        <div class="list-block">
+          <ul>
+            <a href="#">
+              <li class="item-content item-link" id="login_out">
+                <div class="item-inner">
+                  <div class="item-title">退出登陆</div>
+                </div>
+              </li>
+            </a>
+          </ul>
+        </div>
+      </div>
+      <div id="footer"></div>
+  </div>
+</div>
+<script src="common/original/js/zepto.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="common/original/js/sm.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="common/original/js/sm-extend.js" type="text/javascript" charset="utf-8"></script>
+<script src="common/original/js/common.js" type="text/javascript" charset="utf-8"></script>
+<script src="common/original/js/distribution.js" type="text/javascript" charset="utf-8"></script>
+</body>
 </html>
-<script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
-<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/??sm.min.js,sm-extend.min.js' charset='utf-8'></script>

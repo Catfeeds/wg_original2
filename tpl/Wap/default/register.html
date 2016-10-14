@@ -60,44 +60,11 @@
                         <input type="button" class="wg_button_type1 tj bgc_blue1" id="register-submit" value="完成注册"/>
                     </div>
                 </div>
-        <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/??sm.min.css,sm-extend.min.css">
-        <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
-        <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/??sm.min.js,sm-extend.min.js' charset='utf-8'></script>
-        <script>
-            $('.wg_form_message_wrap').click(function(){
-                $(this).find('input').focus();
-                $(this).addClass('wg_item_icon_input_active').siblings('.wg_form_message_wrap').removeClass('wg_item_icon_input_active');
-            })
-            $('#register-submit').click(function(){
-                var validation = $('.validation');
-                var val = 1;
-                validation.each(function(index, el) {
-                    if($(this).val() == ''){
-                        var warn = $(this).attr('placeholder');
-                        $.alert(warn);
-                        val = 0;
-                        return false;
-                    }
-                });
-                if(val == 1){
-                    var data = $('#register_from').serialize();
-                    $.ajax({
-                        url:'http://127.0.0.1/wg_original2/index.php?g=Wap&m=Distribution&a=register',
-                        data:{data:data},
-                        dataType:'json',
-                        type:'post',
-                        success:function(data){
-                            console.log(data);
-                            $.alert(data.info,function(){
-                                console.log('aa');
-                            })
-                        }
-                    })
-                }
-            })
-        </script>
             </div>
         </div>
     </div>
+    <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/??sm.min.js,sm-extend.min.js' charset='utf-8'></script>
+    <script src="common/original/js/login_register.js" type="text/javascript" charset="utf-8"></script>
 </body>
 </html>

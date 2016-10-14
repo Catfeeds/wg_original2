@@ -17,6 +17,12 @@
 .clear{
 	clear: both;
 }
+a{
+	color:#000;
+}
+img{
+	display: block;
+}
                     
 /**login**/
 .login_content{
@@ -56,7 +62,7 @@
 }
 
 .bgc_blue1{
-	background-color: #4e8ed0;
+	background-color: #4e8ed0 !important;
 }
 
 /* button type1 */
@@ -72,6 +78,8 @@
 	color: #fff;
 	display: block;
 	margin: 0 auto;
+	text-align: center;
+	line-height: 40px;
 }
 /* button type1 */
 
