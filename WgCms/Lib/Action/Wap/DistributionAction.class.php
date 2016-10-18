@@ -15,6 +15,7 @@
 			}
 			return $arr2;
 		}
+		//注册
 		function register(){
 			$data = $this->htmlSpecial('post');
 			$db = D('Account');

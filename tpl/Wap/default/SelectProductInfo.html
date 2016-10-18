@@ -10,30 +10,24 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <link rel="stylesheet" href="common/original/css/sm.min.css">
   <link rel="stylesheet" href="common/original/css/sm-extend.css">
-  <link rel="stylesheet" href="common/original/css/style.css"></head>
-  <link rel="stylesheet" href="common/original/css/test.css"></head>
+  <link rel="stylesheet" href="common/original/css/style.css">
+</head>
 <body>
   <div class="page-group">
-    <div class="page" id="reservation-date">
+    <div class="page page-current" id="select_products_info_wrap">
       <div class="content">
-        <div class="reservation-timeWeek" id="reservation-date-week">
-               <span>日</span>
-               <span>一</span>
-               <span>二</span>
-               <span>三</span>
-               <span>四</span>
-               <span>五</span>
-               <span>六</span>
-             </div>
-             <!-- 日期列表 -->
-             <div class="reservation-timeDateWrap" id="reservation-date-day"></div>
+        <div id="choose_products_info">
+          
+        </div>
+        <div>合计 <span id="total_price"></span></div>
+        <button id="next_btn">下一步</button>
       </div>
-      <div id="footer"></div>
     </div>
   </div>
   <script src="common/original/js/zepto.min.js" type="text/javascript" charset="utf-8"></script>
   <script src="common/original/js/sm.min.js" type="text/javascript" charset="utf-8"></script>
   <script src="common/original/js/sm-extend.js" type="text/javascript" charset="utf-8"></script>
-  <script src="common/original/js/test.js" type="text/javascript" charset="utf-8"></script>
+  <script src="common/original/js/cookie.js" type="text/javascript" charset="utf-8"></script>
+  <script src="common/original/js/store.js" type="text/javascript" charset="utf-8"></script>
 </body>
 </html>
