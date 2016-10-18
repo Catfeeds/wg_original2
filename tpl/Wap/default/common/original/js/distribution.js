@@ -1,5 +1,4 @@
 $(function($){
-	var total_url = 'http://127.0.0.1/wg_original2/';
 	//判断账号登陆
 	$(document).ready(function($) {
 		$.ajax({

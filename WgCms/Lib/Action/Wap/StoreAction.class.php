@@ -71,7 +71,50 @@ class StoreAction extends WapAction{
 		);
 		exit(json_encode($data));
 	}
-	
+	//获取城市信息
+	function getCityList(){
+		$citys_data = M('City_list')->select();
+		$firstChar = M('City_list')->Distinct(true)->field('char')->select();
+		//城市列表
+		$citys = array();
+		//城市首字母列表
+		$cityfirstchar = array();
+		foreach ($firstChar as $k => $v) {
+			array_push($cityfirstchar, $v['char']);
+			$citys[$v['char']] = array();
+			foreach ($citys_data as $k2 => $v2) {
+				if($v['char'] == $v2['char']){
+					$city = array(
+						'SC_FirstChar'=> $v['char'],
+						'SC_Name'=> $v2['name'],
+						'SC_Id'=> $v2['id'],
+					);
+					array_push($citys[$v['char']], $city);
+				}
+			}
+		}
+		//热门城市列表
+		$hotcity = array();
+		foreach ($citys_data as $k => $v) {
+			if($v['hot'] == 1){
+				$hot = array(
+					'SC_Id' => $v['id'],
+					'SC_Name' => $v['name'],
+				);
+				array_push($hotcity, $hot);
+			}
+		}
+		$data = array(
+			'error' => 0,
+			'biz' => 'SAPI_GETCITYLIST',
+			'msg' => array(
+				'city' => $citys,
+				'cityfirstchar' => $cityfirstchar,
+				'hotcity' => $hotcity,
+			),
+		);
+		exit(json_encode($data));
+	}
 }
 
 ?>

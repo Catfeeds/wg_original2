@@ -1,0 +1,1 @@
+var total_url = 'http://127.0.01/wg_original2/';

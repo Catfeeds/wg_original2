@@ -1,17 +1,16 @@
 $(function($) {
-	var total_url = 'http://127.0.0.1/wg_original2/';
 	//判断账号登陆
-	$(document).ready(function($) {
-		$.ajax({
-			url: total_url + 'index.php?g=Wap&m=Distribution&a=checkLogin',
-			dataType: 'json',
-			success: function(data) {
-				if (data && data.status == -1) {
-					location.href = "login.html";
-				}
-			}
-		});
-	});
+	// $(document).ready(function($) {
+	// 	$.ajax({
+	// 		url: total_url + 'index.php?g=Wap&m=Distribution&a=checkLogin',
+	// 		dataType: 'json',
+	// 		success: function(data) {
+	// 			if (data && data.status == -1) {
+	// 				location.href = "login.html";
+	// 			}
+	// 		}
+	// 	});
+	// });
 	//选择门店
 	$(document).on('pageInit', '#appintment_wrap', function() {
 			//获取区域信息
@@ -20,21 +19,6 @@ $(function($) {
 				$.each(data.data,function(index, el) {
 					areas.push(el.name);
 				});
-			});
-			//选择区域
-			$(this).find('#area_list').picker({
-				toolbarTemplate: '<header class="bar bar-nav">\
-					<button class="button button-link pull-right close-picker">确定</button>\
-					<h1 class="title">选择区域</h1>\
-					</header>',
-				cols: [{
-					textAlign: 'center',
-					values: [1,2],
-					displayValues:areas,
-				}],
-				onClose: function() {
-					console.log('11');
-				}
 			});
 			$(this).find('#stores_list').picker({
 				toolbarTemplate: '<header class="bar bar-nav">\

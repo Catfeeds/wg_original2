@@ -1,6 +1,5 @@
 $(function() {
 	// 选择日期
-		var m_module = 'http://127.0.0.1/wg_original2/';
 	$(document).on('pageInit', '#reservation-date', function(e, id, page) {
 		$.showPreloader();
 		arrangeDate('#reservation-date-day'); // 日期排版
@@ -54,7 +53,7 @@ $(function() {
 			var monthArr = new Array('一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月');
 			var storeId = cookie.get('storeId');
 			$.showPreloader();
-			$.get(m_module + 'index.php?g=Wap&m=Store&a=getWorkDate' + storeId, function(data) {
+			$.get(total_url + 'index.php?g=Wap&m=Store&a=getWorkDate' + storeId, function(data) {
 				data = eval('(' + data + ')');
 				console.log(data);
 				$.hidePreloader();
@@ -253,7 +252,7 @@ $(function() {
 			var headDateHtml = '';
 			var $headDateNode = $('.reservation-dateNum');
 			var $timeListNode = $('.reservation-timeList'); // 时间节点目标容器
-			$.get(m_module + 'index.php?g=Wap&m=Store&a=getWorkTime',{storeId:1,dateFormat:dateFormat}, function(data) {
+			$.get(total_url + 'index.php?g=Wap&m=Store&a=getWorkTime',{storeId:1,dateFormat:dateFormat}, function(data) {
 				$.hidePreloader();
 				data = eval('(' + data + ')');
 				console.log(data);

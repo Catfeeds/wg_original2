@@ -83,8 +83,8 @@
 				'password' => md5($data['password']),
 			);
 			if(D('Account')->where($condition)->find()){
-				setcookie('zxg_login_user',$data['username'],time()+86400*30);
-				$this->ajaxReturn('','登陆成功',1);
+				$this->test();
+				$this->ajaxReturn($_COOKIE['zxg_login_user'],'登陆成功',1);
 			}else{
 				$this->ajaxReturn('','账号或密码错误',2);
 			}
@@ -140,6 +140,9 @@
 		function loginOut(){
 			setcookie('zxg_login_user',null);
 			$this->ajaxReturn('','',1);
+		}
+		function test(){
+			setcookie('testa','aa1',time() + 10000);
 		}
 		//判断登陆
 		function checkLogin($get = ''){
