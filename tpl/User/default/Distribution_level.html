@@ -1,0 +1,89 @@
+<include file="Public:head"/>
+<link rel="stylesheet" type="text/css" href="{wghd::RES}/css/cymain.css" />  
+
+<div class="content">
+         
+          <div class="cLineB">
+			<h4 class="left">会员等级列表</h4>
+			<div class="clr"></div>
+			</div>
+          <div class="cLine">
+            <div class="pageNavigator">
+  　　      <span>
+              <form action="" method="post">
+              关键词：
+              <input type="text" name="name" class="px" value="{wghd:$Think.request.name}">
+              <input type="submit" class="btnGrayS" value="搜索">
+               </form>
+            </span>
+             
+            </div>
+          
+            <div class="clr"></div>
+          </div>
+          <div class="msgWrap">
+          <form method="post" action="index.php?ac=vote-manage&amp;id=9878" id="info">
+          <input name="delall" type="hidden" value="del">
+           <input name="wxid" type="hidden" value="gh_423dwjkewad">
+            <table class="ListProduct" border="0" cellspacing="0" cellpadding="0" width="100%">
+              <thead>
+                <tr>
+					<th>等级名称</th>
+					<th>微信头像</th>
+					<th>姓名</th>
+					<th>联系电话</th>
+					<th>QQ</th>
+					<th>关注时间</th>
+					<th>是否成为分店</th>
+					<th class="norightborder">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr></tr>
+                  <volist id="list" name="member">
+                <tr>
+                  <td>{wghd:$list.nickname}</td>
+                  <td><img src="{wghd:$list.headimgurl}" width="50"></td>
+                  <td>{wghd:$list.name}</td>
+                  <td>{wghd:$list.tele}</td>
+				  <td>{wghd:$list.email}</td>
+				  <td>{wghd:$list.createtime|date='Y-m-d H:i:s',###}</td>
+				  <td><eq name="list.distritime" value="0">否<else/><span style="color:red">是</eq></td>
+                   <td class="norightborder">
+                    <a href="{wghd::U('Distribution/member',array('id'=>$list['id']))}" title="详细">详细</a> |
+                    <eq name="list.distritime" value="0"><a href="{wghd::U('Distribution/beDistribution',array('id'=>$list['id']))}" onclick="return confirm('确定要该会员成为分店么？');" title="删除">设为分店</a> |</eq>
+                    <a href="{wghd::U('Distribution/delMember',array('id'=>$list['id']))}" onclick="return confirm('确定要删除该会员么？');" title="删除">删除</a>
+                   </td>
+          
+                </tr>
+                  </volist>
+      			                
+                  
+              </tbody>
+            </table>
+           </form> 
+           <script>
+   function checkvotethis() {
+var aa=document.getElementsByName('del_id[]');
+var mnum = aa.length;
+j=0;
+for(i=0;i<mnum;i++){
+if(aa[i].checked){
+j++;
+}
+}
+if(j>0) {
+document.getElementById('info').submit();
+} else {
+alert('未选中内容！')
+}
+}</script>
+   </div> 
+          <div class="cLine">
+            <div class="pageNavigator right">
+                 <div class="pages">{wghd:$page}</div>
+              </div>
+            <div class="clr"></div>
+          </div>
+  </div>
+<include file="Public:footer"/>
