@@ -12,10 +12,7 @@
     <link rel="stylesheet" href="common/original/css/sm.min.css">
     <link rel="stylesheet" href="common/original/css/sm-extend.css">
     <link rel="stylesheet" href="common/original/css/style.css">
-    <link rel="stylesheet" type="text/css" href="common/original/css/main.css">
-    <link rel="stylesheet" href="common/original/css/demo.css">
-    <link rel="stylesheet" href="common/original/css/iconfont.css">
-</head>
+    <link rel="stylesheet" type="text/css" href="common/original/css/main.css"></head>
 
 <body>
     <div class="page-group">
@@ -23,7 +20,7 @@
             <div class="content">
                 <style type="text/css">
                 .list-block {
-                    margin: 0.25rem 0;
+                    margin: 0;
                 }
                 
                 .list-block .item-link .item-inner {
@@ -45,158 +42,122 @@
                     font-size: 0.5rem;
                     line-height: 1.8rem;
                 }
+
                 .list-block .item-after .item-after-money{
                     color: #0894ec;
                 }
                 
-                .list-block .item-content {
-                    margin: 0;
-                    padding: 0;
-                }
-                
                 .list-block.media-list .item-title-row {
                     padding: 0px 2%;
+                    background-color: #fff;
                 }
-                
-                .list-block .item-content,
+                .list-block.media-list .item-inner,
                 .list-block .item-inner {
-                    min-height: 0;
-                }
-                
-                .list-block .item-content {
-                    min-height: 0;
-                }
-                
-                .list-block .item-after {
-                    max-height: 2rem;
-                }
-                .list-block .item-after{
-                    white-space:normal;
+                    padding-right: 0;
+                    padding-top: 0;
                 }
                 </style>
-                <div id="choose_products_info">
-                    
-                    <div class="list-block media-list">
-                        <ul>
-                            <li>
-                                <a href="#" class="item-link item-content">
-                                    <div class="item-inner">
-                                        <div class="item-title-row">
-                                            <div class="item-title wg_order_choose_title">签证照</div>
-                                            <div class="item-after">
-                                                <span>合计：</span> ￥<span class="item-after-money" id="">99.00</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                        </ul>
+                <div class="list-block media-list" id="choose_products_info">
+                    <div class="item-inner">
+                        <div class="item-title-row">
+                            <div class="item-title wg_order_choose_title">签证照</div>
+                            <div class="item-after">
+                                <span>合计：</span>
+                                ￥
+                                <span class="item-after-money">99.00</span>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="list-block media-list">
-                        <ul>
-                            <li>
-                                <a href="#" class="item-link item-content">
-                                    <div class="item-inner">
-                                        <div class="item-title-row" style="border-bottom: 1px solid #e7e7e7;">
-                                            <div class="item-title wg_order_choose_title">证件照</div>
-                                            <div class="item-after"></div>
-                                        </div>
-                                        <div class="item-title-row">
-                                            <div class="item-title">升级体验</div>
-                                            <div class="item-after iconfont">升级体验说明&#xe60d;</div>
-                                        </div>
-                                        <div class="item-title-row" style="border-bottom: 1px solid #e7e7e7; padding-bottom: 5px;">
-                                            <div class="item-title wg_order_choose_color card-product-color card-product-blue">蓝色</div>
-                                            <div class="item-title wg_order_choose_color card-product-color card-product-white">白色</div>
-                                            <div class="item-title wg_order_choose_color card-product-color card-product-red">红色</div>
-                                            <div class="item-title wg_order_choose_color card-product-color card-product-yellow">芽黄</div>
-                                            <div class="item-title wg_order_choose_color card-product-color card-product-gray">灰色</div>
-                                        </div>
-                                        <div class="item-title-row">
-                                            <div class="item-title"></div>
-                                            <div class="item-after iconfont"><span>合计：</span>￥99.00</div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                        </ul>
+                    <div class="item-inner">
+                        <div class="item-title-row" style="border-bottom: 1px solid #e7e7e7;">
+                            <div class="item-title wg_order_choose_title">证件照</div>
+                            <div class="item-after"></div>
+                        </div>
+                        <div class="item-title-row">
+                            <div class="item-title">升级体验</div>
+                            <div class="item-after iconfont">升级体验说明&#xe60d;</div>
+                        </div>
+                        <div class="item-title-row">
+                            <div class="item-title wg_order_choose_color card-product-color card-product-blue">蓝色</div>
+                            <div class="item-title wg_order_choose_color card-product-color card-product-white">白色</div>
+                            <div class="item-title wg_order_choose_color card-product-color card-product-red">红色</div>
+                            <div class="item-title wg_order_choose_color card-product-color card-product-yellow">芽黄</div>
+                            <div class="item-title wg_order_choose_color card-product-color card-product-gray">灰色</div>
+                        </div>
+
+                        <div class="item-title-row">
+                            <div class="item-title"></div>
+                            <div class="item-after">
+                                <span>合计：</span>
+                                ￥<span class="item-after-money" class="product-price"></span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="list-block media-list">
-                        <ul>
-                            <li>
-                                <a href="#" class="item-link item-content">
-                                    <div class="item-inner">
-                                        <div class="item-title-row" style="border-bottom: 1px solid #e7e7e7;">
-                                            <div class="item-title wg_order_choose_title">结婚登记照</div>
-                                            <div class="item-after"></div>
-                                        </div>
-                                        <div class="item-title-row">
-                                            <div class="item-title">升级体验</div>
-                                            <div class="item-after iconfont">升级体验说明&#xe60d;</div>
-                                        </div>
-                                        <div class="item-title-row" style="border-bottom: 1px solid #e7e7e7; padding-bottom: 5px;">
-                                            <div class="item-title  wg_order_choose" style="line-height:25px;">搞怪结婚照</div>
-                                        </div>
-                                        <div class="item-title-row">
-                                            <div class="item-title"></div>
-                                            <div class="item-after iconfont">
-                                                <span>合计：</span> ￥99.00
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                        </ul>
+
+                    <div class="item-inner">
+                        <div class="item-title-row" style="border-bottom: 1px solid #e7e7e7;">
+                            <div class="item-title wg_order_choose_title">结婚登记照</div>
+                            <div class="item-after"></div>
+                        </div>
+                        <div class="item-title-row">
+                            <div class="item-title">升级体验</div>
+                            <div class="item-after iconfont">升级体验说明&#xe60d;</div>
+                        </div>
+                        <div class="item-title-row">
+                            <div class="item-title  wg_order_choose">搞怪结婚照</div>
+                        </div>
+                        <div class="item-title-row">
+                            <div class="item-title"></div>
+                            <div class="item-after iconfont">
+                                <span>合计：</span>
+                                ￥99.00
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="list-block media-list">
-                    <ul>
-                        <li>
-                            <a href="#" class="item-link item-content">
-                                <div class="item-inner">
-                                    <div class="item-title-row" style="border-bottom: 1px solid #e7e7e7;">
-                                        <div class="item-title wg_order_choose_title"> 文艺照</div>
-                                        <div class="item-after"></div>
-                                    </div>
-                                    <div class="item-title-row">
-                                        <div class="item-title">选择类型</div>
-                                        <div class="item-after"></div>
-                                    </div>
-                                    <div class="item-title-row" style="border-bottom: 1px solid #e7e7e7; padding-bottom: 5px;">
-                                        <div class="item-title  wg_order_choose" style="line-height:25px;">单人</div>
-                                        <div class="item-title  wg_order_choose" style="line-height:25px;">闺蜜</div>
-                                        <div class="item-title  wg_order_choose" style="line-height:25px;">亲子</div>
-                                        <div class="item-title  wg_order_choose" style="line-height:25px;">情侣</div>
-                                    </div>
-                                    <div class="item-title-row" style="border-bottom: 1px solid #e7e7e7; ">
-                                        <div class="item-title">闺蜜拍摄人数</div>
-                                        <div class="item-after">
-                                            <div class="product-photo-reduce">-</div>
-                                            <div class="product-photo-num">1</div>
-                                            <div class="product-photo-add">+</div>
-                                        </div>
-                                    </div>
-                                    <div class="item-title-row">
-                                        <div class="item-title">升级体验</div>
-                                        <div class="item-after iconfont">升级体验说明&#xe60d;</div>
-                                    </div>
-                                    <div class="item-title-row" style="border-bottom: 1px solid #e7e7e7; padding-bottom: 5px;">
-                                        <div class="item-title  wg_order_choose" style="line-height:25px;">搞怪结婚照</div>
-                                    </div>
-                                    <div class="item-title-row">
-                                        <div class="item-title"></div>
-                                        <div class="item-after iconfont"><span>合计：</span>￥99.00</div>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                    </ul>
+                    <div class="item-inner">
+                        <div class="item-title-row" style="border-bottom: 1px solid #e7e7e7;">
+                            <div class="item-title wg_order_choose_title">文艺照</div>
+                            <div class="item-after"></div>
+                        </div>
+                        <div class="item-title-row">
+                            <div class="item-title">选择类型</div>
+                            <div class="item-after"></div>
+                        </div>
+                        <div class="item-title-row" style="border-bottom: 1px solid #e7e7e7; padding-bottom: 5px;">
+                            <div class="item-title  wg_order_choose" style="line-height:25px;">单人</div>
+                            <div class="item-title  wg_order_choose" style="line-height:25px;">闺蜜</div>
+                            <div class="item-title  wg_order_choose" style="line-height:25px;">亲子</div>
+                            <div class="item-title  wg_order_choose" style="line-height:25px;">情侣</div>
+                        </div>
+                        <div class="item-title-row" style="border-bottom: 1px solid #e7e7e7; ">
+                            <div class="item-title">闺蜜拍摄人数</div>
+                            <div class="item-after">
+                                <div class="product-photo-reduce">-</div>
+                                <div class="product-photo-num">1</div>
+                                <div class="product-photo-add">+</div>
+                            </div>
+                        </div>
+                        <div class="item-title-row">
+                            <div class="item-title">升级体验</div>
+                            <div class="item-after iconfont">升级体验说明&#xe60d;</div>
+                        </div>
+                        <div class="item-title-row" style="border-bottom: 1px solid #e7e7e7; padding-bottom: 5px;">
+                            <div class="item-title  wg_order_choose" style="line-height:25px;">搞怪结婚照</div>
+                        </div>
+                        <div class="item-title-row">
+                            <div class="item-title"></div>
+                            <div class="item-after iconfont">
+                                <span>合计：</span>
+                                ￥99.00
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="wg_order_pay">
                     <div class="wg_order_pay_all">
                         总计：
-                        <span>￥99.00</span> （优惠：￥180）
+                        <span>￥<span id="total_price"></span></span>
                     </div>
                     <div class="wg_order_pay_again">下一步</div>
                 </div>

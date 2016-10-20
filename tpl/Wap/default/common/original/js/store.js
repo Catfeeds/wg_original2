@@ -47,11 +47,12 @@ $(function($) {
 		 * 定位请求,仅在移动端使用
 		 */
 		function geolocation() {
-			if (navigator.geolocation) {
-				navigator.geolocation.getCurrentPosition(getLocationCity, locationError);
-			} else {
-				$.router.load('/Index/reservationPosition1');
-			}
+			$.router.load('ChoosePosition.html');
+			// if (navigator.geolocation) {
+			// 	navigator.geolocation.getCurrentPosition(getLocationCity, locationError);
+			// } else {
+			// 	$.router.load('/Index/reservationPosition1');
+			// }
 		}
 
 
@@ -396,7 +397,7 @@ $(function($) {
 			str += '<li>' + item.name + '</li>'
 			if (item.products[0].length != 0) {
 				$.each(item.products[0], function(index2, item2) {
-					str += '<li class="product_item" data-pid="' + item2.id + '" data-price="' + item2.price + '" data-name="' + item2.name + '">';
+					str += '<li class="product_item" data-pid="' + item2.id + '" data-price="' + item2.price + '" data-name="' + item2.name + '" data-type="' + item2.type + '">';
 					str += '    <label class="label-checkbox item-content">';
 					str += '        <div class="wg_item_pro_pic"><img src="' + item2.logourl + '"></div>';
 					str += '        <div class="item-inner">';
@@ -444,12 +445,14 @@ $(function($) {
 			var pid = $(this).data('pid');
 			var pname = $(this).data('name');
 			var pprice = $(this).data('price');
+			var ptype = $(this).data('type');
 			if(!$(this).hasClass('active')){
 				$(this).addClass('active');
 				pid_arr.push({
 					'pid': pid,
 					'name': pname,
-					'price': pprice
+					'price': pprice,
+					'type': ptype,
 				});
 			}else{
 				$(this).removeClass('active');
@@ -473,17 +476,46 @@ $(function($) {
 		//选择产品信息页面
 	$(document).on('pageInit', '#select_products_info_wrap', function() {
 			var pinfo = cookie.get('choose_product');
-			console.log(pinfo);
 			var wrap = $('#choose_products_info');
 			var str = '';
 			var total_price = 0;
 			pinfo = eval('(' + pinfo + ')');
 			$.each(pinfo, function(index, el) {
-				str += '<div>' + el.name + '合计:' + el.price + '</div>';
+				if(el.type == 0){
+					str += '<div class="item-inner"><div class="item-title-row"><div class="item-title wg_order_choose_title">'+el.name+'</div><div class="item-after"><span>合计：</span>￥<span class="item-after-money">'+el.price+'</span></div></div></div>';
+				}
+				if(el.type == 1){
+					str += '<div class="item-inner">';
+					str += '    <div class="item-title-row" style="border-bottom: 1px solid #e7e7e7;">';
+					str += '        <div class="item-title wg_order_choose_title">'+el.name+'</div>';
+					str += '        <div class="item-after"></div>';
+					str += '    </div>';
+					str += '    <div class="item-title-row">';
+					str += '        <div class="item-title">背景颜色</div>';
+					str += '        <div class="item-after iconfont">背景颜色说明&#xe60d;</div>';
+					str += '    </div>';
+					console.log(el);
+					console.log(el.colorinfo);
+					str += '    <div class="item-title-row">';
+					str += '        <div class="item-title wg_order_choose_color card-product-color card-product-blue">蓝色</div>';
+					str += '        <div class="item-title wg_order_choose_color card-product-color card-product-white">白色</div>';
+					str += '        <div class="item-title wg_order_choose_color card-product-color card-product-red">红色</div>';
+					str += '        <div class="item-title wg_order_choose_color card-product-color card-product-yellow">芽黄</div>';
+					str += '        <div class="item-title wg_order_choose_color card-product-color card-product-gray">灰色</div>';
+					str += '    </div>';
+					str += '    <div class="item-title-row">';
+					str += '        <div class="item-title"></div>';
+					str += '        <div class="item-after">';
+					str += '            <span>合计:</span>￥';
+					str += '            <span class="item-after-money" class="product-price">'+el.price+'</span>';
+					str += '        </div>';
+					str += '    </div>';
+					str += '</div>';
+				}
 				total_price += el.price;
 			});
 			$('#total_price').text(total_price);
-			// wrap.html(str);
+			wrap.html(str);
 			//下一步
 			$(this).find('#next_btn').click(function() {
 				if (total_price != 0) {

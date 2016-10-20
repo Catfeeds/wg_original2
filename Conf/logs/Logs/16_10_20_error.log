@@ -14,3 +14,6 @@
 [ 2016-10-20T13:59:10+08:00 ] ERR: (ThinkException) Model:relation_METHOD_NOT_EXIST_
 [ 2016-10-20T13:59:11+08:00 ] ERR: (ThinkException) Model:relation_METHOD_NOT_EXIST_
 [ 2016-10-20T14:13:53+08:00 ] ERR: (ThinkException) _TEMPLATE_NOT_EXIST_[./tpl/User/default/Map_setLatLng_amap.html]
+[ 2016-10-20T20:16:40+08:00 ] ERR: (ThinkException) Accès refusé pour l'utilisateur: 'root'@'@localhost' (mot de passe: OUI)
+[ 2016-10-20T20:16:44+08:00 ] ERR: (ThinkException) Accès refusé pour l'utilisateur: 'root'@'@localhost' (mot de passe: OUI)
+[ 2016-10-20T20:19:38+08:00 ] ERR: (ThinkException) Accès refusé pour l'utilisateur: 'root'@'@localhost' (mot de passe: NON)
