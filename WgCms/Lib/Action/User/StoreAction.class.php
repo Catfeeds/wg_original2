@@ -560,11 +560,6 @@ class StoreAction extends UserAction{
         	$show       = $Page->show();
         	$list = $product_model->where($where)->order('sort desc,id asc')->limit($Page->firstRow.','.$Page->listRows)->select();
         }
-        foreach ($list as $k => $v) {
-        	if(!$v['price7']){
-        		$list[$k]['price7'] = M('Product_detail')->where('pid='.$v['id'])->order('price7 asc')->getField('price7');
-        	}
-        }
 		$this->assign('page',$show);		
 		$this->assign('list',$list);
 		$this->assign('isProductPage',1);
@@ -608,6 +603,18 @@ class StoreAction extends UserAction{
 	        		$colorList[] = $p['color'];
 	        		$pData[] = $p;
         		}
+        	}
+        	//显示背景颜色信息
+        	if($product['colorinfo']){
+        		$product['colorinfo'] = json_decode($product['colorinfo'],true);
+        	}
+        	//显示艺术照信息
+        	if($product['artinfo']){
+        		$product['artinfo'] = json_decode($product['artinfo'],true);
+        	}
+        	//显示艺术照升级体验
+        	if($product['artex']){
+        		$product['artex'] = json_decode($product['artex'],true);
         	}
         	$this->assign('set', $product);
         	$this->assign('formatList', $formatList);
@@ -685,20 +692,6 @@ class StoreAction extends UserAction{
 			}
 		}
 	}
-	function test(){
-		// $test = '[{"format":53,"color":54,"colorid":54,"price":"1","price2":"2","price3":"0","price4":"0","price5":"0","price6":"0","price7":"0","num":"0"}]';
-		$test = '[{"format":53}]';
-		$a = json_decode($test);
-		if(is_object($a)){
-			echo 'aa';
-		}
-		echo count($a);
-		echo mysql_field_type($a);
-		foreach ($a as $v) {
-			$v = (array)$v;
-			dump($v);
-		}
-	}
 	/**
 	 * 增加商品
 	 */
@@ -711,6 +704,27 @@ class StoreAction extends UserAction{
 		$_POST['time'] = time();
 		if ($product->create() === false) {
 		    exit(json_encode(array('error_code' => false, 'msg' => $product->getError())));
+		}
+		//判断颜色价格信息
+		$colorinfo = htmlspecialchars_decode($_POST['colorinfo']);
+		if (!empty($colorinfo) && $colorinfo != '{}') {
+			$_POST['colorinfo'] = $colorinfo;
+		}else{
+			$_POST['colorinfo'] = '';
+		}
+		//艺术照信息
+		$artinfo = htmlspecialchars_decode($_POST['artinfo']);
+		if (!empty($artinfo) && $artinfo != '{}') {
+			$_POST['artinfo'] = $artinfo;
+		}else{
+			$_POST['artinfo'] = '';
+		}
+		//艺术升级体验
+		$artex = htmlspecialchars_decode($_POST['artex']);
+		if (!empty($artex) && $artex != '{}') {
+			$_POST['artex'] = $artex;
+		}else{
+			$_POST['artex'] = '';
 		}
 		//判断更新还是增加
 		if ($_POST['id'] && $obj = $product->where(array('id' => $_POST['id'], 'token' => $_POST['token']))->find()) {
@@ -749,7 +763,7 @@ class StoreAction extends UserAction{
 				$oldDetailId[$val['id']] = $val['id'];
 			}
 			foreach ($norms as $row) {
-				$data_d = array('format' => $row['format'], 'color' => $row['color'], 'num' => $row['num'], 'price' => $row['price'],'price2' => $row['price2'],'price3' => $row['price3'],'price4' => $row['price4'],'price5' => $row['price5'],'price6' => $row['price6'],'price7' => $row['price7']);
+				$data_d = array('format' => $row['format'], 'color' => $row['color'], 'num' => $row['num'], 'price' => $row['price']);
 				if ($row['id']) {
 					unset($oldDetailId[$row['id']]);
 					$data_d['pid'] = $row['pid'];

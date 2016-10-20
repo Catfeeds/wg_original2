@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <link rel="stylesheet" href="common/original/css/sm.min.css">
+  <link rel="stylesheet" href="common/original/css/sm-extend.css">
+  <link rel="stylesheet" href="common/original/css/style.css">
+  <link rel="stylesheet" type="text/css" href="common/original/css/main.css">
+  <link rel="stylesheet" href="common/original/css/demo.css">
+  <link rel="stylesheet" href="common/original/css/iconfont.css">
+    <style type="text/css">
+    
+    p {
+        margin: 0.3em 0;
+    }
+    
+    .content1 {
+        position: absolute;
+        top: 40px;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .list-block {
+        margin: 10px 0;
+    }
+    
+    .list-block .item-media+.item-inner {
+        margin-left: 0rem;
+    }
+    
+    .list-block .item-after2 {
+        padding: 5px 10px;
+        border-radius: 5px;
+        margin: 6px 5px;
+        text-align:center;
+    }
+    
+    .bar-tab .tab-item.active {
+        color: #f08302;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="page-group">
+        <div class="page page-current">
+            <div class="content">
+                <div class="buttons-tab">
+                    <a href="#tab1" class="tab-link active button">全部</a>
+                    <a href="#tab2" class="tab-link button">待付款</a>
+                    <a href="#tab3" class="tab-link button">待发货</a>
+                </div>
+                <div class="content-block">
+                    <div class="tabs">
+                        <div id="tab1" class="tab active">
+                            <div class="content-block">
+                                <div class="content1">
+                                    <div class="list-block">
+                                        <ul>
+                                            <li class="item-content">
+                                                <div class="item-media"><i class="icon icon-f7"></i></div>
+                                                <div class="item-inner">
+                                                    <div class="item-title">订单号：201562825148100</div>
+                                                    <div class="item-after">已关闭</div>
+                                                </div>
+                                            </li>
+                                            <li class="item-content">
+                                                <div class="item-inner">
+                                                    <div class="item-title">
+                                                        <p>拍摄门店：浙江椒江</p>
+                                                        <p>预约时间：2016-10-19 11:30</p>
+                                                        <p>门店号码：0576-15152665</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="item-content1" style="overflow: hidden;border-bottom: 1px solid #e7e7e7">
+                                                <div class="item-inner1" style="float: right; margin-right: 2%; ">
+                                                    <div class="item-title"></div>
+                                                    <div class="item-after1" style="line-height: px;">总计：<span>￥268.00</span></div>
+                                                    <div class="clear"></div>
+                                                    <div class="item-after2 pay_unchoose">已关闭</div>
+                                                    <div class="clear"></div>
+                                                </div>
+                                                <div class="clear"></div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="list-block">
+                                        <ul>
+                                            <li class="item-content">
+                                                <div class="item-media"><i class="icon icon-f7"></i></div>
+                                                <div class="item-inner">
+                                                    <div class="item-title">订单号：201562825148100</div>
+                                                    <div class="item-after">已关闭</div>
+                                                </div>
+                                            </li>
+                                            <li class="item-content">
+                                                <div class="item-inner">
+                                                    <div class="item-title">
+                                                        <p>拍摄门店：浙江椒江</p>
+                                                        <p>预约时间：2016-10-19 11:30</p>
+                                                        <p>门店号码：0576-15152665</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="item-content1" style="overflow: hidden;border-bottom: 1px solid #e7e7e7">
+                                                <div class="item-inner1" style="float: right; margin-right: 2%; ">
+                                                    <div class="item-title"></div>
+                                                    <div class="item-after1">总计：<span>￥268.00</span></div>
+                                                    <div class="clear"></div>
+                                                    <div class="item-after2 pay_choose" style="float: right;">拍摄路线</div>
+                                                    <div class="item-after2 pay_unchoose" style="float: right;">拍摄建议</div>
+                                                    <div class="item-after2 pay_unchoose" style="float: right;">去付款</div>
+                                                    <div class="clear"></div>
+                                                </div>
+                                                <div class="clear"></div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tab2" class="tab">
+                            <div class="content-block">
+                                <p>This is tab 2 content</p>
+                            </div>
+                        </div>
+                        <div id="tab3" class="tab">
+                            <div class="content-block">
+                                <p>This is tab 3 content</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <nav class="bar bar-tab">
+                <a class="tab-item external active" href="#">
+                    <span class="icon icon-home"></span>
+                    <span class="tab-label">展示</span>
+                </a>
+                <a class="tab-item external" href="#">
+                    <span class="icon icon-me"></span>
+                    <span class="tab-label">预约</span>
+                    <span class="badge">2</span>
+                </a>
+                <a class="tab-item external" href="#">
+                    <span class="icon icon-star"></span>
+                    <span class="tab-label">订单</span>
+                </a>
+                <a class="tab-item external" href="#">
+                    <span class="icon icon-cart"></span>
+                    <span class="tab-label">我的</span>
+                </a>
+            </nav>
+        </div>
+    </div>
+     <script src="common/original/js/zepto.min.js" type="text/javascript" charset="utf-8"></script>
+  <script src="common/original/js/sm.min.js" type="text/javascript" charset="utf-8"></script>
+  <script src="common/original/js/sm-extend.js" type="text/javascript" charset="utf-8"></script>
+  <script src="common/original/js/public_parameters.js" type="text/javascript" charset="utf-8"></script>
+  
+  <script src="common/original/js/distribution.js" type="text/javascript" charset="utf-8"></script>
+</body>
+
+</html>

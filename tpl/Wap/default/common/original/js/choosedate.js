@@ -53,7 +53,7 @@ $(function() {
 			var monthArr = new Array('一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月');
 			var storeId = cookie.get('storeId');
 			$.showPreloader();
-			$.get(total_url + 'index.php?g=Wap&m=Store&a=getWorkDate' + storeId, function(data) {
+			$.get(total_url + 'index.php?g=Wap&m=Store&a=getWorkDate&storeId=' + storeId, function(data) {
 				data = eval('(' + data + ')');
 				console.log(data);
 				$.hidePreloader();
@@ -252,7 +252,10 @@ $(function() {
 			var headDateHtml = '';
 			var $headDateNode = $('.reservation-dateNum');
 			var $timeListNode = $('.reservation-timeList'); // 时间节点目标容器
-			$.get(total_url + 'index.php?g=Wap&m=Store&a=getWorkTime',{storeId:1,dateFormat:dateFormat}, function(data) {
+			var storeId = cookie.get('storeId');
+			console.log(storeId);
+			console.log(dateFormat);
+			$.get(total_url + 'index.php?g=Wap&m=Store&a=getWorkTime',{storeId:storeId,dateFormat:dateFormat}, function(data) {
 				$.hidePreloader();
 				data = eval('(' + data + ')');
 				console.log(data);

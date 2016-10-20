@@ -237,8 +237,50 @@
 				};
 			}
 		});
+		//序列化颜色数据
+		var color_data = {};	
+		if($('.color-wrap').is(':visible')){
+			$('#color-info .color-price').each(function(index, el) {
+				var obj = $(this);
+				var k = $(this).attr('name');
+				if(obj.val() != 0){
+					color_data[k] = {
+						price:obj.val(),
+					};
+				}
+			});
+		}
+		//艺术照信息
+		var art_data = {};
+		if($('.art-wrap').is(':visible')){
+			$('#art-info .art-price').each(function(index, el) {
+				var obj = $(this);
+				var k = $(this).attr('name');
+				if(obj.val() != 0){
+					art_data[k] = {
+						price:obj.val(),
+					};
+				}
+			});
+		}
+		//艺术照升级体验
+		var art_experience = {};
+		if($('.art-wrap').is(':visible')){
+			$('#art-experience .art-experience-price').each(function(index, el) {
+				var obj = $(this);
+				var k = $(this).attr('name');
+				if(obj.val() != 0){
+					art_experience[k] = {
+						price:obj.val(),
+					};
+				}
+			});
+		}
 		//重组FORM数据
 		data +="&norms="+JSON.stringify(norms_data);
+		data +="&colorinfo="+JSON.stringify(color_data);
+		data +="&artinfo="+JSON.stringify(art_data);
+		data +="&artex="+JSON.stringify(art_experience);
 		//保存
 		$.post('index.php?g=User&m=Store&a=productSave', data, function(response) {
 			if (response.error_code == false) {

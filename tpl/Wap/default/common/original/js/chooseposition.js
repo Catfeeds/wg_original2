@@ -91,6 +91,7 @@ $(function() {
 		 */
 		function setCurrentCity() {
 			var cityS = getCityName(cookie.get('scid'));
+			console.log(cityS);
 			var _cityHtml = setTipText(cityS.split('市')[0]);
 			$city.html(_cityHtml); // 改变显示城市
 			$('#reservation .wrapper').show(); //显示加载图
@@ -113,8 +114,9 @@ $(function() {
 			var cityHaveStoreArr = [];
 			var isUs;
 			$.showIndicator();
-			$.get(total_url + '/Sapi/getCityList', function(data) {
+			$.get(total_url + 'index.php?g=Wap&m=Store&a=getCityList', function(data) {
 				$.hideIndicator();
+				data = eval('('+data+')');
 				if (data.error === 0) {
 					var cityHaveStoreArr = [];
 					var citylist = data.msg.city;
@@ -154,7 +156,9 @@ $(function() {
 		 */
 		function showStoreInfo(cid) {
 			$.showIndicator();
-			$.get(total_url + '/Sapi/getStoreByCity/cid/' + cid, function(data) {
+			$.get(total_url + 'index.php?g=Wap&m=Store&a=getStoreByCity&cid=' + cid, function(data) {
+				data = eval('('+data+')');
+				console.log(data);
 				$.hideIndicator();
 				if (data.error === 0) {
 					var cityInfo = data.msg.city; // 当前选择城市
@@ -219,29 +223,29 @@ $(function() {
 		function changeStoreInfo(storeInfo, storeId) {
 			var storeinfoHtml = '';
 			var storeArr = Object.keys(storeInfo);
-			var storeServiceArr = storeInfo[storeId].S_Service.split('');
+			// var storeServiceArr = storeInfo[storeId].S_Service.split('');
 			var $service = $('#reservation-storeService .reservation-serviceList'); //门店服务
-			var opents = parseInt(storeInfo[storeId].S_StartTime);
+			// var opents = parseInt(storeInfo[storeId].S_StartTime);
 			var tsNow = parseInt(+new Date() / 1000); // 获取当前的时间戳
 			var btnHtml = '选择套餐';
 			$('.reservation-checkBtn').removeClass('btn-disabled');
 
-			if (opents && (tsNow < opents)) {
-				var _date = new Date(opents * 1000);
-				var _mnum = _date.getMonth();
-				var _dnum = _date.getDate();
-				var _hnum = _date.getHours();
-				var _minum = _date.getMinutes();
-				btnHtml = '将于' + (_mnum + 1) + '月' + _dnum + '日' + _hnum + ':' + (_minum < 10 ? '0' + _minum : _minum) + '开放预约,敬请期待';
-				$('.reservation-checkBtn').addClass('btn-disabled');
-			}
+			// if (opents && (tsNow < opents)) {
+			// 	var _date = new Date(opents * 1000);
+			// 	var _mnum = _date.getMonth();
+			// 	var _dnum = _date.getDate();
+			// 	var _hnum = _date.getHours();
+			// 	var _minum = _date.getMinutes();
+			// 	btnHtml = '将于' + (_mnum + 1) + '月' + _dnum + '日' + _hnum + ':' + (_minum < 10 ? '0' + _minum : _minum) + '开放预约,敬请期待';
+			// 	$('.reservation-checkBtn').addClass('btn-disabled');
+			// }
 
 			$service.removeClass('off');
-			for (var i in storeServiceArr) {
-				if (storeServiceArr[i] === '0') {
-					$($service[i]).addClass('off');
-				}
-			}
+			// for (var i in storeServiceArr) {
+			// 	if (storeServiceArr[i] === '0') {
+			// 		$($service[i]).addClass('off');
+			// 	}
+			// }
 			$service.on('click', function() {
 				var picIndex = $(this).index() + 1;
 				if ($(this).hasClass('off')) {
@@ -255,6 +259,8 @@ $(function() {
 			$('#reservation-store .reservation-storename').text(storeInfo[storeId].S_Name); // 门店名
 			$('#address-maplink').attr('href', storeInfo[storeId].S_MapUrl); // 地图链接
 			$('#address-maplink .addressText').html(storeInfo[storeId].S_Address); // 地址
+			$('#tele-wrap').attr('href','tel:'+storeInfo[storeId].S_TELE); // 电话
+			$('#tele-wrap .tele').html(storeInfo[storeId].S_TELE); // 电话
 			$('#reservation-store .reservation-storeNum').text(storeArr.length); // 门店数量
 			$('.reservation-top img').attr('src', storeInfo[storeId].S_Photo);
 			$('#reservation-storeInfo').show(); // 门店详情展示出现

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>我的生活</title>
+  <title>首页</title>
   <meta name="viewport" content="initial-scale=1, maximum-scale=1">
   <link rel="shortcut icon" href="/favicon.ico">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -14,10 +14,24 @@
   <link rel="stylesheet" href="common/original/css/position.css"></head>
 </head>
 <body>
+  <style>
+  .swiper-container{
+    padding-bottom: 0;
+  }
+  .swiper-slide img{
+    width: 100%;
+  }
+</style>
   <div class="page-group">
-    <div class="page page-current" id="store_index_wrap">
+    <div class="page page-current" id="index-page">
       <div class="content">
-        <a href="ChoosePosition.html">123</a>
+        <!-- BNNER -->
+        <div id="slider-index"></div>
+        <!-- 定位 -->
+        <div class="index-position">
+          <span class="index-positionIcon"></span> <em>获取位置中</em>
+          <span class="icon icon-right"></span>
+        </div>
         <div class="buttons-tab">
           <a href="#tab1" class="tab-link active button">全部</a>
           <a href="#tab2" class="tab-link button">待付款</a>
@@ -49,4 +63,5 @@
 <script src="common/original/js/cookie.js" type="text/javascript" charset="utf-8"></script>
 <script src="common/original/js/public_parameters.js" type="text/javascript" charset="utf-8"></script>
 <script src="common/original/js/citylist.js" type="text/javascript" charset="utf-8"></script>
+<script src="common/original/js/slider.js" type="text/javascript" charset="utf-8"></script>
 <script src="common/original/js/chooseposition.js" type="text/javascript" charset="utf-8"></script>
