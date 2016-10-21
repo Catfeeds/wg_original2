@@ -57,7 +57,10 @@ class StoreAction extends WapAction{
 		$w = $this->numberToCn(date('w',$str_time));
 		//查询店铺每个时间段限制预约人数
 		$timeNums = M('Store_list')->where(array('id'=>$storeId))->getField('timeNums');
-		
+		//获取已经预约的时间
+		$carts = M('Product_cart')->where(array("storeid"=>$storeId,'paid'=>1,'returMoney'=>0))->select();
+
+
 		//日期
 		$date = (int)$m."月".(int)$d."日 星期".$w;
 		//当天时间预约
@@ -65,9 +68,15 @@ class StoreAction extends WapAction{
 
 		for ($i=0; $i < 40; $i++) {
 			$t = $starttime + 900 * $i;
+			$del = 0;
+			foreach ($carts as $k => $v) {
+				if($v['rtime'] == $t){
+					$del += 1;
+				}
+			}
 			$remain[$t] = array(
 				'time'  => date('H:i',$t),
-				'count' => $timeNums,
+				'count' => $timeNums - $del,
 			);
 		}
 
