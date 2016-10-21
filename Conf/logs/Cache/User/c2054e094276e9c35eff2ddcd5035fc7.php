@@ -281,122 +281,95 @@ $i=0; $parms=$_SERVER['QUERY_STRING']; $parms1=explode('&',$parms); $parmsArr=ar
 		})
 	});
 
-</script>
-<link rel="stylesheet" type="text/css" href="<?php echo RES;?>/css/cymain.css" />  
- <div class="content">
-<div class="cLineB">
-<h4 class="left">分类管理</h4>
-<div class="clr"></div>
-</div>
-<!--tab start-->
-<div class="tab" id="store_tab">
-<ul>
-<li class="tabli spfl"     id="tab2"><a href="<?php echo U('Store/index',array('token'=>$token,'dining'=>$isDining));?>">
-<?php if($isDining != 1): ?>商品分类<?php else: ?>菜品分类<?php endif; ?>管理</a></li>
-<li class="tabli sssp"     id="tab2"><a href="<?php echo U('Store/search',array('token'=>$token));?>">搜索商品</a></li>
-<li class="tabli ban"      id="tab2"><a href="<?php echo U('Store/banner',array('token'=>$token));?>">轮播图管理</a></li>
-<li class="tabli ad"       id="tab2"><a href="<?php echo U('Store/guanggao',array('token'=>$token));?>">广告位图管理</a></li>
-<li class="tabli discount" id="tab2"><a href="<?php echo U('Store/level',array('token'=>$token));?>">会员等级管理</a></li>
-<li class="tabli city" 	   id="tab2"><a href="<?php echo U('Store/cityList',array('token'=>$token));?>">城市管理</a></li>
-<li class="tabli city" 	   id="tab2"><a href="<?php echo U('Store/departList',array('token'=>$token));?>">分店管理</a></li>
+</script> 
+<script src="<?php echo STATICS;?>/artDialog/jquery.artDialog.js?skin=default"></script>
+<script src="<?php echo STATICS;?>/artDialog/plugins/iframeTools.js"></script>
+<script>
+  function setlatlng(longitude,latitude){
+  art.dialog.data('longitude', longitude);
+  art.dialog.data('latitude', latitude);
+  // 此时 iframeA.html 页面可以使用 art.dialog.data('test') 获取到数据，如：
+  // document.getElementById('aInput').value = art.dialog.data('test');
+  art.dialog.open('<?php echo U('Map/setLatLng',array('token'=>$token,'id'=>$id));?>',{lock:false,title:'设置经纬度',width:600,height:400,yesText:'关闭',background: '#000',opacity: 0.87});
+}
 
-<?php if(empty($catid) != true): ?><li class="tabli pro"      id="tab0"><a href="<?php echo U('Store/product',array('token'=>$token));?>">商品管理</a></li><?php endif; ?>
-<li class="tabli ord"      id="tab2"><a href="<?php echo U('Store/orders',array('token'=>$token,'dining'=>$isDining));?>">订单管理</a></li>
-<?php if($isDining == 1): ?><li class="tabli" id="tab2"><a href="<?php echo U('Store/tables',array('token'=>$token,'dining'=>1));?>">桌台管理</a></li><?php endif; ?>
-<!-- <?php if($isDining != 1): ?><li class="tabli" id="tab5"><a href="<?php echo U('Reply_info/set',array('token'=>$token,'infotype'=>'Shop'));?>">商城回复配置</a></li>
-<?php else: ?>
-<li class="tabli" id="tab5"><a href="<?php echo U('Reply_info/set',array('token'=>$token,'infotype'=>'Dining'));?>">订餐回复配置</a></li><?php endif; ?> -->
-</ul>
-</div>
-<!--tab end-->
-<script type="text/javascript">
-	(function($){
-		var module_name="<?php echo MODULE_NAME;?>";
-		var action_name="<?php echo ACTION_NAME;?>";
-		var tab=$("#store_tab");
-		if(module_name=="Store"){
-			if(action_name=="index"){
-				tab.find('.spfl').addClass('current');
-			}
-			if(action_name=="search"){
-				tab.find('.sssp').addClass('current');
-			}
-			if(action_name=="banner"){
-				tab.find('.ban').addClass('current');
-			}
-			if(action_name=="guanggao"){
-				tab.find('.ad').addClass('current');
-			}
-			if(action_name=="product"){
-				tab.find('.pro').addClass('current');
-			}
-			if(action_name=="orders"){
-				tab.find('.ord').addClass('current');
-			}
-			if(action_name=='discount'){
-				tab.find('.discount').addClass('current');
-			}
-		}
-	})(jQuery)
 </script>
-<div class="cLine">
-<div class="pageNavigator left"> 
-<a href="<?php echo U('Store/catAdd', array('token' => $token, 'cid' => $cid, 'parentid' => $parentid));?>" title="新增分类" class="btnGrayS vm bigbtn"><img src="<?php echo RES;?>/images/product/add.png" class="vm">新增<?php if($_GET['parentid'] != 0 and $_GET['parentid'] != ''): ?>子<?php endif; ?>分类</a>
-</div>
-<?php if($parentid > 0): ?><div class="pageNavigator right">
-<a href="<?php echo U('Store/index',array('token'=>$token, 'cid' => $cid, 'parentid' => $parentCat['parentid']));?>" class="btnGrayS vm bigbtn">返回上级分类</a>
-</div>
-<?php else: ?>
-<div class="pageNavigator right"> 
-<a href="<?php echo U('Store/setting', array('token' => $token, 'cid' => $cid));?>" title="商城设置" class="btnGrayS vm bigbtn"><img src="<?php echo RES;?>/images/product/add.png" class="vm">商城设置</a>
-</div><?php endif; ?>
-<div class="clr"></div>
-</div>
-<div class="msgWrap">
-<form method="post" action="" id="info">
-<input name="delall" type="hidden" value="">
-<input name="wxid" type="hidden" value="">
-<table class="ListProduct" border="0" cellspacing="0" cellpadding="0" width="100%">
-<thead>
-<tr>
-<th width="100">分类名称</th>
-<th width="100">分类URL</th>
-<th width="150">规格</th>
-<th width="90">产品外观</th>
-<th width="60">排序值</th>
-<th width="120">创建时间</th>
-<th width="200" class="norightborder">操作</th>
-</tr>
-</thead>
-<tbody>
-<tr></tr>
-<?php if(is_array($list)): $i = 0; $__LIST__ = $list;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$hostlist): $mod = ($i % 2 );++$i;?><tr>
-<td><?php echo ($hostlist["name"]); ?></td>
-<td><?php echo C('site_url'); echo U('Wap/Store/products',array('token'=>$token,'catid'=>$hostlist['id']));?></td>
-<td><?php echo ($hostlist["norms"]); if(empty($hostlist['norms']) != true): ?><span>&nbsp;&nbsp;<a href="<?php echo U('Store/norms', array('catid'=>$hostlist['id'],'token'=>$token, 'type' => 0));?>">规格的管理</a></span><?php endif; ?></td> 
-<td><?php echo ($hostlist["color"]); if(empty($hostlist['color']) != true): ?><span>&nbsp;&nbsp;<a href="<?php echo U('Store/norms', array('catid'=>$hostlist['id'],'token'=>$token, 'type' => 1));?>">外观的管理</a></span><?php endif; ?></td>
-<td><?php echo ($hostlist["sort"]); ?></td>
-<td><?php echo (date("Y-m-d H:i:s",$hostlist["time"])); ?></td> 
-<td class="norightborder">
-	<a href="<?php echo U('Store/catSet',array('token'=>$token,'id'=>$hostlist['id'],'parentid' => $hostlist['parentid']));?>">修改</a>
-	<a href="javascript:drop_confirm('您确定要删除吗?', '<?php echo U('Store/catDel',array('id'=>$hostlist['id'],'token'=>$token));?>');">删除</a>
-	<!-- <span>&nbsp;|&nbsp;<a href="<?php echo U('Store/norms', array('catid'=>$hostlist['id'],'token'=>$token));?>">增加规格</a></span> -->
-	<?php if($hostlist['parentid'] == 0): ?><span>&nbsp;|&nbsp;<a href="<?php echo U('Store/index',array('parentid' => $hostlist['id'],'level' => $hostlist['level'],'token'=>$token));?>" style="color:#f00">子分类列表</a></span><?php endif; ?>
-	<?php if(($hostlist['isfinal']) != "2"): ?><span>&nbsp;|&nbsp;<a href="<?php echo U('Store/product',array('catid' => $hostlist['id'],'token'=>$token,'parentid' => $hostlist['parentid']));?>" style="color:#f00">商品管理</a></span><?php endif; ?>
-</td>
-</tr><?php endforeach; endif; else: echo "" ;endif; ?>
-</tbody>
-</table>
-</form>
-</div>
-<div class="cLine">
-<div class="pageNavigator right">
-<div class="pages"><?php echo ($page); ?></div>
-</div>
-<div class="clr"></div>
-</div>
-</div>
-</div>
+  <div class="content"> 
+   <div class="cLineB"> 
+    <h4>分店设置</h4> 
+    <a href="<?php echo U('Store/departList',array('token'=>$token));?>" class="right  btnGreen" style="margin-top:-27px">返回</a> 
+   </div> 
+   <form class="form" method="post" action="" enctype="multipart/form-data"> 
+    <input type="hidden" name="id" value="<?php echo ($set["id"]); ?>" /> 
+     
+    <div class="msgWrap bgfc"> 
+     <table class="userinfoArea" style=" margin:0;" border="0" cellspacing="0" cellpadding="0" width="100%"> 
+      <tbody> 
+      
+       <tr> 
+        <th>店名:</th> 
+        <td><input type="text" name="name" value="<?php echo ($set["name"]); ?>" class="px" style="width:120px;" /></td> 
+       </tr> 
+      
+        <tr> 
+        <th>城市：</th> 
+        <td>
+        <select style="width:120px;" name="cid" id="ww">
+          <?php if($set["cid"] == null): ?><option value="0">----请选择-----</option>
+            <?php else: ?>
+              <option value="<?php echo ($setcity["id"]); ?>"><?php echo ($setcity["name"]); ?></option><?php endif; ?>    
+        <?php echo ($str); ?>    
+        </select>
+        </td> 
+       </tr> 
+
+	     <tr> 
+        <th>电话：</th> 
+        <td><input type="text" name="tele" value="<?php echo ($set["tele"]); ?>" class="px" style="width:120px;" /></td> 
+       </tr>
+
+       <tr> 
+        <th>用户：</th> 
+        <td><input type="text" name="username" value="<?php echo ($set["username"]); ?>" class="px" style="width:120px;" /></td> 
+       </tr>
+
+       <tr> 
+        <th>密码：</th> 
+        <td><input type="text" name="password" value="" class="px" style="width:120px;" /></td> 
+       </tr>
+
+
+       <tr> 
+        <th>同时预约个数：</th> 
+        <td><input type="text" name="timeNum" value="<?php echo ($set["timeNum"]); ?>" class="px" style="width:120px;" /></td> 
+       </tr>     
+
+       <tr> 
+        <th>地址：</th> 
+        <td><input type="text" name="address" value="<?php echo ($set["address"]); ?>" class="px" style="width:120px;" /></td> 
+       </tr>     
+
+        <tr> 
+        <th>经纬度：</th> 
+        <td>经度 <input type="text" id="longitude"  name="longitude" size="14" class="px" value="<?php echo ($set["longitude"]); ?>" /> 纬度 <input type="text"  name="dimension" size="14" id="latitude" class="px" value="<?php echo ($set["dimension"]); ?>" /> <a href="###" onclick="setlatlng($('#longitude').val(),$('#latitude').val())">在地图中查看/设置</a></td> 
+        </tr>
+
+
+       <tr> 
+        <th>广告位图片：</th> 
+        <td><input type="text" name="pic" value="<?php echo ($set["pic"]); ?>" id="pic" class="px" style="width:400px;" />  <script src="<?php echo STATICS;?>/upyun.js"></script><a href="###" onclick="upyunPicUpload('pic',700,420,'<?php echo ($token); ?>')" class="a_upload">上传</a> <a href="###" onclick="viewImg('pic')">预览</a></td> 
+       </tr>
+
+       <th>&nbsp;</th>
+       <td>
+       <button type="submit" name="button" class="btnGreen">保存</button> &nbsp; <a href="<?php echo U('Store/departList',array('token'=>$token));?>" class="btnGray vm">取消</a></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+     </div>
+   </form> 
+  </div> 
+  </div>
 </div>
 </div>
 

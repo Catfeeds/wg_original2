@@ -51,10 +51,33 @@
                     padding: 0px 2%;
                     background-color: #fff;
                 }
+                .extent-flex-start{
+                    -webkit-justify-content: flex-start !important;
+                    justify-content: flex-start !important;
+                }
+                .extend-mr7{
+                    margin-right: 7px;
+                }
                 .list-block.media-list .item-inner,
                 .list-block .item-inner {
                     padding-right: 0;
                     padding-top: 0;
+                }
+                .bb_1_s{
+                    border-bottom: 1px solid #e7e7e7;
+                }
+                .bb_1_s_pb_5{
+                    border-bottom: 1px solid #e7e7e7 !important;
+                    padding-bottom: 5px !important;
+                }
+                .lh25{
+                    line-height: 25px !important;
+                }
+                .choose-active{
+                    background-color: #0894ec;
+                    border: none !important;
+                    padding: 2px 6px !important;
+                    color: #fff;
                 }
                 </style>
                 <div class="list-block media-list" id="choose_products_info">
@@ -70,9 +93,8 @@
                     </div>
 
                     <div class="item-inner">
-                        <div class="item-title-row" style="border-bottom: 1px solid #e7e7e7;">
+                        <div class="item-title-row bb_1_s">
                             <div class="item-title wg_order_choose_title">证件照</div>
-                            <div class="item-after"></div>
                         </div>
                         <div class="item-title-row">
                             <div class="item-title">升级体验</div>
@@ -96,9 +118,8 @@
                     </div>
 
                     <div class="item-inner">
-                        <div class="item-title-row" style="border-bottom: 1px solid #e7e7e7;">
+                        <div class="item-title-row bb_1_s">
                             <div class="item-title wg_order_choose_title">结婚登记照</div>
-                            <div class="item-after"></div>
                         </div>
                         <div class="item-title-row">
                             <div class="item-title">升级体验</div>
@@ -109,28 +130,26 @@
                         </div>
                         <div class="item-title-row">
                             <div class="item-title"></div>
-                            <div class="item-after iconfont">
-                                <span>合计：</span>
-                                ￥99.00
+                            <div class="item-after">
+                                <span>合计：</span>￥<span class="item-after-money product-price">99</span>
                             </div>
                         </div>
                     </div>
+
                     <div class="item-inner">
-                        <div class="item-title-row" style="border-bottom: 1px solid #e7e7e7;">
+                        <div class="item-title-row bb_1_s">
                             <div class="item-title wg_order_choose_title">文艺照</div>
-                            <div class="item-after"></div>
                         </div>
                         <div class="item-title-row">
                             <div class="item-title">选择类型</div>
-                            <div class="item-after"></div>
                         </div>
-                        <div class="item-title-row" style="border-bottom: 1px solid #e7e7e7; padding-bottom: 5px;">
-                            <div class="item-title  wg_order_choose" style="line-height:25px;">单人</div>
-                            <div class="item-title  wg_order_choose" style="line-height:25px;">闺蜜</div>
-                            <div class="item-title  wg_order_choose" style="line-height:25px;">亲子</div>
-                            <div class="item-title  wg_order_choose" style="line-height:25px;">情侣</div>
+                        <div class="item-title-row bb_1_s_pb_5">
+                            <div class="item-title  wg_order_choose lh25 choose-active">单人</div>
+                            <div class="item-title  wg_order_choose lh25">闺蜜</div>
+                            <div class="item-title  wg_order_choose lh25">亲子</div>
+                            <div class="item-title  wg_order_choose lh25">情侣</div>
                         </div>
-                        <div class="item-title-row" style="border-bottom: 1px solid #e7e7e7; ">
+                        <div class="item-title-row bb_1_s">
                             <div class="item-title">闺蜜拍摄人数</div>
                             <div class="item-after">
                                 <div class="product-photo-reduce">-</div>
@@ -142,24 +161,26 @@
                             <div class="item-title">升级体验</div>
                             <div class="item-after iconfont">升级体验说明&#xe60d;</div>
                         </div>
-                        <div class="item-title-row" style="border-bottom: 1px solid #e7e7e7; padding-bottom: 5px;">
-                            <div class="item-title  wg_order_choose" style="line-height:25px;">搞怪结婚照</div>
+                        <div class="item-title-row bb_1_s_pb_5">
+                            <div class="item-title  wg_order_choose lh25">搞怪结婚照</div>
                         </div>
                         <div class="item-title-row">
                             <div class="item-title"></div>
                             <div class="item-after iconfont">
                                 <span>合计：</span>
-                                ￥99.00
+                                ￥
+                                <span class="item-after-money product-price">99</span>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div style="height: 40px;"></div>
                 <div class="wg_order_pay">
                     <div class="wg_order_pay_all">
                         总计：
                         <span>￥<span id="total_price"></span></span>
                     </div>
-                    <div class="wg_order_pay_again">下一步</div>
+                    <div class="wg_order_pay_again" id="next_btn">下一步</div>
                 </div>
             </div>
         </div>

@@ -1,4 +1,4 @@
-$(function() {
+$(function($) {
 	// 选择日期
 	$(document).on('pageInit', '#reservation-date', function(e, id, page) {
 		$.showPreloader();
@@ -55,7 +55,6 @@ $(function() {
 			$.showPreloader();
 			$.get(total_url + 'index.php?g=Wap&m=Store&a=getWorkDate&storeId=' + storeId, function(data) {
 				data = eval('(' + data + ')');
-				console.log(data);
 				$.hidePreloader();
 				if (data.error === 0) {
 					var dateK = data.msg;

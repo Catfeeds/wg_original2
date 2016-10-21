@@ -1,4 +1,5 @@
 $(function($) {
+	//删除数组中指定元素
 	//判断账号登陆
 	// $(document).ready(function($) {
 	// 	$.ajax({
@@ -11,7 +12,7 @@ $(function($) {
 	// 		}
 	// 	});
 	// });
-	
+
 	// 选择门店
 	$(document).on('pageAnimationStart', '#reservation', function(e, id, page) {
 		//初始化操作
@@ -130,7 +131,7 @@ $(function($) {
 			$.showIndicator();
 			$.get(total_url + 'index.php?g=Wap&m=Store&a=getCityList', function(data) {
 				$.hideIndicator();
-				data = eval('('+data+')');
+				data = eval('(' + data + ')');
 				if (data.error === 0) {
 					var cityHaveStoreArr = [];
 					var citylist = data.msg.city;
@@ -171,7 +172,7 @@ $(function($) {
 		function showStoreInfo(cid) {
 			$.showIndicator();
 			$.get(total_url + 'index.php?g=Wap&m=Store&a=getStoreByCity&cid=' + cid, function(data) {
-				data = eval('('+data+')');
+				data = eval('(' + data + ')');
 				console.log(data);
 				$.hideIndicator();
 				if (data.error === 0) {
@@ -274,7 +275,7 @@ $(function($) {
 			$('#reservation-store .reservation-storename').text(storeInfo[storeId].S_Name); // 门店名
 			$('#address-maplink').attr('href', storeInfo[storeId].S_MapUrl); // 地图链接
 			$('#address-maplink .addressText').html(storeInfo[storeId].S_Address); // 地址
-			$('#tele-wrap').attr('href','tel:'+storeInfo[storeId].S_TELE); // 电话
+			$('#tele-wrap').attr('href', 'tel:' + storeInfo[storeId].S_TELE); // 电话
 			$('#tele-wrap .tele').html(storeInfo[storeId].S_TELE); // 电话
 			$('#reservation-store .reservation-storeNum').text(storeArr.length); // 门店数量
 			$('.reservation-top img').attr('src', storeInfo[storeId].S_Photo);
@@ -308,7 +309,7 @@ $(function($) {
 			var cityHaveStoreArr = [];
 			var isUs;
 			$.get(total_url + 'index.php?g=Wap&m=Store&a=getCityList', function(data) {
-				var data = eval('('+data+')');
+				var data = eval('(' + data + ')');
 				console.log(data);
 				$.hideIndicator();
 				if (data.error === 0) {
@@ -391,13 +392,15 @@ $(function($) {
 	function CatsProductsHtml(json) {
 		var wrap = $('#cat_products_wrap');
 		var str = '';
-		var pid_arr = [];
+		var pid_arr = {};
+		var store_product = [];
 		$.each(json.data, function(index, item) {
 			str += '<ul>'
 			str += '<li>' + item.name + '</li>'
 			if (item.products[0].length != 0) {
 				$.each(item.products[0], function(index2, item2) {
-					str += '<li class="product_item" data-pid="' + item2.id + '" data-price="' + item2.price + '" data-name="' + item2.name + '" data-type="' + item2.type + '">';
+					store_product[item2.id] = item2;
+					str += '<li class="product_item" data-pid="' + item2.id + '">';
 					str += '    <label class="label-checkbox item-content">';
 					str += '        <div class="wg_item_pro_pic"><img src="' + item2.logourl + '"></div>';
 					str += '        <div class="item-inner">';
@@ -417,50 +420,34 @@ $(function($) {
 		})
 		wrap.html(str);
 		//预约须知
-		$(document).find('#reservation-info-btn').off('click').on('click',function(){
+		$(document).find('#reservation-info-btn').off('click').on('click', function() {
 			var info = $('#reservation-info');
 			info.show();
 		})
-		$(document).find('#reservation-info .close').off('click').on('click',function(){
-			var info = $('#reservation-info');
-			info.hide();
-		})
-		//删除数组中指定元素
-		Array.prototype.indexOf = function(val) {
-            for (var i = 0; i < this.length; i++) {
-                if (this[i] == val) return i;
-            }
-            return -1;
-        };
-        Array.prototype.remove = function(val) {
-            var index = this.indexOf(val);
-            if (index > -1) {
-                this.splice(index, 1);
-            }
-        };
-		//选择商品
+		$(document).find('#reservation-info .close').off('click').on('click', function() {
+				var info = $('#reservation-info');
+				info.hide();
+			})
+			//选择商品
 		$(document).find('.product_item').off('click').on('click', function(event) {
 			event.preventDefault();
 			event.stopPropagation();
 			var pid = $(this).data('pid');
-			var pname = $(this).data('name');
-			var pprice = $(this).data('price');
-			var ptype = $(this).data('type');
-			if(!$(this).hasClass('active')){
+			if (!$(this).hasClass('active')) {
 				$(this).addClass('active');
-				pid_arr.push({
+				pid_arr[pid] = {
 					'pid': pid,
-					'name': pname,
-					'price': pprice,
-					'type': ptype,
-				});
-			}else{
+					'name': store_product[pid].name,
+					'price': store_product[pid].price,
+					'type': store_product[pid].type,
+					'colorinfo': store_product[pid].colorinfo,
+					'artinfo': store_product[pid].artinfo,
+					'artex': store_product[pid].artex,
+					'wmprice': store_product[pid].wmprice,
+				};
+			} else {
 				$(this).removeClass('active');
-				$.each(pid_arr,function(index, el) {
-					if(el.pid == pid){
-						pid_arr.remove(el);
-					}
-				});
+				delete(pid_arr[pid]);
 			}
 			cookie.set('choose_product', JSON.stringify(pid_arr));
 		})
@@ -479,46 +466,287 @@ $(function($) {
 			var wrap = $('#choose_products_info');
 			var str = '';
 			var total_price = 0;
+			var colorinfo;
+			var artinfo;
+			var artex;
+			var colorname = '';
 			pinfo = eval('(' + pinfo + ')');
 			$.each(pinfo, function(index, el) {
-				if(el.type == 0){
-					str += '<div class="item-inner"><div class="item-title-row"><div class="item-title wg_order_choose_title">'+el.name+'</div><div class="item-after"><span>合计：</span>￥<span class="item-after-money">'+el.price+'</span></div></div></div>';
+				if (el.type == 0) {
+					str += '<div class="item-inner"><div class="item-title-row"><div class="item-title wg_order_choose_title">' + el.name + '</div><div class="item-after"><span>合计：</span>￥<span class="item-after-money">' + el.price + '</span></div></div></div>';
 				}
-				if(el.type == 1){
-					str += '<div class="item-inner">';
+				if (el.type == 1) {
+					str += '<div class="item-inner" data-pid="' + el.pid + '">';
 					str += '    <div class="item-title-row" style="border-bottom: 1px solid #e7e7e7;">';
-					str += '        <div class="item-title wg_order_choose_title">'+el.name+'</div>';
-					str += '        <div class="item-after"></div>';
+					str += '        <div class="item-title wg_order_choose_title">' + el.name + '</div>';
 					str += '    </div>';
 					str += '    <div class="item-title-row">';
 					str += '        <div class="item-title">背景颜色</div>';
 					str += '        <div class="item-after iconfont">背景颜色说明&#xe60d;</div>';
 					str += '    </div>';
-					console.log(el);
-					console.log(el.colorinfo);
+					colorinfo = eval('(' + el.colorinfo + ')');
 					str += '    <div class="item-title-row">';
-					str += '        <div class="item-title wg_order_choose_color card-product-color card-product-blue">蓝色</div>';
-					str += '        <div class="item-title wg_order_choose_color card-product-color card-product-white">白色</div>';
-					str += '        <div class="item-title wg_order_choose_color card-product-color card-product-red">红色</div>';
-					str += '        <div class="item-title wg_order_choose_color card-product-color card-product-yellow">芽黄</div>';
-					str += '        <div class="item-title wg_order_choose_color card-product-color card-product-gray">灰色</div>';
+					$.each(colorinfo, function(index2, el2) {
+						switch (index2) {
+							case 'blue':
+								colorname = '蓝色';
+								break;
+							case 'white':
+								colorname = '白色';
+								break;
+							case 'red':
+								colorname = '红色';
+								break;
+							case 'yellow':
+								colorname = '芽黄';
+								break;
+							case 'grey':
+								colorname = '灰色';
+								break;
+						}
+						if (index2 != 'blue') {
+							str += '<div class="item-title wg_order_choose_color card-product-color card-product-' + index2 + '" data-price="' + el2.price + '" data-choose="' + index2 + '">' + colorname + '</div>';
+						} else {
+							str += '<div class="item-title wg_order_choose_color card-product-' + index2 + '" data-price="' + el2.price + '" data-choose="' + index2 + '">' + colorname + '</div>';
+						}
+					});
 					str += '    </div>';
 					str += '    <div class="item-title-row">';
 					str += '        <div class="item-title"></div>';
 					str += '        <div class="item-after">';
 					str += '            <span>合计:</span>￥';
-					str += '            <span class="item-after-money" class="product-price">'+el.price+'</span>';
+					str += '            <span class="item-after-money product-price">' + colorinfo.blue.price + '</span>';
+					//默认选择蓝色
+					pinfo[index]['choose'] = '{"blue":{"price":"' + colorinfo.blue.price + '"}}';
 					str += '        </div>';
 					str += '    </div>';
 					str += '</div>';
 				}
-				total_price += el.price;
+				if (el.type == 2) {
+					str += '<div class="item-inner" data-pid="' + el.pid + '">';
+					str += '    <div class="item-title-row bb_1_s">';
+					str += '        <div class="item-title wg_order_choose_title">' + el.name + '</div>';
+					str += '    </div>';
+					str += '    <div class="item-title-row">';
+					str += '        <div class="item-title">选择类型</div>';
+					str += '    </div>';
+					str += '    <div class="item-title-row bb_1_s_pb_5 extent-flex-start">';
+					artinfo = eval('(' + el.artinfo + ')');
+					$.each(artinfo, function(index2, el2) {
+						switch (index2) {
+							case 'personal':
+								artname = '单人';
+								break;
+							case 'friends':
+								artname = '闺蜜';
+								break;
+							case 'childrens':
+								artname = '亲子';
+								break;
+							case 'lovers':
+								artname = '情侣';
+								break;
+						}
+						if (index2 != 'personal') {
+							str += '<div class="item-title  wg_order_choose lh25 extend-mr7 choose-art-type" data-price="' + el2.price + '" data-choose="' + index2 + '">' + artname + '</div>';
+						} else {
+							str += '<div class="item-title  wg_order_choose lh25 extend-mr7 choose-active choose-art-type" data-price="' + el2.price + '" data-choose="' + index2 + '">' + artname + '</div>';
+						}
+					});
+					//默认选择单人
+					pinfo[index]['choose'] = '{"personal":{"price":' + artinfo.personal.price + '}}';
+
+					str += '    </div>';
+					// str += '    <div class="item-title-row bb_1_s">';
+					// str += '        <div class="item-title">闺蜜拍摄人数</div>';
+					// str += '        <div class="item-after">';
+					// str += '            <div class="product-photo-reduce">-</div>';
+					// str += '            <div class="product-photo-num">1</div>';
+					// str += '            <div class="product-photo-add">+</div>';
+					// str += '        </div>';
+					// str += '    </div>';
+					str += '    <div class="item-title-row">';
+					str += '        <div class="item-title">升级体验</div>';
+					str += '        <div class="item-after iconfont">升级体验说明&#xe60d;</div>';
+					str += '    </div>';
+					artex = eval('(' + el.artex + ')');
+					str += '    <div class="item-title-row bb_1_s_pb_5 extent-flex-start">';
+					str += '        <div class="item-title  wg_order_choose lh25 extend-mr7 choose-art-gongge" data-price="' + artex.four.price + '"  data-choose="four">四宫格</div>';
+					str += '        <div class="item-title  wg_order_choose lh25 extend-mr7 choose-art-gongge" data-price="' + artex.nine.price + '"  data-choose="nine">九宫格</div>';
+					//记录选择宫格
+					str += '    </div>';
+					str += '    <div class="item-title-row">';
+					str += '        <div class="item-title"></div>';
+					str += '        <div class="item-after iconfont">';
+					str += '            <span>合计：</span>￥';
+					str += '            <span class="item-after-money product-price">' + artinfo.personal.price + '</span>';
+					str += '        </div>';
+					str += '    </div>';
+					str += '</div>';
+				}
+				//结婚照
+				if (el.type == 3) {
+					str += '<div class="item-inner" data-pid="' + el.pid + '">';
+					str += '	<div class="item-title-row bb_1_s">';
+					str += '		<div class="item-title wg_order_choose_title">' + el.name + '</div>';
+					str += '	</div>';
+					str += '	<div class="item-title-row">';
+					str += '		<div class="item-title">升级体验</div>';
+					str += '		<div class="item-after iconfont">升级体验说明&#xe60d;</div>';
+					str += '	</div>';
+					str += '	<div class="item-title-row">';
+					str += '		<div class="item-title  wg_order_choose choose-whimsy" data-price="' + el.wmprice + '">搞怪结婚照</div>';
+					str += '	</div>';
+					str += '	<div class="item-title-row">';
+					str += '		<div class="item-title"></div>';
+					str += '		<div class="item-after">';
+					str += '			<span>合计：</span>￥';
+					str += '			<span class="item-after-money product-price">' + el.price + '</span>';
+					str += '		</div>';
+					str += '	</div>';
+					str += '</div>';
+				}
+				total_price += parseInt(el.price);
 			});
 			$('#total_price').text(total_price);
 			wrap.html(str);
+			//选择样色
+			$(document).on('click', '#choose_products_info .wg_order_choose_color', function() {
+					var product_price = parseInt($(this).parents('.item-inner').find('.product-price').text());
+					var choose_price = parseInt($(this).data('price'));
+					var choose_key = $(this).data('choose');
+					var pid = $(this).parents('.item-inner').data('pid');
+					//记录选择颜色
+					var choose_color = eval('(' + pinfo[pid]['choose'] + ')');
+
+					if ($(this).hasClass('card-product-color')) {
+						$(this).removeClass('card-product-color');
+						product_price += choose_price;
+						total_price += choose_price;
+						//在选中的产品中记录颜色选择
+						if ($.type(choose_color[choose_key]) == 'undefined') {
+							choose_color[choose_key] = {
+								"price": choose_price
+							};
+						}
+					} else {
+						if (product_price != choose_price) {
+							$(this).addClass('card-product-color');
+							product_price -= choose_price;
+							total_price -= choose_price;
+							//在选中的产品中删除颜色选择
+							delete(choose_color[choose_key]);
+						}
+
+					}
+					//在选中的产品中记录颜色选择
+					pinfo[pid]['choose'] = JSON.stringify(choose_color);
+					$('#total_price').text(total_price);
+					wrap.find('.product-price').text(product_price);
+				})
+				//选择文艺照类型
+			$(document).on('click', '#choose_products_info .choose-art-type', function() {
+					var product_price_item = $(this).parents('.item-inner').find('.product-price');
+					var product_price = parseInt(product_price_item.text());
+					var choose_price = parseInt($(this).data('price'));
+					var pid = $(this).parents('.item-inner').data('pid');
+					var choose_name = $(this).data('choose');
+					//记录选择单人
+					var choose_art = eval('(' + pinfo[pid]['choose'] + ')');
+					//宫格价格
+					var chooseartex = pinfo[pid]['chooseartex'];
+					var choose_artex = eval('(' + pinfo[pid]['chooseartex'] + ')');
+					var choose_artex_price = 0;
+					if ($.type(chooseartex) != 'undefined') {
+						if (chooseartex.indexOf('four') != -1) {
+							choose_artex_price += choose_artex['four']['price'];
+						}
+						if (chooseartex.indexOf('nine') != -1) {
+							choose_artex_price += choose_artex['nine']['price'];
+						}
+					}
+
+					//选择类型
+					if ($(this).hasClass('choose-active')) {
+						//最后一个还不能点击
+						if (product_price != choose_price) {
+							$(this).removeClass('choose-active');
+							product_price -= choose_price + choose_artex_price;
+							total_price -= choose_price + choose_artex_price;
+							delete(choose_art[choose_name]);
+						}
+					} else {
+						$(this).addClass('choose-active');
+						if ($.type(choose_art[choose_name]) == 'undefined') {
+							choose_art[choose_name] = {
+								"price": choose_price
+							};
+						}
+						product_price += choose_price + choose_artex_price;
+						total_price += choose_price + choose_artex_price;
+					}
+					pinfo[pid]['choose'] = JSON.stringify(choose_art);
+					$('#total_price').text(total_price);
+					product_price_item.text(product_price);
+				})
+				//选择文艺照宫格
+			$(document).on('click', '#choose_products_info .choose-art-gongge', function() {
+					var product_price_item = $(this).parents('.item-inner').find('.product-price');
+					var product_price = parseInt(product_price_item.text());
+					var choose_price = parseInt($(this).data('price'));
+					var choose_key = $(this).data('choose');
+					var pid = $(this).parents('.item-inner').data('pid');
+					var choose_artex = {};
+					var choose_art = eval('(' + pinfo[pid]['choose'] + ')');
+					var arr = Object.keys(choose_art)
+					var type_num = arr.length;
+					if ($.type(pinfo[pid]['chooseartex']) != 'undefined') {
+						choose_artex = eval('(' + pinfo[pid]['chooseartex'] + ')');
+					}
+					//选择类型
+					if ($(this).hasClass('choose-active')) {
+						$(this).removeClass('choose-active');
+						product_price -= choose_price * type_num;
+						total_price -= choose_price * type_num;
+						delete(choose_artex[choose_key]);
+					} else {
+						$(this).addClass('choose-active');
+						choose_artex[choose_key] = {
+							"price": choose_price
+						};
+						product_price += choose_price * type_num;
+						total_price += choose_price * type_num;
+					}
+					pinfo[pid]['chooseartex'] = JSON.stringify(choose_artex);
+					$('#total_price').text(total_price);
+					product_price_item.text(product_price);
+				})
+				//选择搞怪结婚照
+			$(document).on('click', '#choose_products_info .choose-whimsy', function() {
+				var product_price_item = $(this).parents('.item-inner').find('.product-price');
+				var product_price = parseInt(product_price_item.text());
+				var choose_price = parseInt($(this).data('price'));
+				var pid = $(this).parents('.item-inner').data('pid');
+				//选择类型
+				if ($(this).hasClass('choose-active')) {
+					$(this).removeClass('choose-active');
+					product_price -= choose_price;
+					total_price -= choose_price;
+					pinfo[pid]['choosew'] = false;
+				} else {
+					$(this).addClass('choose-active');
+					product_price += choose_price;
+					total_price += choose_price;
+					pinfo[pid]['choosew'] = true;
+				}
+				$('#total_price').text(total_price);
+				product_price_item.text(product_price);
+			})
+
 			//下一步
 			$(this).find('#next_btn').click(function() {
 				if (total_price != 0) {
+					cookie.set('choose_product', JSON.stringify(pinfo));
 					$.router.load("ChooseDate.html");
 				} else {
 					$.alert('未选择商品');

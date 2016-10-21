@@ -258,7 +258,7 @@ if (!isset($_SESSION['isQcloud'])){ ?>
 <div class="catalogList">
 <ul id="menu">
 <?php
-$menus=array( array( 'name'=>'基础设置', 'iconName'=>'base', 'display'=>0, 'subs'=>array( array('name'=>'关注时回复与帮助','link'=>U('Areply/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Areply')), array('name'=>'微信－文本回复','link'=>U('Text/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Text')), array('name'=>'微信－图文回复','link'=>U('Img/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Img','a'=>'index')), array('name'=>'自定义LBS回复','link'=>U('Company/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Company')), array('name'=>'自定义菜单','link'=>U('Diymen/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Diymen')), array('name'=>'回答不上来的配置','link'=>U('Other/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Other')), )), array( 'name'=>'分销管理', 'iconName'=>'crm', 'display'=>0, 'subs'=>array( array('name'=>'分销设置','link'=>U('Distribution/set',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Distribution','a'=>'set')), array('name'=>'分销提醒页','link'=>U('Distribution/forwardSet',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Distribution','a'=>'forwardSet')), )), array( 'name'=>'会员管理', 'iconName'=>'card', 'display'=>0, 'subs'=>array( array('name'=>'账号列表','link'=>U('Distribution/account',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Distribution','a'=>'account')), array('name'=>'会员列表','link'=>U('Distribution/member',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Distribution','a'=>'member')), array('name'=>'会员收藏列表','link'=>U('Distribution/collection',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Distribution','a'=>'collection')), array('name'=>'提现记录列表','link'=>U('Distribution/moneylist',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Distribution','a'=>'moneylist')), array('name'=>'收货地址列表','link'=>U('Distribution/address',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Distribution','a'=>'address')), )), array( 'name'=>'商城系统', 'iconName'=>'store', 'display'=>0, 'subs'=>array( array('name'=>'微信商城系统','link'=>U('Store/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Store')), )), ); ?>
+$menus=array( array( 'name'=>'基础设置', 'iconName'=>'base', 'display'=>0, 'subs'=>array( array('name'=>'关注时回复与帮助','link'=>U('Areply/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Areply')), array('name'=>'微信－文本回复','link'=>U('Text/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Text')), array('name'=>'微信－图文回复','link'=>U('Img/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Img','a'=>'index')), array('name'=>'自定义LBS回复','link'=>U('Company/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Company')), array('name'=>'自定义菜单','link'=>U('Diymen/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Diymen')), array('name'=>'回答不上来的配置','link'=>U('Other/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Other')), )), array( 'name'=>'分销管理', 'iconName'=>'crm', 'display'=>0, 'subs'=>array( array('name'=>'分销设置','link'=>U('Distribution/set',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Distribution','a'=>'set')), array('name'=>'分销提醒页','link'=>U('Distribution/forwardSet',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Distribution','a'=>'forwardSet')), )), array( 'name'=>'会员管理', 'iconName'=>'card', 'display'=>0, 'subs'=>array( array('name'=>'会员列表','link'=>U('Distribution/member',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Distribution','a'=>'member')), array('name'=>'会员收藏列表','link'=>U('Distribution/collection',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Distribution','a'=>'collection')), array('name'=>'提现记录列表','link'=>U('Distribution/moneylist',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Distribution','a'=>'moneylist')), array('name'=>'收货地址列表','link'=>U('Distribution/address',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Distribution','a'=>'address')), )), array( 'name'=>'商城系统', 'iconName'=>'store', 'display'=>0, 'subs'=>array( array('name'=>'微信商城系统','link'=>U('Store/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Store')), )), ); ?>
 <?php
 $i=0; $parms=$_SERVER['QUERY_STRING']; $parms1=explode('&',$parms); $parmsArr=array(); if ($parms1){ foreach ($parms1 as $p){ $parms2=explode('=',$p); $parmsArr[$parms2[0]]=$parms2[1]; } } $subMenus=array(); $t=0; $currentMenuID=0; $currentParentMenuID=0; foreach ($menus as $m){ $loopContinue=1; if ($m['subs']){ $st=0; foreach ($m['subs'] as $s){ $includeArr=1; if ($s['selectedCondition']){ foreach ($s['selectedCondition'] as $condition){ if (!in_array($condition,$parmsArr)){ $includeArr=0; break; } } } if ($includeArr){ if ($s['exceptCondition']){ foreach ($s['exceptCondition'] as $epkey=>$eptCondition){ if ($epkey=='a'){ $parm_a_values=explode(',',$eptCondition); if ($parm_a_values){ if (in_array($parmsArr['a'],$parm_a_values)){ $includeArr=0; break; } } }else { if (in_array($eptCondition,$parmsArr)){ $includeArr=0; break; } } } } } if ($includeArr){ $currentMenuID=$st; $currentParentMenuID=$t; $loopContinue=0; break; } $st++; } if ($loopContinue==0){ break; } } $t++; } foreach ($menus as $m){ $displayStr=''; if ($currentParentMenuID!=0||0!=$currentMenuID){ $m['display']=0; } if (!$m['display']){ $displayStr=' style="display:none"'; } if ($currentParentMenuID==$i){ $displayStr=''; } $aClassStr=''; if ($displayStr){ $aClassStr=' nav-header-current'; } if($i == 0){ echo '<a class="nav-header'.$aClassStr.'" style="border-top:none !important;"><b class="'.$m['iconName'].'"></b>'.$m['name'].'</a><ul class="ckit"'.$displayStr.'>'; }else{ echo '<a class="nav-header'.$aClassStr.'"><b class="'.$m['iconName'].'"></b>'.$m['name'].'</a><ul class="ckit"'.$displayStr.'>'; } if ($m['subs']){ $j=0; foreach ($m['subs'] as $s){ $selectedClassStr='subCatalogList'; if ($currentParentMenuID==$i&&$j==$currentMenuID){ $selectedClassStr='selected'; } $newStr=''; if ($s['test']){ $newStr.='<span class="test"></span>'; }else { if ($s['new']){ $newStr.='<span class="new"></span>'; } } if ($s['name']!='微信墙'&&$s['name']!='摇一摇'){ echo '<li class="'.$selectedClassStr.'"> <a href="'.$s['link'].'">'.$s['name'].'</a>'.$newStr.'</li>'; }else { switch ($s['name']){ case '微信墙': case '摇一摇': if (file_exists($_SERVER['DOCUMENT_ROOT'].'/PigCms/Lib/Action/User/WallAction.class.php')&&file_exists($_SERVER['DOCUMENT_ROOT'].'/PigCms/Lib/Action/User/ShakeAction.class.php')){ echo '<li class="'.$selectedClassStr.'"> <a href="'.$s['link'].'">'.$s['name'].'</a>'.$newStr.'</li>'; } break; } } if ($s['name']=='模板管理'&&is_dir($_SERVER['DOCUMENT_ROOT'].'/cms')&&!strpos($_SERVER['HTTP_HOST'],'pigcms')){ echo '<li class="subCatalogList"> <a href="/cms/manage/index.php">高级模板</a><span class="new"></span></li>'; } $j++; } } echo '</ul>'; $i++; } ?>
 
@@ -282,120 +282,164 @@ $i=0; $parms=$_SERVER['QUERY_STRING']; $parms1=explode('&',$parms); $parmsArr=ar
 	});
 
 </script>
-<link rel="stylesheet" type="text/css" href="<?php echo RES;?>/css/cymain.css" />  
- <div class="content">
-<div class="cLineB">
-<h4 class="left">分类管理</h4>
-<div class="clr"></div>
-</div>
-<!--tab start-->
-<div class="tab" id="store_tab">
-<ul>
-<li class="tabli spfl"     id="tab2"><a href="<?php echo U('Store/index',array('token'=>$token,'dining'=>$isDining));?>">
-<?php if($isDining != 1): ?>商品分类<?php else: ?>菜品分类<?php endif; ?>管理</a></li>
-<li class="tabli sssp"     id="tab2"><a href="<?php echo U('Store/search',array('token'=>$token));?>">搜索商品</a></li>
-<li class="tabli ban"      id="tab2"><a href="<?php echo U('Store/banner',array('token'=>$token));?>">轮播图管理</a></li>
-<li class="tabli ad"       id="tab2"><a href="<?php echo U('Store/guanggao',array('token'=>$token));?>">广告位图管理</a></li>
-<li class="tabli discount" id="tab2"><a href="<?php echo U('Store/level',array('token'=>$token));?>">会员等级管理</a></li>
-<li class="tabli city" 	   id="tab2"><a href="<?php echo U('Store/cityList',array('token'=>$token));?>">城市管理</a></li>
-<li class="tabli city" 	   id="tab2"><a href="<?php echo U('Store/departList',array('token'=>$token));?>">分店管理</a></li>
+<div class="content">
 
-<?php if(empty($catid) != true): ?><li class="tabli pro"      id="tab0"><a href="<?php echo U('Store/product',array('token'=>$token));?>">商品管理</a></li><?php endif; ?>
-<li class="tabli ord"      id="tab2"><a href="<?php echo U('Store/orders',array('token'=>$token,'dining'=>$isDining));?>">订单管理</a></li>
-<?php if($isDining == 1): ?><li class="tabli" id="tab2"><a href="<?php echo U('Store/tables',array('token'=>$token,'dining'=>1));?>">桌台管理</a></li><?php endif; ?>
-<!-- <?php if($isDining != 1): ?><li class="tabli" id="tab5"><a href="<?php echo U('Reply_info/set',array('token'=>$token,'infotype'=>'Shop'));?>">商城回复配置</a></li>
-<?php else: ?>
-<li class="tabli" id="tab5"><a href="<?php echo U('Reply_info/set',array('token'=>$token,'infotype'=>'Dining'));?>">订餐回复配置</a></li><?php endif; ?> -->
-</ul>
+<div class="cLineB">
+  <h4> 
+    会员详细信息 
+</h4>
+
+<a href="javascript:history.go(-1);" class="right btnGrayS vm" style="margin-top:-27px">返回</a>
 </div>
-<!--tab end-->
-<script type="text/javascript">
-	(function($){
-		var module_name="<?php echo MODULE_NAME;?>";
-		var action_name="<?php echo ACTION_NAME;?>";
-		var tab=$("#store_tab");
-		if(module_name=="Store"){
-			if(action_name=="index"){
-				tab.find('.spfl').addClass('current');
-			}
-			if(action_name=="search"){
-				tab.find('.sssp').addClass('current');
-			}
-			if(action_name=="banner"){
-				tab.find('.ban').addClass('current');
-			}
-			if(action_name=="guanggao"){
-				tab.find('.ad').addClass('current');
-			}
-			if(action_name=="product"){
-				tab.find('.pro').addClass('current');
-			}
-			if(action_name=="orders"){
-				tab.find('.ord').addClass('current');
-			}
-			if(action_name=='discount'){
-				tab.find('.discount').addClass('current');
-			}
-		}
-	})(jQuery)
-</script>
-<div class="cLine">
-<div class="pageNavigator left"> 
-<a href="<?php echo U('Store/catAdd', array('token' => $token, 'cid' => $cid, 'parentid' => $parentid));?>" title="新增分类" class="btnGrayS vm bigbtn"><img src="<?php echo RES;?>/images/product/add.png" class="vm">新增<?php if($_GET['parentid'] != 0 and $_GET['parentid'] != ''): ?>子<?php endif; ?>分类</a>
-</div>
-<?php if($parentid > 0): ?><div class="pageNavigator right">
-<a href="<?php echo U('Store/index',array('token'=>$token, 'cid' => $cid, 'parentid' => $parentCat['parentid']));?>" class="btnGrayS vm bigbtn">返回上级分类</a>
-</div>
-<?php else: ?>
-<div class="pageNavigator right"> 
-<a href="<?php echo U('Store/setting', array('token' => $token, 'cid' => $cid));?>" title="商城设置" class="btnGrayS vm bigbtn"><img src="<?php echo RES;?>/images/product/add.png" class="vm">商城设置</a>
-</div><?php endif; ?>
-<div class="clr"></div>
-</div>
-<div class="msgWrap">
-<form method="post" action="" id="info">
-<input name="delall" type="hidden" value="">
-<input name="wxid" type="hidden" value="">
-<table class="ListProduct" border="0" cellspacing="0" cellpadding="0" width="100%">
-<thead>
+
+         <div class="msgWrap bgfc">
+<table class="userinfoArea" style=" margin:0;float:left" border="0" cellspacing="0" cellpadding="0" width="50%"><tbody>
 <tr>
-<th width="100">分类名称</th>
-<th width="100">分类URL</th>
-<th width="150">规格</th>
-<th width="90">产品外观</th>
-<th width="60">排序值</th>
-<th width="120">创建时间</th>
-<th width="200" class="norightborder">操作</th>
+<th width="120">微信名：</th>
+<td><?php echo ($member["nickname"]); ?></td>
 </tr>
-</thead>
-<tbody>
-<tr></tr>
-<?php if(is_array($list)): $i = 0; $__LIST__ = $list;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$hostlist): $mod = ($i % 2 );++$i;?><tr>
-<td><?php echo ($hostlist["name"]); ?></td>
-<td><?php echo C('site_url'); echo U('Wap/Store/products',array('token'=>$token,'catid'=>$hostlist['id']));?></td>
-<td><?php echo ($hostlist["norms"]); if(empty($hostlist['norms']) != true): ?><span>&nbsp;&nbsp;<a href="<?php echo U('Store/norms', array('catid'=>$hostlist['id'],'token'=>$token, 'type' => 0));?>">规格的管理</a></span><?php endif; ?></td> 
-<td><?php echo ($hostlist["color"]); if(empty($hostlist['color']) != true): ?><span>&nbsp;&nbsp;<a href="<?php echo U('Store/norms', array('catid'=>$hostlist['id'],'token'=>$token, 'type' => 1));?>">外观的管理</a></span><?php endif; ?></td>
-<td><?php echo ($hostlist["sort"]); ?></td>
-<td><?php echo (date("Y-m-d H:i:s",$hostlist["time"])); ?></td> 
-<td class="norightborder">
-	<a href="<?php echo U('Store/catSet',array('token'=>$token,'id'=>$hostlist['id'],'parentid' => $hostlist['parentid']));?>">修改</a>
-	<a href="javascript:drop_confirm('您确定要删除吗?', '<?php echo U('Store/catDel',array('id'=>$hostlist['id'],'token'=>$token));?>');">删除</a>
-	<!-- <span>&nbsp;|&nbsp;<a href="<?php echo U('Store/norms', array('catid'=>$hostlist['id'],'token'=>$token));?>">增加规格</a></span> -->
-	<?php if($hostlist['parentid'] == 0): ?><span>&nbsp;|&nbsp;<a href="<?php echo U('Store/index',array('parentid' => $hostlist['id'],'level' => $hostlist['level'],'token'=>$token));?>" style="color:#f00">子分类列表</a></span><?php endif; ?>
-	<?php if(($hostlist['isfinal']) != "2"): ?><span>&nbsp;|&nbsp;<a href="<?php echo U('Store/product',array('catid' => $hostlist['id'],'token'=>$token,'parentid' => $hostlist['parentid']));?>" style="color:#f00">商品管理</a></span><?php endif; ?>
-</td>
-</tr><?php endforeach; endif; else: echo "" ;endif; ?>
+                            <tr>
+<th width="120">微信头像：</th>
+<td><img src="<?php echo ($member["headimgurl"]); ?>" width="80"></td>
+</tr>
+<tr>
+<th width="120">关注时间：</th>
+<td><?php echo (date('Y-m-d',$member["createtime"])); ?></td>
+</tr>
+<tr>
+<th width="120">来自好友：</th>
+<td><?php if(($from_user) == ""): echo ($wxuser["wxname"]); else: ?>(会员ID：<?php echo ($from_user["id"]); ?>)<?php echo ($from_user["nickname"]); endif; ?></td>
+</tr>
+<tr>
+<th width="120">姓名：</th>
+<td><?php echo ($member["name"]); ?></td>
+</tr>
+<tr>
+<th width="120">联系电话：</th>
+<td><?php echo ($member["tele"]); ?></td>
+</tr>
+<tr>
+<th width="120">QQ：</th>
+<td><?php echo ($member["email"]); ?></td>
+</tr>
+<tr>
+<th width="120">地址：</th>
+<td><?php echo ($member["province"]); echo ($member["city"]); echo ($member["county"]); echo ($member["address"]); ?></td>
+</tr>
 </tbody>
 </table>
-</form>
-</div>
-<div class="cLine">
-<div class="pageNavigator right">
-<div class="pages"><?php echo ($page); ?></div>
-</div>
-<div class="clr"></div>
-</div>
-</div>
+<table class="userinfoArea" style=" margin:0;float:left" border="0" cellspacing="0" cellpadding="0" width="50%"><tbody>
+<tr>
+<th width="120">会员积分：</th>
+<td><?php echo intval($totalScore);?>&nbsp;分</td>
+</tr>
+<tr>
+<th width="120">累计销售：</th>
+<td><?php echo sprintf("%.2f",$totalMoney/100);?>&nbsp;元</td>
+</tr>
+<tr>
+<th width="120">累计佣金：</th>
+<td><?php echo sprintf("%.2f",$totalOfferMoney/100);?>&nbsp;元</td>
+</tr>
+<tr>
+<th width="120">分店总人数：</th>
+<td><?php echo $member[firstNums]+$member[secondNums]+$member[thirdNums];?>&nbsp;人</td>
+</tr>
+<tr>
+<th width="120">A分店个数：</th>
+<td><?php echo ($member["firstNums"]); ?>&nbsp;人</td>
+</tr>
+                            <tr>
+<th width="120">B分店个数：</th>
+<td><?php echo ($member["secondNums"]); ?>&nbsp;人</td>
+</tr>
+<tr>
+<th width="120">C分店个数：</th>
+<td><?php echo ($member["thirdNums"]); ?>&nbsp;人</td>
+</tr>
+<tr>
+<th width="120">点击链接人数：</th>
+<td><?php echo ($member["clickNums"]); ?>&nbsp;人</td>
+</tr>
+<tr>
+<th width="120">成功关注人数：</th>
+<td><?php echo ($member["followNums"]); ?>&nbsp;人</td>
+</tr>
+<tr>
+<th width="120">分店下单购买：</th>
+<td><?php echo ($orderNums); ?>&nbsp;单</td>
+</tr>
+<tr>
+<th width="120">正式A分店：</th>
+<td><?php echo ($distriCount); ?>&nbsp;人</td>
+</tr>
+<!--tr>
+<th width="120">未付款订单佣金：</th>
+<td><?php echo sprintf("%.2f",$order['status_0']/100);?>&nbsp;元</td>
+</tr-->
+<tr>
+<th width="120">已付款订单佣金：</th>
+<td><?php echo sprintf("%.2f",$order['status_1']/100);?>&nbsp;元</td>
+</tr>
+<tr>
+<th width="120">未收货订单佣金：</th>
+<td><?php echo sprintf("%.2f",$order['status_2']/100);?>&nbsp;元</td>
+</tr>
+<tr>
+<th width="120">已收货订单佣金：</th>
+<td><?php echo sprintf("%.2f",$order['status_3']/100);?>&nbsp;元</td>
+</tr>
+<!--tr>
+<th width="120">已审核订单佣金：</th>
+<td><?php echo sprintf("%.2f",$order['status_4']/100);?>&nbsp;元</td>
+</tr-->
+<tr>
+<th width="120">可提现订单佣金：</th>
+<td><?php echo sprintf("%.2f",($order['status_4']-$member['alreadyGetMoney'])/100);?>&nbsp;元</td>
+</tr>
+<tr>
+<th width="120">已提现订单佣金：</th>
+<td><?php echo sprintf("%.2f",$member['alreadyGetMoney']/100);?>&nbsp;元</td>
+</tr>
+<tr>
+<th width="120">已退款订单佣金：</th>
+<td><?php echo sprintf("%.2f",$order['status_-1']/100);?>&nbsp;元</td>
+</tr>
+</tbody>
+</table>
+<div style="clear:both;"></div>
+  <h4> 
+    分店人员列表 
+</h4>
+<table class="ListProduct" border="0" cellspacing="0" cellpadding="0" width="100%">
+              <thead>
+                <tr>
+					<th>微信名</th>
+					<th>微信头像</th>
+					<th>会员等级</th>
+					<th>是否成为分店</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr></tr>
+                  <?php if(is_array($childmember)): $i = 0; $__LIST__ = $childmember;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$list): $mod = ($i % 2 );++$i;?><tr>
+                  <td><?php echo ($list["nickname"]); ?></td>
+                  <td><img src="<?php echo ($list["headimgurl"]); ?>" width="50"></td>
+                  <td><?php if(($list["fid"]) == $member["id"]): ?>A分店<?php endif; if(($list["sid"]) == $member["id"]): ?>B分店<?php endif; if(($list["tid"]) == $member["id"]): ?>C分店<?php endif; ?></td>
+				  <td><?php if(($list["distritime"]) == "0"): ?>否<?php else: ?><span style="color:red">是</span><?php endif; ?></td>
+                </tr><?php endforeach; endif; else: echo "" ;endif; ?>
+
+              </tbody>
+            </table>
+			      			                
+                  <div class="cLine">
+					<div class="pageNavigator right">
+					<div class="pages"><?php echo ($page); ?></div>
+					</div>
+  </div>
+
+
+        </div>
 </div>
 </div>
 </div>

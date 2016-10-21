@@ -55,6 +55,9 @@ class StoreAction extends WapAction{
 		$m = date('m',$str_time);
 		$d = date('d',$str_time);
 		$w = $this->numberToCn(date('w',$str_time));
+		//查询店铺每个时间段限制预约人数
+		$timeNums = M('Store_list')->where(array('id'=>$storeId))->getField('timeNums');
+		
 		//日期
 		$date = (int)$m."月".(int)$d."日 星期".$w;
 		//当天时间预约
@@ -64,7 +67,7 @@ class StoreAction extends WapAction{
 			$t = $starttime + 900 * $i;
 			$remain[$t] = array(
 				'time'  => date('H:i',$t),
-				'count' => 2,
+				'count' => $timeNums,
 			);
 		}
 
@@ -110,13 +113,17 @@ class StoreAction extends WapAction{
 	}
 	//获取日期
 	function getWorkDate(){
+		$storeId = $this->_get('storeId');
+		//查询店铺每个时间段限制预约人数
+		$timeNums = M('Store_list')->where(array('id'=>$storeId))->getField('timeNums');
+
 		//获取已预约日期
 		$today = date(strtotime('today'));
 		for ($i=0; $i < 36; $i++) {
 			$t = $today + 86400 * $i;
 			$remain[$t] = array(
 				'data' => date('Y-m-d',$t),
-				'count' => 40,
+				'count' => $timeNums*40,
 			);
 		}
 		//获取自定义日期

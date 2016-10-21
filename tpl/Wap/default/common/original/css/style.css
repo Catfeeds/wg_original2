@@ -254,6 +254,170 @@ img {
   margin-left: -1rem;
   text-indent: 1rem; }
 
+#reservation-date .reservation-timeWeek {
+  height: 1rem;
+  line-height: 1rem;
+  background-color: #fff; }
+
+#reservation-date .reservation-timeWeek span {
+  float: left;
+  width: 2.26rem;
+  height: 1.35rem;
+  line-height: 1.35rem;
+  text-align: center;
+  font-size: .35rem;
+  color: #8e8d8d; }
+
+#reservation-date .reservation-timeDateWrap {
+  width: 100%;
+  min-height: 20.3rem;
+  text-align: center;
+  background-color: #fff; }
+
+#reservation-date .reservation-timeDateWrap div {
+  float: left;
+  color: #333;
+  width: 2.28rem;
+  height: 3.88rem;
+  line-height: 3.88rem;
+  padding-top: 1.4rem; }
+
+#reservation-date .reservation-timeDateWrap div span {
+  display: block;
+  height: .32rem;
+  line-height: 0.32rem; }
+
+#reservation-date .reservation-timeDateWrap div .reservation-timeDate {
+  height: 1.8rem;
+  width: 1.8rem;
+  line-height: 1.8rem;
+  font-size: .7rem;
+  margin: 0 .2rem;
+  border-radius: 50%; }
+
+#reservation-date .reservation-timeDateWrap div .reservation-timeMonth,
+#reservation-date .reservation-timeDateWrap div .reservation-timeNum {
+  height: .80rem;
+  line-height: .80rem;
+  font-size: 0.32rem; }
+
+#reservation-date .reservation-timeDateWrap div .reservation-timeMonthIcon {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background-color: #33a6a9;
+  border-radius: 50%;
+  margin-left: .05rem;
+  position: relative;
+  top: -1px; }
+
+#reservation-date .reservation-timeDateWrap div.active .reservation-timeDate {
+  background-color: #33a6a9;
+  color: #FFF; }
+
+#reservation-date .reservation-timeDateWrap div.off {
+  color: #a9a9a9; }
+
+#reservation-date .reservation-timeBtn {
+  display: block;
+  color: #fff;
+  width: 3.28rem;
+  height: 1rem;
+  line-height: 1rem;
+  text-align: center;
+  border-radius: .1rem;
+  background-color: #33a6a9;
+  margin: .8rem auto;
+  border: none; }
+
+#reservation-timeNode .reservation-timeDate {
+  height: 2.1rem;
+  line-height: 2.1rem;
+  background-color: #fff;
+  border-bottom: 1px solid #c7c7c7;
+  text-align: center;
+  font-size: .8rem;
+  font-weight: 700; }
+
+#reservation-timeNode .reservation-timeDate span {
+  display: inline-block;
+  height: .38rem;
+  line-height: .38rem;
+  vertical-align: middle; }
+
+#reservation-timeNode .reservation-timeDate .reservation-timeDateInfo {
+  width: 100%;
+  height: 1.3rem;
+  line-height: 1.3rem;
+  margin: 0 auto; }
+
+#reservation-timeNode .reservation-timeDate .reservation-timeDateInfo .reservation-dateNum {
+  width: 56%;
+  height: 2.1rem;
+  line-height: 2.1rem;
+  overflow: hidden;
+  position: relative;
+  top: -0.05rem; }
+
+#reservation-timeNode .reservation-timeDate .reservation-timeDateInfo .reservation-dateNum em {
+  font-style: normal;
+  letter-spacing: -.025rem;
+  margin-left: 0.2rem; }
+
+#reservation-timeNode .reservation-timeDate .reservation-timeDateInfo .reservation-arrowLeft {
+  width: 25%;
+  height: 2.1rem;
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAaCAYAAAC3g3x9AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAABmJLR0QAAAAAAAD5Q7t/AAAACXBIWXMAAAsSAAALEgHS3X78AAABRElEQVRIx63Uu0okQRiG4aeHARcNBBMDYVETUQxGGwMXYWENRLyAgUkEMVRDDcTMQyCaiLDiumDS0HgB3oCp5l6GYCAiYtCtSOFhprv/sOrnrbeqvqpIRRUn6QD2ogpAEZZwAKWAcZIO4RSz+dBdvSCohlXsoOf9XMfAOElH8Q+/PppvGxgnaR3r2MKPz/raAsZJ2sB/THzXW/8G1JUbbbS7eP0L2DTOMNrusXwIjJO0B9tYQ60TGEEO4yT9I8vVcKegvB6jHNSLfSwrGfYoTtIFnGCgDOi1auhWIOCfAq9bzQuM4bwKYHgp8/iLn2W2/FbXreYlxnGM59KGge2M7BMYKWwY2F6hgV08lTYMbCdlz7BR2DCwvcEUNvFQ2jCwHZGd7Uxhw8D2Fr+xgvvShoHtoCy3c5UA34EXcYi+SoA5tB9HL/b6RkgfV6snAAAAAElFTkSuQmCC);
+  background-repeat: no-repeat;
+  background-position: 1.6rem center;
+  background-size: 12%;
+  position: absolute;
+  left: 0; }
+
+#reservation-timeNode .reservation-timeDate .reservation-timeDateInfo .reservation-arrowRight {
+  width: 25%;
+  height: 2.1rem;
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAaCAYAAAC3g3x9AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAABmJLR0QAAAAAAAD5Q7t/AAAACXBIWXMAAAsSAAALEgHS3X78AAABSUlEQVRIx63ToUtDURTH8e8eA5WF/QEmbRPD5GDQImg2P3h1hpUxMWpVsGmxiEUGBw77A0S0uaS8KYphTQSDxWQwqBjmhSEb25vnF99798PvnncvotYQtWmcEgHrwKOoVUQt5wECFIET4ELUZjzAkDXgQdTqohZ5gAAF4BC4ErWSBxiyDLRFbVvU8h4gwCSwB1yLWtkDDFkAbkRtV9QmPECAPLAD3IrakgcYUgJaonYgagUPMKzbBO5FbdUDDJkFLkXtWNSKADlR+3KAAV6AauSEQfenTXlhDWAuTeLmyDdgQJ6BaprEZ+HBuA2/gSNgvhcL+86aDrCRJnGr38ssDT+BfaA8CMvS8A6opEncHvbhsIYfdO/v4ijYsIat31l1Moylb8N3oAasZMX6NTyne66eskJ/wTdgK03i03GhXrAJ1NIkfv0vBvADfR5djyMqM2cAAAAASUVORK5CYII=);
+  background-repeat: no-repeat;
+  background-position: .6rem center;
+  background-size: 12%;
+  position: absolute; }
+
+#reservation-timeNode .reservation-timeList {
+  padding: 0 .8rem;
+  background-color: #fff;
+  min-height: 11rem; }
+
+#reservation-timeNode .reservation-timeList a {
+  display: inline-block;
+  width: 2.1rem;
+  height: 2.1rem;
+  line-height: 2.1rem;
+  text-align: center;
+  color: #333;
+  margin: .15rem .7rem;
+  font-size: .70rem;
+  border-radius: 50%; }
+
+#reservation-timeNode .reservation-timeList a.active {
+  color: #fff;
+  background-color: #33a6a9; }
+
+#reservation-timeNode .reservation-timeList a.off {
+  color: #a9a9a9; }
+
+#reservation-timeNode .reservation-timeNodeBtn {
+  width: 3.2rem;
+  height: .86rem;
+  line-height: .86rem;
+  color: #fff;
+  display: block;
+  border-radius: .1rem;
+  background-color: #33a6a9;
+  text-align: center;
+  font-size: .43rem;
+  margin: 0.5rem auto; }
+
 /* extends */
 #cat_products_wrap .active .icon-form-checkbox {
   border: none;

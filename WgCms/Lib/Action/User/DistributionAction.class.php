@@ -166,101 +166,77 @@ class DistributionAction extends UserAction{
 	}
 	//账号列表
 	public function account(){
+
 		$db = D('Account');
-		$aid = $this->_get('id');
-		$type = $this->_get('type');
-		//详情页
-		if($aid && $type == 'detail'){
-			$account = $db->where(array('id'=>$aid))->relation(true)->find();
-			//创建者
-			if($account['createtype'] != 1){
-				$account['creater'] = M('Distribution_member')->where(array('wecha_id'=>$account['wecha_id']))->getField('nickname');
-			}else{
-				$account['creater'] = $account['wecha_id'];
-			}
-			//登陆者
-			$account['loginer'] ='';
-			if($account['mid'] != 0){
-				$account['loginer'] = $account['member']['nickname'];
-			}
-			if($account['ip']){
-				$account['loginer'] = $account['ip'];
-			}
-			//上级账号
-			if($account['bindaid'] != 0){
-				$account['bindac'] = M('Distribution_account')->where(array('id'=>$account['bindaid']))->getField('username');
-			}else{
-				$account['bindac'] = '';
-			}
-			
-			$data = array(
-				'totalearn' => $this->statistical('totalearn',$account['id']),//总收入
-				'applymoney' => $this->statistical('applymoney',$account['id']),		//已提现
-				'gold' => $this->statistical('gold',$account['id']),		//总金币
-				'ordernums' => $this->statistical('ordernums',$account['id']),		//处理订单总数
-				'shoporders' => $this->statistical('shoporders',$account['id']),		//购买订单总数
-			);
-			$account['detail'] = $data;
-			//子账号
-			$account['childs'] = $db->where(array('createid'=>$account['id'],'delete'=>0))->relation(true)->select();
-			$this->assign('info',$account);
-			$this->display('accountDetail');
-			exit();
-		}
-		//设置等级页面
-		if($aid && $type == 'upgrade'){
-			$account = $db->where(array('id'=>$aid))->relation(true)->find();
-			// if($account['lid']){
-			// 	$condition['lid'] = array('lt',$account['lid']);
-			// }
-			// if($account['lid'] !=0){
-			// 	$upgrade_condition = array(
-			// 		'lid' => array(array('lt',$account['lid']),array('gt',1),'and'),
-			// 	);
-			// }else{
-			// 	$upgrade_condition['lid'] = array('gt',1);
-			// }
-			$upgrade_condition['lid'] = array('neq',1);
-			$levels = M('Distribution_level')->where($upgrade_condition)->select();
-			$this->assign('info',$account);
-			$this->assign('list',$levels);
-			$this->display('setLevel');
-		}
-		//充值金币页面
-		if($aid && $type == 'topup'){
-			$account = $db->where(array('id'=>$aid))->relation(true)->find();
-			$account['gold'] = $this->statistical('gold',$account['id']);
-			$this->assign('info',$account);
-			$this->display('topup');
-		}
-		//充值现金页面
-		if($aid && $type == 'topupmoney'){
-			$account = $db->where(array('id'=>$aid))->relation(true)->find();
-			$account['balance'] = $this->statistical('balance',$account['id']);
-			$this->assign('info',$account);
-			$this->display('topupmoney');
-		}
-		//账号列表
-		if(!$aid && !$type){
-			$where['delete'] = 0;
+		if(IS_POST){
 
-			if($this->_post('name')!=''){
-				$where['nickname|username'] = array('like','%'.$this->_post('name').'%');
-			}
-			//列表页
-			$count=$db->where($where)->count();
-			$page=new Page($count,25);
+			$key = $this->_post('keyword');	
+			if(empty($key)){
 
-			$list = $db->where($where)->relation(true)->limit($page->firstRow.','.$page->listRows)->select();
-			foreach ($list as $k => $v) {
-				$list[$k]['creater'] = M('Distribution_member')->where(array('wecha_id'=>$v['wecha_id']))->getField('nickname');
-				$list[$k]['bindac'] = M('Distribution_account')->field('id,nickname')->where(array('id'=>$v['bindaid']))->find();
+				$this->error('关键词不能为空');
 			}
-			$this->assign('page',$page->show());
-			$this->assign('list',$list);
-			$this->display();
+
+			$map['id|username|truename'] = array('like',"%$key%");
+			$account = $db->where($map)->order('id asc')->select();
+			$count   = $db->where($map)->order('id asc')->count();
+		}else{
+
+			$account = $db->field('id,username,sex,truename,tele,areaname')->order('id asc')->select();	
+			$count   = $db->count();
 		}
+
+		$page = new Page($count,30);
+		$show = $page->show();
+		$this->assign('page',$show);
+		$this->assign('list',$account);
+		$this->display();
+
 	}
+
+	public function accountDetail(){
+
+		$id      = $this->_get('id');
+		$db      = D('Account');
+		$account = $db->where("id=".$id)->find();
+
+		$where['aid']  = $id;
+		$where['paid'] = 1;
+		$where['returnMoney'] = 0;
+
+		$price = M('Product_cart')->where($where)->field('price')->select();
+		$sumprice = 0;
+
+		for($i=0; $i<count($price); $i++){ 
+
+			$sumprice = $sumprice + $price[$i]['price'];
+		}
+		//订单数  总金额
+		$cart['price'] = $sumprice;
+		$cart['count'] = count($price);
+
+		$this->assign('cart',$cart); 
+		$this->assign('info',$account);
+		$this->display();
+	}
+
+	public function accountEdit(){
+
+
+		$id   = $_POST['id'];
+
+		if($_POST['name']=='password'){
+			$val = md5($_POST['con']);
+		}else{
+			$val = $_POST['con'];
+		}
+
+		$data = $_POST['name'].'='.$val;
+		$where['id'] = $id;
+		$res  = M('Distribution_account')->where($where)->data($data)->save();
+
+		echo "修改成功";
+	}
+
 	//删除账号
 	public function deleteAccount(){
 		$id = $this->_get('id');
@@ -272,6 +248,8 @@ class DistributionAction extends UserAction{
 			$this->error('删除成功',U('Distribution/account'));
 		}
 	}
+
+
 	public function bank(){
 		$db = M('Distribution_bank');
 		if($this->_post('name')!=''){

@@ -1428,5 +1428,258 @@ class StoreAction extends UserAction{
 			$this->success('操作成功', U('Store/comment',array('token'=>session('token'),'catid' => $catid,'pid' => $pid)));
         }        
 	}
+	public function cityList(){
+
+		$cityModel = M('City_list');
+
+		if(IS_POST){
+            $key = $this->_post('searchkey');
+            	if(empty($key)){
+                	$this->error("关键词不能为空");
+        		}else{
+
+        		$map['name'] = array('like',"%$key%"); 
+        		$cityList  	 = $cityModel->where($map)->select(); 
+        		$count 	     = $cityModel->where($map)->count();       
+        		$Page        = new Page($count,20);
+        		$show        = $Page->show(); 
+        		}  
+        }else{ 
+
+			$count      = $cityModel->count();       
+        	$Page       = new Page($count,10);
+        	$show       = $Page->show();
+
+        	$cityList   = $cityModel->order('id asc')->limit($Page->firstRow.','.$Page->listRows)->select();      
+		}
+
+		$this->assign('page',$show);
+		$this->assign('list',$cityList);
+		$this->display();
+	}
+
+	public function cityAdd(){
+
+		if(IS_POST){
+			$this->insert('CityList','/cityList');
+		}else{
+			$parentid = intval($_GET['parentid']);
+			$parentid = $parentid==''?0:$parentid;
+			$this->assign('parentid',$parentid);
+			$this->display('citySet');
+		}
+	}
+
+	/*public function cityTest(){
+
+		$str = "SELECT * FROM 'pigcms_city_list'  ORDER BY binary CONVERT('char' USING GBK) ASC";
+
+		$rew = M('City_list')->query($str);
+
+		dump($rew);
+	}*/
+
+	public function citySet(){
+
+		$set = M('City_list')->where('id='.$_GET['id'])->select();
+		
+		if(IS_POST){
+
+			$data = D('City_list');
+            $where= array('id'=>$this->_post('id'));
+
+			$check= $data->where($where)->find();
+
+			if($check==false)$this->error('非法操作');
+
+			if($check){
+				if($data->where($where)->save($_POST)){
+					$this->success('修改成功',U('Store/cityList',array('token'=>session('token'),'parentid'=>$this->_post('parentid'))));
+					
+				}else{
+					$this->error('操作失败');
+				}
+			}else{
+				$this->error($data->getError());
+			}		
+		}else{
+		$this->assign('set',$set[0]);
+		$this->display();
+		}
+	}	
+
+	public function cityDel(){
+
+		if($this->_get('token')!=session('token')){
+			$this->error('非法操作');
+		}
+
+        $id = $this->_get('id');
+
+        if(IS_GET){   
+
+            $where['id'] = $id;
+
+            $data  = M('City_list');
+            $check = $data->where($where)->find();
+
+            if($check==false)   $this->error('非法操作');
+            $back=$data->where($where)->delete();
+
+            if($back==true){
+                $this->success('操作成功',U('Store/cityList',array('token'=>session('token'),'parentid'=>$check['parentid'])));
+            }else{
+                 $this->error('服务器繁忙,请稍后再试',U('Store/cityList',array('token'=>session('token'))));
+            }
+        }        		
+	}
+
+	public function departList(){
+
+		$departModel = M('Store_list');
+
+		if(IS_POST){
+            $key = $this->_post('searchkey');
+            	if(empty($key)){
+                	$this->error("关键词不能为空");
+        		}else{
+
+        		$map['name|address'] = array('like',"%$key%"); 
+        		$depart  	 = $departModel->where($map)->select(); 
+        		$count 	     = $departModel->where($map)->count();       
+        		$Page        = new Page($count,20);
+        		$show        = $Page->show(); 
+        		}  
+        }else{ 
+
+			$count  = $departModel->count();       
+        	$Page   = new Page($count,10);
+        	$show   = $Page->show();
+        	$where['delete']  = 0; 
+        	$depart = $departModel->where($where)->order('id asc')->limit($Page->firstRow.','.$Page->listRows)->select();
+        
+		}
+
+		$this->assign('page',$show);
+		$this->assign('list',$depart);
+		$this->display();
+	}
+
+	public function departAdd(){
+
+		$city 	  = M('City_list');
+		$cityName = $city->field('id,name')->select();	
+		$this->assign('city',$cityName);
+
+		//option 
+		$char  ='';
+		$city1 = $city->select();
+		$str   ='';
+		foreach ($city1 as $key => $value) {
+			
+			if($value['char']!=$char){
+			
+			$str.="<option>".$value['char']."</option>";
+			$char = $value['char'];
+			}
+
+			$str.="<option value=".$value['id'].">&nbsp&nbsp".$value['name']."</option>";
+		}
+		$this->assign('str',$str);
+
+
+		if(IS_POST){
+		$_POST['password'] = md5($_POST['password']);	
+		$res = $this->insert('Store_list','/departList');
+		
+		$city->where('id='.$_POST['cid'])->setInc('snums');
+	
+		}else{
+			$parentid = intval($_GET['parentid']);
+			$parentid = $parentid==''?0:$parentid;
+			$this->assign('parentid',$parentid);
+			$this->display('departSet');
+		}
+	}
+
+	public function departSet(){
+
+		$set 	  = M('Store_list')->where('id='.$_GET['id'])->select();
+		$city 	  = M('City_list');
+		$cityName = $city->field('id,name,char')->select();
+		$setCity  = $city->where('id='.$set[0]['cid'])->find();
+		$this->assign('city',$cityName);
+		$this->assign('setcity',$setCity);
+		//城市列表
+		$char  ='';
+		$city1 = $city->select();
+		$str   ='';
+		foreach ($city1 as $key => $value) {
+			
+			if($value['char']!=$char){
+			
+			$str.="<option>".$value['char']."</option>";
+			$char = $value['char'];
+			}
+
+			$str.="<option value=".$value['id'].">&nbsp&nbsp".$value['name']."</option>";
+		}
+		$this->assign('str',$str);
+
+
+		if(IS_POST){
+			$_POST['password'] = md5($_POST['password']);
+			$data = D('Store_list');
+            $where= array('id'=>$this->_post('id'));
+			$check= $data->where($where)->find();
+
+			if($check==false)$this->error('非法操作');
+
+
+			if($check){
+
+				if($data->where($where)->save($_POST)){
+					
+				$this->success('修改成功',U('Store/departList',array('token'=>session('token'),'parentid'=>$this->_post('parentid'))));
+					
+				}else{
+					$this->error('操作失败');
+				}
+			}else{
+				$this->error($data->getError());
+			}		
+		}else{
+		$this->assign('set',$set[0]);
+		$this->display();
+		}
+	}	
+
+	public function departDel(){
+
+		if($this->_get('token')!=session('token')){
+			$this->error('非法操作');
+		}
+
+        $id = $this->_get('id');
+
+        if(IS_GET){   
+
+            $where['id'] = $id;
+
+            $data  = M('Store_list');
+            $check = $data->where($where)->find();
+            if($check==false)   $this->error('非法操作');
+
+            $back=$data->where($where)->data('delete=1')->save();
+
+            if($back==true){
+
+            	M('City_list')->where('id='.$check['cid'])->setDec('snums');
+                $this->success('操作成功',U('Store/departList',array('token'=>session('token'),'parentid'=>$check['parentid'])));
+            }else{
+                 $this->error('服务器繁忙,请稍后再试',U('Store/departList',array('token'=>session('token'))));
+            }
+        }        		
+	}
 }
 ?>

@@ -13,7 +13,7 @@
         　　      <span>
                     <form action="" method="post">
                     关键词：
-                    <input type="text" name="name" class="px" value="{wghd:$Think.request.name}" placeholder="输入账号名">
+                    <input type="text" name="keyword" class="px" value="{wghd:$Think.request.name}" placeholder="关键词">
                     <input type="submit" class="btnGrayS" value="搜索">
                      </form>
                   </span>
@@ -31,12 +31,10 @@
                 <tr>
 					<th>账号ID</th>
           <th>账号名</th>
-          <th>真实姓名</th>
-          <th>会员等级</th>
-          <!-- <th>注册人</th> -->
-          <th>上级姓名</th>
-          <!-- <th>当前登陆人</th> -->
-          <th>注册时间</th>
+          <th>性别</th>          
+          <th>姓名</th>
+          <th>电话</th>
+          <th>区域</th>
           <th>操作</th>
                 </tr>
               </thead>
@@ -46,22 +44,18 @@
                 <tr>
                   <td>{wghd:$list.id}</td>
                   <td>{wghd:$list.username}</td>
-                  <td>{wghd:$list.nickname}</td>
-                  <td>{wghd:$list.level.name|default="游客"}</td>
-                  <!-- <td>{wghd:$list.creater}</td> -->
-                  <td>{wghd:$list.bindac.nickname}</td>
-                  <!-- <td>{wghd:$list.member.nickname}</td> -->
-                  <td>{wghd:$list.addtime|date='Y-m-d',###}</td>
+
+                  <if condition = "$list['sex'] eq 1">
+                    <td>男</td>
+                    <else/>
+                    <td>女</td>
+                  </if>
+
+                  <td>{wghd:$list.truename}</td>
+                  <td>{wghd:$list.tele}</td>
+                  <td>{wghd:$list.areaname}</td>
                   <td class="norightborder">
-                    <a href="{wghd::U('Distribution/account',array('id'=>$list['id'],'type'=>'detail','p'=>$_GET['p']))}" title="详细">详细</a> | 
-                    <neq name="list.lid" value="1">
-                      <a href="{wghd::U('Distribution/account',array('id'=>$list['id'],'type'=>'upgrade','p'=>$_GET['p']))}" title="设置等级">设置等级</a> | 
-                    </neq>
-                    <a href="{wghd::U('Distribution/account',array('id'=>$list['id'],'type'=>'topup','p'=>$_GET['p']))}" title="充值金币">充值金币</a> | 
-                    <a href="{wghd::U('Distribution/account',array('id'=>$list['id'],'type'=>'topupmoney','p'=>$_GET['p']))}" title="充值金币">充值现金</a>
-                    <if condition="($list.lid neq 2) AND ($list.lid neq 1)">
-                     | <a href="javascript:;" onclick="bindupaccount({wghd:$list.id})" title="设置上级">设置上级</a>
-                    </if>
+                    <a href="{wghd::U('Distribution/accountDetail',array('id'=>$list['id'],'type'=>'detail','p'=>$_GET['p']))}" title="详细">详细</a> 
                     | <a href="javascript:drop_confirm('您确定要删除吗?', '{wghd::U('Distribution/deleteAccount',array('id'=>$list['id']))}');" title="设置上级">删除</a>
                   </td>
                 </tr>

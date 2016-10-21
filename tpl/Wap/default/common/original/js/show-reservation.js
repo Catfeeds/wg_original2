@@ -4,6 +4,6 @@ requirejs.config({
 	urlArgs:"bust" + (new Date()).getTime(),
 });
 
-requirejs(['common','cookie','public_parameters','citylist','store'],function($){
-	console.log('aa');
+requirejs(['common','cookie','public_parameters','citylist','store','choosedate'],function($){
+	
 })

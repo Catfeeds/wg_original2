@@ -163,7 +163,7 @@ button{background:none;border:0;outline:none;color:#fff; color: #f08302;}
   border-top-left-radius: 5px; border-top-right-radius: 5px;}
 }
 .hintl3{width:38px;height:37px;background:url(../images/icon/hint3.png) no-repeat;-webkit-background-size:38px 37px;background-size:38px 37px; position:absolute;top:7px;right:7px;}
-.hintl-in2{line-height:1rem;font-size:0.5px; text-align:center;color:#000; width: 90%; margin: 0 auto; text-align:center;}
+.hintl-in2{line-height:1rem;font-size:0.5px; text-align:center;color:#000; width: 90%; margin: 0 auto;}
 .hintl-in3{font-size:0.5rem ;padding: 0px .5rem; height:35px;background:#0894ec;color:#f4e8df;position:absolute;bottom:25px;left:10%;text-align:center;line-height:35px;border-radius:8px;}
 .hintl-in4{font-size:0.5rem ;padding: 0px .5rem;height:35px;border: 1px solid #0894ec; color:#0894ec;position:absolute;bottom:25px;right:10%;text-align:center;line-height:35px;border-radius:8px;}
 .wg_item_pro_bottom_all{
@@ -175,10 +175,15 @@ button{background:none;border:0;outline:none;color:#fff; color: #f08302;}
     right: 0;
     max-width: 640px;
     margin: 0 auto;
+    z-index: 16;
   .wg_item_pro_bottom_bg{position: absolute;background: rgba(0,0,0,0.5); width: 100%;height:100%; top:0; left: 0; }
   
 }
 .box{position:fixed;display:block;  max-width: 640px; z-index: 1}
+
+.hintl-in5{
+  font-size:1rem ; color:#0894ec;position:absolute;bottom:25px;text-align:center;line-height:35px;border-radius:8px; left: 50%; margin-left: -51px;
+}
 
 
 /*order*/
@@ -407,16 +412,21 @@ button{background:none;border:0;outline:none;color:#fff; color: #f08302;}
 }
 
 .wg_order_choose_color{
-  border: 1px solid #333;
   border-radius: 5px;
   padding: 0px .5rem;
   line-height: 25px;
+  background: #0894ec;
+  color: #fff;
   
 }
 
 .card-product-color{
-  position: relative;
+  border: 1px solid #333;
   padding-right: 1rem;
+  border-radius: 5px;
+  background: #fff;
+  color: #000;
+
   &:after{
     content:"";
     border-radius: 50%;
@@ -438,6 +448,8 @@ button{background:none;border:0;outline:none;color:#fff; color: #f08302;}
   &:after{
   background-color: white;
   border: 1px solid #d8d8d8;
+  padding: 1px;
+  box-sizing: border-box;
   }
 }
 
@@ -457,7 +469,7 @@ button{background:none;border:0;outline:none;color:#fff; color: #f08302;}
 
 .card-product-gray{
   &:after{
-  background-color: gray;
+  background-color: grey;
   }
 }
 
