@@ -56,10 +56,20 @@ class StoreAction extends WapAction{
 		$d = date('d',$str_time);
 		$w = $this->numberToCn(date('w',$str_time));
 		//查询店铺每个时间段限制预约人数
-		$timeNums = M('Store_list')->where(array('id'=>$storeId))->getField('timeNums');
+		$timeNums = M('Store_list')->where(array('id'=>$storeId))->getField('defaultWorkTime');
+		$timeNums = unserialize($timeNums);
 		//获取已经预约的时间
 		$carts = M('Product_cart')->where(array("storeid"=>$storeId,'paid'=>1,'returMoney'=>0))->select();
-
+		//查看有没附加时间
+		$condition = array(
+			'time' => array('gt',time()),
+			'sid' => $storeId,
+		);
+		$limittimes = M('Store_addtime')->where($condition)->select();
+		$addtime = array();
+		foreach ($limittimes as $k => $v) {
+			$addtime[$v['time']] = $v;
+		}
 
 		//日期
 		$date = (int)$m."月".(int)$d."日 星期".$w;
@@ -69,14 +79,19 @@ class StoreAction extends WapAction{
 		for ($i=0; $i < 40; $i++) {
 			$t = $starttime + 900 * $i;
 			$del = 0;
+			//减去已预约的时间段
 			foreach ($carts as $k => $v) {
 				if($v['rtime'] == $t){
 					$del += 1;
 				}
 			}
+			//判断有没附加限制时间
+			if($addtime[$str_time]){
+				$timeNums = unserialize($addtime[$str_time]['defaultWorkTime']);
+			}
 			$remain[$t] = array(
 				'time'  => date('H:i',$t),
-				'count' => $timeNums - $del,
+				'count' => $timeNums[$i] - $del,
 			);
 		}
 
@@ -124,15 +139,47 @@ class StoreAction extends WapAction{
 	function getWorkDate(){
 		$storeId = $this->_get('storeId');
 		//查询店铺每个时间段限制预约人数
-		$timeNums = M('Store_list')->where(array('id'=>$storeId))->getField('timeNums');
+		$timeNums = M('Store_list')->where(array('id'=>$storeId))->getField('defaultWorkTime');
+		$timeNums = unserialize($timeNums);
+		foreach ($timeNums as $k => $v) {
+			$dailyWorkNums += $v;
+		}
+
+		//查看有没附加时间
+		$condition = array(
+			'time' => array('gt',time()),
+			'sid' => $storeId,
+		);
+		$limittimes = M('Store_addtime')->where($condition)->select();
+		$addtime = array();
+		foreach ($limittimes as $k => $v) {
+			$addtime[$v['time']] = $v;
+		}
+		//获取已经预约的时间
+		$carts = M('Product_cart')->where(array("storeid"=>$storeId,'paid'=>1,'returMoney'=>0))->select();
+
 
 		//获取已预约日期
 		$today = date(strtotime('today'));
 		for ($i=0; $i < 36; $i++) {
 			$t = $today + 86400 * $i;
+			if($addtime[$t]){
+				$addlimittime = 0;
+				$info = $addtime[$t]['defaultWorkTime'];
+				$info = unserialize($info);
+				foreach ($info as $k => $v) {
+					$addlimittime += $v;
+				}
+			}
+			$del = 0;
+			foreach ($carts as $k => $v) {
+				if($v['rtime'] == $t){
+					$del += 1;
+				}
+			}
 			$remain[$t] = array(
 				'data' => date('Y-m-d',$t),
-				'count' => $timeNums*40,
+				'count' => $addlimittime == 0 ? $dailyWorkNums-$del : $addlimittime-$del,
 			);
 		}
 		//获取自定义日期

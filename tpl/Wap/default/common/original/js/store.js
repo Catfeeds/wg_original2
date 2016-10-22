@@ -52,7 +52,7 @@ $(function($) {
 			// if (navigator.geolocation) {
 			// 	navigator.geolocation.getCurrentPosition(getLocationCity, locationError);
 			// } else {
-			// 	$.router.load('/Index/reservationPosition1');
+			// 	$.router.load('ChoosePosition.html');
 			// }
 		}
 
@@ -221,7 +221,7 @@ $(function($) {
 						if ($(this).hasClass('btn-disabled')) {
 							return false;
 						}
-						var storeName = $('#reservation-storeInfo .reservation-storename').html();
+						var storeName = $('#reservation-store .reservation-storename').html();
 						cookie.set('storeId', storeId);
 						cookie.set('storeName', storeName);
 						$.router.load('SelectProduct.html');
@@ -788,8 +788,119 @@ $(function($) {
 	});
 	//订单页面
 	$(document).on('pageInit', '#orders_wrap', function() {
+		var pinfo = cookie.get('choose_product');
+		var storeId = cookie.get('storeId');
+		var storeName = cookie.get('storeName');
+		var orderTime = getLocalTime(cookie.get('orderTime')/1000);
+		pinfo = eval('('+pinfo+')');
+		console.log(pinfo);
+		console.log(storeId);
 		var appoint_time_wrap = $('#appoint_time');
-		appoint_time_wrap.text(cookie.get('choose_date') + cookie.get('choose_time'));
+		//拍摄门店
+		$('#appoint_place').text(storeName);
+		//拍摄时间
+		appoint_time_wrap.text(orderTime);
+		//拍摄内容
+		
+		var str = '';
+		var attribute = '';
+		var pay_price = 0;
+		var total_price = 0;
+		$.each(pinfo,function(index, el) {
+			attribute = '';
+			pay_price = 0;
+			switch(el['type']){
+				//证件照
+				case '1':
+					pay_price += parseInt(el.price);
+					if($.type(el.choose) != 'undefined'){
+						var choose_color = eval('('+el.choose+')');
+						if(Object.keys(choose_color).length != 0){
+							attribute +='(';
+							$.each(choose_color,function(index2, el2) {
+								switch(index2){
+									case 'blue':
+										attribute += '蓝色,';
+										break;
+									case 'white':
+										attribute += '白色,';
+										break;
+									case 'red':
+										attribute += '红色,';
+										break;
+									case 'yellow':
+										attribute += '芽黄,';
+										break;
+									case 'grey':
+										attribute += '灰色,';
+										break;
+								}
+								pay_price += parseInt(el2.price);
+							});
+							attribute +=')';
+						}
+					}
+					break;
+				//艺术照
+				case '2':
+					if($.type(el.choose) != 'undefined'){
+						var choose_art = eval('('+el.choose+')');
+						var artex_price = 0;
+						if($.type(el.choose) != 'undefined'){
+							var chooseartex = eval('('+el.chooseartex+')');
+							console.log(chooseartex);
+							if(Object.keys(chooseartex).length != 0){
+								$.each(chooseartex,function(index2, el2) {
+									artex_price += parseInt(el2.price);
+								});
+							}
+						}
+						console.log(choose_art);
+						if(Object.keys(choose_art).length != 0){
+							attribute +='(';
+							$.each(choose_art,function(index2, el2) {
+								switch(index2){
+									case 'childrens':
+										attribute += '亲子,';
+										break;
+									case 'friends':
+										attribute += '闺蜜,';
+										break;
+									case 'lovers':
+										attribute += '情侣,';
+										break;
+									case 'personal':
+										attribute += '个人,';
+										break;
+								}
+								pay_price += parseInt(el2.price + artex_price);
+							});
+							attribute +=')';
+						}
+					}
+					break;
+				//结婚照
+				case '3':
+					pay_price += parseInt(el.wmprice);
+					if(el.choosew){
+						pay_price += parseInt(el.price);
+					}
+					break;
+				default:
+					pay_price += parseInt(el.price);
+			}
+			total_price += pay_price;
+			str += '<div class="item-title-row">';
+			str += '    <div class="item-title">'+el.name+attribute+'</div>';
+			str += '    <div class="item-after wg_order_pay_money">￥'+pay_price+'</div>';
+			str += '</div>';
+		});
+		$('#choose-reservation-content').html(str);
+		//总价
+		$('#total-price').text(total_price);
+		function getLocalTime(nS) {     
+		   return new Date(parseInt(nS) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ');     
+		}
 	});
 	$.init();
 })

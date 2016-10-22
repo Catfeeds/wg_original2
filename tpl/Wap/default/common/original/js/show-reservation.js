@@ -5,5 +5,4 @@ requirejs.config({
 });
 
 requirejs(['common','cookie','public_parameters','citylist','store','choosedate'],function($){
-	
 })

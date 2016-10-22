@@ -262,6 +262,13 @@ array('name'=>'提现记录列表','link'=>U('Distribution/moneylist',array('tok
 array('name'=>'收货地址列表','link'=>U('Distribution/address',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Distribution','a'=>'address')),
 )),
 array(
+'name'=>'分店管理',
+'iconName'=>'store',
+'display'=>0,
+'subs'=>array(
+array('name'=>'附加时间限制','link'=>U('Branch/additionalTime',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Branch')),
+)),
+array(
 'name'=>'商城系统',
 'iconName'=>'store',
 'display'=>0,

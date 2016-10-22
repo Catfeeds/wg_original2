@@ -1450,7 +1450,9 @@ class StoreAction extends UserAction{
         	$Page       = new Page($count,10);
         	$show       = $Page->show();
 
-        	$cityList   = $cityModel->order('id asc')->limit($Page->firstRow.','.$Page->listRows)->select();      
+        	$str      = "SELECT * FROM `pigcms_city_list` ORDER BY binary CONVERT(`char` USING GBK) ASC LIMIT ".$Page->firstRow.','.$Page->listRows;
+			$cityList = M('City_list')->query($str);
+      
 		}
 
 		$this->assign('page',$show);
@@ -1573,7 +1575,11 @@ class StoreAction extends UserAction{
 
 		//option 
 		$char  ='';
-		$city1 = $city->select();
+		$str      = "SELECT * FROM `pigcms_city_list` ORDER BY binary CONVERT(`char` USING GBK) ASC";
+		$cityList = M('City_list')->query($str);
+
+		$city1 = $cityList;
+
 		$str   ='';
 		foreach ($city1 as $key => $value) {
 			
@@ -1604,15 +1610,19 @@ class StoreAction extends UserAction{
 
 	public function departSet(){
 
-		$set 	  = M('Store_list')->where('id='.$_GET['id'])->select();
+		$set 	  = M('Store_list')->where('id='.$_GET['id'])->find();
 		$city 	  = M('City_list');
 		$cityName = $city->field('id,name,char')->select();
-		$setCity  = $city->where('id='.$set[0]['cid'])->find();
+		$setCity  = $city->where('id='.$set['cid'])->find();
 		$this->assign('city',$cityName);
 		$this->assign('setcity',$setCity);
 		//城市列表
 		$char  ='';
-		$city1 = $city->select();
+		$str      = "SELECT * FROM `pigcms_city_list` ORDER BY binary CONVERT(`char` USING GBK) ASC";
+		$cityList = M('City_list')->query($str);
+
+		$city1 = $cityList;
+		
 		$str   ='';
 		foreach ($city1 as $key => $value) {
 			
@@ -1637,7 +1647,8 @@ class StoreAction extends UserAction{
 
 
 			if($check){
-
+				$worktime = split(",",$_POST['default_time']);
+				$_POST['defaultWorkTime'] = serialize($worktime);
 				if($data->where($where)->save($_POST)){
 					
 				$this->success('修改成功',U('Store/departList',array('token'=>session('token'),'parentid'=>$this->_post('parentid'))));
@@ -1649,7 +1660,8 @@ class StoreAction extends UserAction{
 				$this->error($data->getError());
 			}		
 		}else{
-		$this->assign('set',$set[0]);
+		$set['defaultWorkTime'] = json_encode(unserialize($set['defaultWorkTime']));
+		$this->assign('set',$set);
 		$this->display();
 		}
 	}	
