@@ -106,7 +106,6 @@ $(function($) {
 		 */
 		function setCurrentCity() {
 			var cityS = getCityName(cookie.get('scid'));
-			console.log(cityS);
 			var _cityHtml = setTipText(cityS.split('市')[0]);
 			$city.html(_cityHtml); // 改变显示城市
 			$('#reservation .wrapper').show(); //显示加载图
@@ -173,7 +172,6 @@ $(function($) {
 			$.showIndicator();
 			$.get(total_url + 'index.php?g=Wap&m=Store&a=getStoreByCity&cid=' + cid, function(data) {
 				data = eval('(' + data + ')');
-				console.log(data);
 				$.hideIndicator();
 				if (data.error === 0) {
 					var cityInfo = data.msg.city; // 当前选择城市
@@ -395,7 +393,7 @@ $(function($) {
 		var pid_arr = {};
 		var store_product = [];
 		$.each(json.data, function(index, item) {
-			str += '<ul>'
+			str += '<ul class="p0">'
 			str += '<li>' + item.name + '</li>'
 			if (item.products[0].length != 0) {
 				$.each(item.products[0], function(index2, item2) {
@@ -517,7 +515,7 @@ $(function($) {
 					str += '            <span>合计:</span>￥';
 					str += '            <span class="item-after-money product-price">' + colorinfo.blue.price + '</span>';
 					//默认选择蓝色
-					pinfo[index]['choose'] = '{"blue":{"price":"' + colorinfo.blue.price + '"}}';
+					pinfo[index]['choose'] = '{"blue":{"price":' + colorinfo.blue.price + '}}';
 					str += '        </div>';
 					str += '    </div>';
 					str += '</div>';
@@ -789,17 +787,20 @@ $(function($) {
 	//订单页面
 	$(document).on('pageInit', '#orders_wrap', function() {
 		var pinfo = cookie.get('choose_product');
+		if(!pinfo){
+			$.router.load('myorders.html');
+			return false;
+		}
 		var storeId = cookie.get('storeId');
 		var storeName = cookie.get('storeName');
-		var orderTime = getLocalTime(cookie.get('orderTime')/1000);
+		var orderTime = cookie.get('orderTime')/1000;
+		var orderTime2 = getLocalTime(orderTime);
 		pinfo = eval('('+pinfo+')');
-		console.log(pinfo);
-		console.log(storeId);
 		var appoint_time_wrap = $('#appoint_time');
 		//拍摄门店
 		$('#appoint_place').text(storeName);
 		//拍摄时间
-		appoint_time_wrap.text(orderTime);
+		appoint_time_wrap.text(orderTime2);
 		//拍摄内容
 		
 		var str = '';
@@ -846,16 +847,14 @@ $(function($) {
 					if($.type(el.choose) != 'undefined'){
 						var choose_art = eval('('+el.choose+')');
 						var artex_price = 0;
-						if($.type(el.choose) != 'undefined'){
+						if($.type(el.chooseartex) != 'undefined'){
 							var chooseartex = eval('('+el.chooseartex+')');
-							console.log(chooseartex);
 							if(Object.keys(chooseartex).length != 0){
 								$.each(chooseartex,function(index2, el2) {
 									artex_price += parseInt(el2.price);
 								});
 							}
 						}
-						console.log(choose_art);
 						if(Object.keys(choose_art).length != 0){
 							attribute +='(';
 							$.each(choose_art,function(index2, el2) {
@@ -881,9 +880,10 @@ $(function($) {
 					break;
 				//结婚照
 				case '3':
-					pay_price += parseInt(el.wmprice);
+					pay_price += parseInt(el.price);
 					if(el.choosew){
-						pay_price += parseInt(el.price);
+						attribute = '(搞怪结婚照)';
+						pay_price += parseInt(el.wmprice);
 					}
 					break;
 				default:
@@ -895,12 +895,117 @@ $(function($) {
 			str += '    <div class="item-after wg_order_pay_money">￥'+pay_price+'</div>';
 			str += '</div>';
 		});
+		//拍摄内容赋值
 		$('#choose-reservation-content').html(str);
+		//个人信息获取
+		var psesonal_info;
+		$.getJSON(total_url + 'index.php?g=Wap&m=Distribution&a=myInfo', function(json) {
+			psesonal_info = json.data;
+			$('#order-name').val(json.data.truename);//姓名
+			$('#order-birth').val(json.data.birth);//出生
+			$('#order-sex').val(json.data.sex == 0 ? '女' : '男');//性别
+		})
 		//总价
 		$('#total-price').text(total_price);
+		//去支付
+		$('#pay-btn').click(function(){
+			var pay_data = {};
+			pay_data['sid'] = storeId;
+			pay_data['ordertime'] = orderTime;
+			pay_data['con'] = pinfo;
+			pay_data['myinfo'] = psesonal_info;
+			pay_data['totalPrice'] = total_price;
+			pay_data['city'] = getCityName(cookie.get('scid'));
+			console.log(JSON.stringify(pay_data));
+			$.ajax({
+				url: total_url + 'index.php?g=Wap&m=Store&a=payOrder',
+				data: {data:JSON.stringify(pay_data)},
+				type: 'post',
+				dataType: 'json',
+				success:function(data){
+					if(data.status == 1){
+						cookie.set('choose_product','');
+						var order_data = eval('('+data.data+')');
+						$.router.load('myorders.html',function(){
+
+						});
+						location.href = total_url + 'index.php?g=Wap&m=Alipay&a=pay&token='+order_data.token+'&wecha_id='+order_data.wecha_id+'&success=1&from=Store&orderName='+order_data.orderid+'&single_orderid='+order_data.orderid+'&price'+order_data.price;
+					}else{
+						$.alert(data.info);
+					}
+				}
+			});
+		})
+		//时间戳转日期格式
 		function getLocalTime(nS) {     
 		   return new Date(parseInt(nS) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ');     
 		}
 	});
+	//我的订单页面
+	$(document).on('pageInit','#my-orders',function(){
+		var psesonal_info;
+		var all_wrap = $('#all-orders');
+		var payed_wrap = $('#payed-orders');
+		var finish_wrap = $('#finish-orders');
+		$.getJSON(total_url + 'index.php?g=Wap&m=Distribution&a=myOrders', function(json) {
+			$.each(json.data,function(index, el) {
+				var str = '';
+				console.log(el);
+				var status = '';
+				if(el.paid == 0){
+					status = '未付款';
+				}
+				if(el.paid == 1){
+					status = '进行中';
+				}
+				if(el.finish == 1){
+					status = '已完成';
+				}
+				str += '<div class="list-block">';
+				str += '    <ul>';
+				str += '        <li class="item-content">';
+				str += '            <div class="item-inner">';
+				str += '                <div class="item-title">订单号:'+el.orderid+'</div>';
+				str += '                <div class="item-after">'+status+'</div>';
+				str += '            </div>';
+				str += '        </li>';
+				str += '        <li class="item-content">';
+				str += '            <div class="item-inner">';
+				str += '                <div class="item-title">';
+				str += '                    <p>拍摄门店：<item class="store-name">'+el.sname+'</item></p>';
+				str += '                    <p>预约时间：<item class="reservation-time">'+el.rtime+'</item></p>';
+				str += '                    <p>门店号码：<item class="store-tele">'+el.stel+'</item></p>';
+				str += '                </div>';
+				str += '            </div>';
+				str += '        </li>';
+				str += '        <li class="item-content1" >';
+				str += '            <div class="item-inner1">';
+				str += '                <div class="item-title"></div>';
+				str += '                <div class="item-after1">总计：￥<span class="reservation-price">'+el.price+'</span></div>';
+				// str += '                <div class="item-after2 pay_choose">拍摄路线</div>';
+				if(el.paid == 0){
+					str += '<div class="item-after2 pay_unchoose pay-now" data-id="'+el.id+'">去付款</div>';
+				}
+				str += '            </div>';
+				str += '        </li>';
+				str += '    </ul>';
+				str += '</div>';
+				if(str){
+					all_wrap.append(str);
+					if(el.paid == 1 && el.finish == 0){
+						payed_wrap.append(str);
+					}
+					if(el.paid == 1 && el.finish == 1){
+						finish_wrap.append(str);
+					}
+				}
+			});
+			//立即支付
+			$(document).on('click','#my-orders .pay-now',function(){
+				var id = $(this).data('id');
+				location.href = total_url + 'index.php?g=Wap&m=Store&a=payNow&id='+id;
+			})
+		})
+	})
 	$.init();
 })

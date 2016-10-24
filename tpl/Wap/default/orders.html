@@ -11,46 +11,45 @@
     <link rel="stylesheet" href="common/original/css/sm.min.css">
     <link rel="stylesheet" href="common/original/css/sm-extend.css">
     <link rel="stylesheet" href="common/original/css/style.css">
-    <link rel="stylesheet" href="common/original/css/main.css">
 </head>
 
 <body>
     <div class="page-group">
         <div class="page page-current" id="orders_wrap">
-            <header class="bar bar-nav">
+           <!--  <header class="bar bar-nav">
                 <h1 class="title">支付剩余时间</h1>
-            </header>
+            </header> -->
+             <style type="text/css">
+             .list-block .item-link .item-inner {
+                 background-image: none;
+                 border-bottom: 1px solid #e7e7e7;
+                 padding-left: 2%;
+                 padding-right:2%;
+             }
+             
+             .list-block {
+                 margin: 0;
+             }
+             
+             .list-block .item-media+.item-inner {
+                 margin: 0;
+                 border-bottom: 1px solid #e7e7e7;
+             }
+             
+             .list-block .item-content {
+                 padding: 0;
+             }
+             .list-block .item-title.label{
+               padding-left: 2%;
+             }
+             .list-block .item-subtitle{
+               padding-bottom: 5px;
+             }
+            .list-block .item-title.label{
+             width: 15%;
+            }
+             </style>
             <div class="content">
-                 <style type="text/css">
-                 .list-block .item-link .item-inner {
-                     background-image: none;
-                     border-bottom: 1px solid #e7e7e7;
-                     padding-left: 2%;
-                     padding-right:2%;
-                 }
-                 
-                 .list-block {
-                     margin: 0;
-                 }
-                 
-                 .list-block .item-media+.item-inner {
-                     margin: 0;
-                     border-bottom: 1px solid #e7e7e7;
-                 }
-                 
-                 .list-block .item-content {
-                     padding: 0;
-                 }
-                 .list-block .item-title.label{
-                   padding-left: 2%;
-                 }
-                 .list-block .item-subtitle{
-                   padding-bottom: 5px;
-                 }
-                .list-block .item-title.label{
-                 width: 13%;
-                }
-                 </style>
                 <div class="list-block">
                     <ul>
                         <!-- <a href="Appointment.html"> -->
@@ -82,22 +81,6 @@
                                     <div id="choose-reservation-content">
                                         
                                     </div>
-                                    <!-- <div class="item-title-row">
-                                        <div class="item-title">证件照（蓝色）</div>
-                                        <div class="item-after wg_order_pay_money">￥99.00</div>
-                                    </div>
-                                    <div class="item-title-row">
-                                        <div class="item-title">证件照（蓝色）</div>
-                                        <div class="item-after wg_order_pay_money">￥99.00</div>
-                                    </div>
-                                    <div class="item-title-row">
-                                        <div class="item-title">证件照（蓝色）</div>
-                                        <div class="item-after wg_order_pay_money">￥99.00</div>
-                                    </div>
-                                    <div class="item-title-row">
-                                        <div class="item-title">证件照（蓝色）</div>
-                                        <div class="item-after wg_order_pay_money">￥99.00</div>
-                                    </div> -->
                                 </div>
                             </a>
                         </li>
@@ -122,40 +105,34 @@
                         <!-- Text inputs -->
                         <li>
                             <div class="item-content">
-                                <div class="item-media"><i class="icon icon-form-name"></i></div>
                                 <div class="item-inner">
                                     <div class="item-title label">姓名</div>
                                     <div class="item-input">
-                                        <input type="text" placeholder="Your name">
+                                        <input id="order-name" type="text" placeholder="">
                                     </div>
                                 </div>
                             </div>
                         </li>
                         <li>
                             <div class="item-content">
-                                <div class="item-media"><i class="icon icon-form-gender"></i></div>
                                 <div class="item-inner">
                                     <div class="item-title label">性别</div>
                                     <div class="item-input">
-                                        <select>
-                                            <option>Male</option>
-                                            <option>Female</option>
-                                        </select>
+                                        <input id="order-sex" type="text" placeholder="">
                                     </div>
-                                    <div class="item-title label iconfont" style="text-align: right;">&#xe613;</div>
+                                    <!-- <div class="item-title label iconfont" style="text-align: right;">&#xe613;</div> -->
                                 </div>
                             </div>
                         </li>
                         <!-- Date -->
                         <li>
                             <div class="item-content">
-                                <div class="item-media"><i class="icon icon-form-calendar"></i></div>
                                 <div class="item-inner">
                                     <div class="item-title label">生日</div>
                                     <div class="item-input">
-                                        <input type="date" placeholder="Birth day" value="2014-04-30">
+                                        <input id="order-birth" type="text" placeholder="">
                                     </div>
-                                    <div class="item-title label iconfont" style="text-align: right;">&#xe613;</div>
+                                    <!-- <div class="item-title label iconfont" style="text-align: right;">&#xe613;</div> -->
                                 </div>
                             </div>
                         </li>
@@ -164,7 +141,7 @@
                 </div>
                 <div class="wg_item_pro_choose">
                     <ul>
-                        <li style="line-height: 40px; padding-left: 2%; font-size:0.8rem;">全年主打</li>
+                        <li style="line-height: 40px; padding-left: 2%; font-size:0.8rem;">支付方式</li>
                         <li>
                             <label class="label-checkbox item-content">
                                 <div class="item-inner">
@@ -172,18 +149,19 @@
                                         <div class="item-title iconfont"><span>&#xe612;</span>微信支付</div>
                                     </div>
                                 </div>
-                                <input type="checkbox" name="my-radio">
+                               <!--  <input type="checkbox" name="my-radio">
                                 <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
-                                <div class="clear"></div>
+                                <div class="clear"></div> -->
                             </label>
                         </li>
                     </ul>
                 </div>
                  <div class="wg_order_pay">
                    <div class="wg_order_pay_all">总计：￥<span id="total-price"></span></div>
-                   <div class="wg_order_pay_again">去支付</div>
+                   <div class="wg_order_pay_again" id="pay-btn">去支付</div>
                  </div>
             </div>
+            <div id="footer"></div>
         </div>
     </div>
     <script src="common/original/js/zepto.min.js" type="text/javascript" charset="utf-8"></script>

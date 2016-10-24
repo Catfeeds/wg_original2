@@ -163,8 +163,8 @@ class StoreAction extends WapAction{
 		$today = date(strtotime('today'));
 		for ($i=0; $i < 36; $i++) {
 			$t = $today + 86400 * $i;
+			$addlimittime = 0;
 			if($addtime[$t]){
-				$addlimittime = 0;
 				$info = $addtime[$t]['defaultWorkTime'];
 				$info = unserialize($info);
 				foreach ($info as $k => $v) {
@@ -269,6 +269,211 @@ class StoreAction extends WapAction{
 			'storelist' => $storelist,
 		);
 		exit($this->returnData($data));
+	}
+	//生成订单
+	function payOrder(){
+		$data = htmlspecialchars_decode($this->_post('data'));
+		$data = htmlspecialchars_decode($data);
+		// Log::write($data,'DEBUG');
+		// $data = '{"sid":"2","ordertime":1477965600,"con":{"80":{"pid":80,"name":"证件照","price":"60","type":"1","colorinfo":"{\"blue\":{\"price\":\"1\"},\"white\":{\"price\":\"2\"},\"red\":{\"price\":\"3\"},\"yellow\":{\"price\":\"4\"},\"grey\":{\"price\":\"5\"}}","artinfo":"","artex":"","wmprice":"1","choose":"{\"blue\":{\"price\":1}}"},"90":{"pid":90,"name":"结婚照","price":"75","type":"3","colorinfo":"","artinfo":"","artex":"","wmprice":"1"},"91":{"pid":91,"name":"文艺照","price":"75","type":"2","colorinfo":"","artinfo":"{\"personal\":{\"price\":\"1\"},\"friends\":{\"price\":\"2\"},\"childrens\":{\"price\":\"3\"},\"lovers\":{\"price\":\"4\"}}","artex":"{\"four\":{\"price\":\"1\"},\"nine\":{\"price\":\"2\"}}","wmprice":"0","choose":"{\"personal\":{\"price\":1}}"},"132":{"pid":132,"name":"一般照","price":"10","type":"0","colorinfo":"","artinfo":"","artex":"","wmprice":"0"}},"myinfo":{"id":"1","areaid":"0","areaname":"","headimgurl":"http://qchpt.b0.upaiyun.com/mhfcjx1421158741/2016/07/28/1469701369_ltmojad1p43nanvx.jpg","truename":"12311","sex":"0","birth":"2016-10-19","editname":"0","tele":"","username":"1","password":"c81e728d9d4c2f636f067f89cc14862c","wecha_id":"","mid":"","ip":"","status":"0","addtime":"0","year":"0","month":"0","day":"0","delete":"0"},"totalPrice":73,"city":"上海市"}';
+		$data = json_decode($data,true);
+		$rightprice = 0;
+		//校验摄影数据信息
+		$price1 = 0;//一般照
+		$price2 = 0;//证件照
+		$price3 = 0;//文艺照
+		$price4 = 0;//结婚照
+		$info = '';
+		foreach ($data['con'] as $k => $v) {
+			$product = M('Product')->where(array('id'=>$k))->find();
+			switch ($v['type']) {
+				//一般照
+				case '0':
+					if($v['price'] != $product['price']){
+						$info .= $product['name'] . '价格错误,';
+					}
+					$price1 += $product['price'];;
+					$rightprice += $product['price'];
+					break;
+				//证件照
+				case '1':
+					$rightprice += $product['price'];
+					$price2 += $product['price'];
+					$rightColorInfo = json_decode($product['colorinfo'],true);
+					$checkcolor = json_decode($v['choose'],ture);
+					foreach ($checkcolor as $k2 => $v2) {
+						if($checkcolor[$k2]['price'] != $rightColorInfo[$k2]['price']){
+							$info .= $product['name'] . '价格错误,';
+							break;
+						}
+						$rightprice += $rightColorInfo[$k2]['price'];
+						$price2 += $rightColorInfo[$k2]['price'];
+					}
+					break;
+				//文艺照
+				case '2':
+					if($v['choose'] && $v['choose'] != '{}'){
+						$checkart = json_decode($v['choose'],ture);
+					}
+					if($v['chooseartex'] && $v['chooseartex'] != '{}'){
+						$checkartex = json_decode($v['chooseartex'],ture);
+					}
+					if($checkart){
+						$rightArtInfo = json_decode($product['artinfo'],true);
+						//宫格价格
+						$artExPrice = 0;
+						//校验宫格价格
+						if($checkartex){
+							$rightArtExInfo = json_decode($product['artex'],ture);
+							foreach ($checkartex as $k2 => $v2) {
+								if($checkartex[$k2]['price'] != $rightArtExInfo[$k2]['price']){
+									$info .= $product['name'] . '价格错误,';
+									break;
+								}
+								$artExPrice += $rightArtExInfo[$k2]['price'];
+							}
+						}
+						//校验类型价格
+						foreach ($checkart as $k2 => $v2) {
+							if($checkart[$k2]['price'] != $rightArtInfo[$k2]['price']){
+								$info .= $product['name'] . '价格错误,';
+								break;
+							}
+							$rightprice += $rightArtInfo[$k2]['price'] + $artExPrice;
+							$price3 += $rightArtInfo[$k2]['price'] + $artExPrice;
+						}
+
+					}
+					break;
+				//结婚照校验
+				case '3':
+					if($v['price'] != $product['price']){
+						$info .= $product['name'] . '价格错误,';
+					}
+					$rightprice += $product['price'];
+					$price4 += $product['price'];
+					if($v['choosew']){
+						if($v['wmprice'] != $product['wmprice']){
+							$info .= '搞怪结婚照价格错误';
+						}
+						$rightprice += $product['wmprice'];
+						$price4 += $product['wmprice'];
+					}
+					break;
+			}
+		}
+		//数据验证
+		// dump($rightprice);
+		// dump('一般照：'.$price1);
+		// dump('证件照：'.$price2);
+		// dump('文艺照：'.$price3);
+		// dump('结婚照：'.$price4);
+		// dump($data['totalPrice']);
+		// exit();
+		if($rightprice != $data['totalPrice']){
+			$info .= '总价有误';
+		}
+		if($info){
+			$this->ajaxReturn('',$info,-1);
+		}
+		//预约内容
+		$total = 0;
+		foreach ($data['con'] as $k => $v) {
+			$price = 0;
+			$total ++;
+			//计算价格
+			switch ($v['type']) {
+				//一般照
+				case '0':
+					$price = $v['price'];
+					break;
+				//证件照
+				case '1':
+					$price += $v['price'];
+					$checkcolor = json_decode($v['choose'],ture);
+					foreach ($checkcolor as $k2 => $v2) {
+						$price += $v2['price'];
+					}
+					break;
+				//文艺照
+				case '2':
+					$checkcolor = json_decode($v['choose'],ture);
+					$exprice = 0;
+					if($v['chooseartex'] && $v['chooseartex'] != '{}'){
+						$checkartex = json_decode($v['chooseartex'],ture);
+					}
+					if($checkartex){
+						foreach ($checkartex as $k2 => $v2) {
+							$exprice += $v2['price'];
+						}
+					}
+					foreach ($checkcolor as $k2 => $v2) {
+						$price += $v2['price'] + $exprice;
+					}
+					break;
+				case '3':
+					$price = $v['price'];
+					if($v['choosew']){
+						$price += $v['wmprice'];
+					}
+					break;
+
+			}
+			$reservation[$k] = array(
+				'name' => $v['name'],
+				'type' => $v['type'],
+				'choose' => $v['choose'],
+				'price' => $price,
+				'choosew' => $v['choosew'],
+				'chooseartex' => $v['chooseartex'],
+			);
+		}
+		//生成订单数据列表
+		$orderid = substr(time(), -1, 4) . date("YmdHis");
+		$store = M('Store_list')->where(array('id'=>$data['id']))->find();
+		$order_data = array(
+			'storeid' => $data['sid'],
+			'sname' => $store['name'],
+			'rtime' => $data['time'],
+			'aid' => $data['myinfo']['id'],
+			'truename' => $data['myinfo']['truename'],
+			'tel' => $data['myinfo']['username'],
+			'wecha_id' => $data['myinfo']['wecha_id'],
+			'birth' => $data['myinfo']['birth'],
+			'stel' => $store['tele'],
+			'sex' => $data['myinfo']['sex'],
+			'info' => serialize($reservation),
+			'total' => $total,
+			'price' => $rightprice,
+			'city' => $data['city'],
+			'time' => time(),
+			'year' => date('Y',time()),
+			'month' => date('m',time()),
+			'day' => date('d',time()),
+			'hour' => date('H',time()),
+			'orderid' => $orderid,
+			'token' => $this->token,
+		);
+		$re = M('Product_cart')->add($order_data);
+		if($re){
+			$return_data = array(
+				'token' => $this->token,
+				'wehcha_id' => $data['myinfo']['wecha_id'],
+				'price' => $rightprice,
+				'orderid' => $orderid,
+			);
+			$this->ajaxReturn(json_encode($return_data),'',1);
+		}else{
+			$this->ajaxReturn('','',-1);
+		}
+	}
+	//立即支付
+	function payNow(){
+		$id = $this->_get('id');
+		$orderid = substr(time(), -1, 4) . date("YmdHis");
+		M('Product_cart')->where(array('id'=>$id))->setField('orderid',$orderid);
+		$cart = M('Product_cart')->where(array('id'=>$id))->find();
+		$this->success('正在提交中...', U('Alipay/pay',array('token' => $this->token, 'wecha_id' => $this->wecha_id, 'success' => 1, 'from'=> 'Store', 'orderName' => $orderid, 'single_orderid' => $orderid, 'price' => $cart['price'])));
 	}
 }
 

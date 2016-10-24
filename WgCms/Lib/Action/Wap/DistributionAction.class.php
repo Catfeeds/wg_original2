@@ -141,8 +141,15 @@
 			setcookie('zxg_login_user',null);
 			$this->ajaxReturn('','',1);
 		}
-		function test(){
-			setcookie('testa','aa1',time() + 10000);
+		//我的订单
+		function myOrders(){
+			$account = $this->checkLogin('account');
+			$db = M('Product_cart');
+			$orders = $db->where(array('aid'=>$account['id']))->select();
+			foreach ($orders as $k => $v) {
+				$orders[$k]['rtime'] = date('Y-m-d H:i',$v['rtime']);
+			}
+			$this->ajaxReturn($orders,'',1);
 		}
 		//判断登陆
 		function checkLogin($get = ''){
@@ -164,5 +171,6 @@
 				$this->ajaxReturn('','账号未登陆',-1);
 			}
 		}
+
 	}
 ?>

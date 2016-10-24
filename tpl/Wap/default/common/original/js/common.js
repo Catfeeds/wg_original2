@@ -15,6 +15,11 @@ $(function($){
 			$('#distribution_index_tab').addClass('active').siblings().removeClass('active');
 		},100)
 	});
+	$(document).on('pageInit','#my-orders',function(){
+		setTimeout(function(){
+			$('#footer_myorders_tab').addClass('active').siblings().removeClass('active');
+		},100)
+	});
 	$.init();
 })
 //删除数组

@@ -1,33 +1,42 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>个人中心</title>
+    <title>预约拍照</title>
     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
     <link rel="shortcut icon" href="/favicon.ico">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="stylesheet" href="common/original/css/sm.min.css">
     <link rel="stylesheet" href="common/original/css/sm-extend.css">
-    <link rel="stylesheet" href="common/original/css/style.css">
-</head>
+    <link rel="stylesheet" href="common/original/css/style.css"></head>
 
 <body>
     <div class="page-group">
-        <div class="page page-current" id="select_products_info_wrap">
+        <div class="page page-current" id="my-orders">
             <div class="content">
-                <div class="list-block media-list" id="choose_products_info"></div>
-                <div style="height: 40px;"></div>
-                <div class="wg_order_pay">
-                    <div class="wg_order_pay_all">
-                        总计：
-                        <span>￥<span id="total_price"></span></span>
+                <div class="buttons-tab">
+                    <a href="#all-orders" class="tab-link active button">全部</a>
+                    <a href="#payed-orders" class="tab-link button">进行中</a>
+                    <a href="#finish-orders" class="tab-link button">已完成</a>
+                </div>
+                <div class="content-block">
+                    <div class="tabs">
+                        <div id="all-orders" class="tab active"></div>
+                        <div id="payed-orders" class="tab">
+                            <div class="content-block">
+                            </div>
+                        </div>
+                        <div id="finish-orders" class="tab">
+                            <div class="content-block">
+                            </div>
+                        </div>
+                        <div style="height: 58px;"></div>
                     </div>
-                    <div class="wg_order_pay_again" id="next_btn">下一步</div>
                 </div>
             </div>
+            <div id="footer"></div>
         </div>
     </div>
     <script src="common/original/js/zepto.min.js" type="text/javascript" charset="utf-8"></script>
