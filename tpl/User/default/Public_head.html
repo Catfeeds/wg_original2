@@ -123,7 +123,7 @@ if (!isset($_SESSION['isQcloud'])){
 <td><strong>请求数：</strong>{wghd:$thisUser.connectnum}/{wghd:$userinfo.connectnum}</td>
 </tr>
 <tr>
-<td><strong>请求数剩余：</strong><php>echo ($userinfo['connectnum']-$_SESSION['connectnum']);</php></td>
+<td><strong>余：</strong><php>echo ($userinfo['connectnum']-$_SESSION['connectnum']);</php></td>
 <td><strong>已使用：</strong><php>echo $_SESSION['diynum'];</php></td>
 <td><strong>当月剩余请求数：</strong><php>echo $userinfo['connectnum']-$_SESSION['connectnum'];</php></td>
 </tr>
@@ -132,6 +132,7 @@ if (!isset($_SESSION['isQcloud'])){
     </div>
         <div class="clr"></div>
       </div>
+
       <!--左侧功能菜单-->
 
  
@@ -276,6 +277,16 @@ array(
 /*array('name'=>'在线支付设置','link'=>U('Alipay_config/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Alipay_config')),*/
 array('name'=>'微信商城系统','link'=>U('Store/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Store')),
 )),
+
+array(
+'name'=>'分店系统',
+'iconName'=>'shop',
+'display'=>0,
+'subs'=>array(
+
+array('name'=>'分店管理','link'=>U('Shop/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Shop')),
+)),
+
 );
 ?>
 <?php

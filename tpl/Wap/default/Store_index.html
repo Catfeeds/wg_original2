@@ -11,9 +11,11 @@
   <link rel="stylesheet" href="common/original/css/sm.min.css">
   <link rel="stylesheet" href="common/original/css/sm-extend.css">
   <link rel="stylesheet" href="common/original/css/style.css">
-  <link rel="stylesheet" href="common/original/css/position.css"></head>
+  <link rel="stylesheet" href="common/original/css/position.css">
 </head>
 <body>
+  <div class="page-group">
+    <div class="page page-current" id="index-page">
   <style>
   .swiper-container{
     padding-bottom: 0;
@@ -22,46 +24,44 @@
     width: 100%;
   }
 </style>
-  <div class="page-group">
-    <div class="page page-current" id="index-page">
       <div class="content">
         <!-- BNNER -->
         <div id="slider-index"></div>
-        <!-- 定位 -->
-        <div class="index-position">
-          <span class="index-positionIcon"></span> <em>获取位置中</em>
-          <span class="icon icon-right"></span>
-        </div>
-        <div class="buttons-tab">
-          <a href="#tab1" class="tab-link active button">全部</a>
-          <a href="#tab2" class="tab-link button">待付款</a>
-        </div>
-        <div class="content-block">
-          <div class="tabs">
-            <div id="tab1" class="tab active">
-              <div class="content-block">
-                <p>This is tab 1 content</p>
-              </div>
-            </div>
-            <div id="tab2" class="tab">
-              <div class="content-block">
-                <p>This is tab 2 content</p>
-              </div>
-            </div>
+        <div id="home-content"></div>
+          <!-- 定位 -->
+          <div class="index-position">
+            <span class="index-positionIcon"></span> <em>获取位置中</em>
+            <span class="icon icon-right"></span>
           </div>
-        </div>
       </div>
-      <div id="footer"></div>
+        <nav class="bar bar-tab">
+  <a class="tab-item external" href="Store_index.html" id="store_index_tab">
+    <span class="icon icon-home"></span>
+    <span class="tab-label">展示</span>
+  </a>
+  <a class="tab-item external" href="Appointment.html" id="footer_appointment_tab">
+    <span class="icon icon-star"></span>
+    <span class="tab-label">预约</span>
+  </a>
+  <a class="tab-item external" href="myorders.html" id="footer_myorders_tab">
+    <span class="icon icon-cart"></span>
+    <span class="tab-label">订单</span>
+  </a>
+  <a class="tab-item external" href="Distribution_index.html" id="distribution_index_tab">
+    <span class="icon icon-me"></span>
+    <span class="tab-label">我的</span>
+  </a>
+</nav>
     </div>
   </div>
-</body>
-</html>
 <script src="common/original/js/zepto.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="common/original/js/sm.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="common/original/js/sm-extend.js" type="text/javascript" charset="utf-8"></script>
 <script src="common/original/js/common.js" type="text/javascript" charset="utf-8"></script>
 <script src="common/original/js/cookie.js" type="text/javascript" charset="utf-8"></script>
-<script src="common/original/js/public_parameters.js" type="text/javascript" charset="utf-8"></script>
+<script src="common/original/js/public_parameters.js?test=2" type="text/javascript" charset="utf-8"></script>
 <script src="common/original/js/citylist.js" type="text/javascript" charset="utf-8"></script>
 <script src="common/original/js/slider.js" type="text/javascript" charset="utf-8"></script>
 <script src="common/original/js/chooseposition.js" type="text/javascript" charset="utf-8"></script>
+</body>
+</html>

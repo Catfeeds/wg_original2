@@ -1,11 +1,23 @@
 $(function($){
 	//判断账号登陆
 	$(document).ready(function($) {
+		//判断授权
+		$.ajax({
+			url: total_url + 'index.php?g=Wap&m=Distribution&a=checkAuth',
+			dataType: 'json',
+			success: function(data) {
+				if (data.data == 'needauth') {
+					var href = 'http://bmy.tzwg.net/index.php?g=Wap&m=Distribution&a=authorization&bmyquth=1&href='+window.location.href;
+					location.href = href;
+				}
+			}
+		});
+		//判断账号登陆
 		$.ajax({
 			url:total_url+'index.php?g=Wap&m=Distribution&a=checkLogin',
 			dataType:'json',
 			success:function(data){
-				if(data && data.status == -1){
+				if(!data || data.status == -1){
 					location.href = "login.html";
 				}
 			}
@@ -34,7 +46,10 @@ $(function($){
 				type:'post',
 				success:function(data){
 					console.log(data);
-					$.alert(data.info)
+					$.alert(data.info);
+					if(data.status == 1){
+						$.router.load('Distribution_index.html');
+					}
 				}
 			});
 		}
@@ -58,7 +73,10 @@ $(function($){
 				type:'post',
 				success:function(data){
 					console.log(data);
-					$.alert(data.info)
+					$.alert(data.info);
+					if(data.status == 1){
+						$.router.load('Distribution_index.html');
+					}
 				}
 			});
 		}

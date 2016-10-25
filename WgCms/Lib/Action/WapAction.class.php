@@ -26,17 +26,25 @@ class WapAction extends BaseAction
             S('wxuser_' . $this->token, $this->wxuser);
         }
 		// if($this->_get('wecha_id')){
-		// 	session('qchwecha_id',$this->_get('wecha_id'));
+		// 	session('bmywecha_id',$this->_get('wecha_id'));
 		// }
-		// session('qchwecha_id',null);
+		// session('bmywecha_id',null);
 		// if($this->_get('test') == 1){
-		// 	session('qchwecha_id',null);
+		// 	session('bmywecha_id',null);
 		// 	setcookie('login_user',null);
 		// }
-		session('qchwecha_id','oR4d_wo0u08EYLH-imb95OZReBdw');
+		// session('bmywecha_id','test');
         $this->assign('wxuser', $this->wxuser);
         // strpos($agent,"icroMessenger") && 
-        if (!session('qchwecha_id') && $this->wxuser['winxintype'] == 3 && !isset($_GET['code']) && $this->wxuser['oauth']) {
+        if($_GET['href']){
+        	session('jump_href',$_GET['href']);
+        }	
+        if($_GET['bmyquth'] == 1) {
+        	$no_need_auth = 1;
+        }else{
+        	$no_need_auth = 0;
+        }
+        if ($no_need_auth && !session('bmywecha_id') && $this->wxuser['winxintype'] == 3 && !isset($_GET['code']) && $this->wxuser['oauth']) {
             $customeUrl = 'http://'.$_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
             $scope = 'snsapi_base';
             $oauth = 'base_oauth';
@@ -44,13 +52,14 @@ class WapAction extends BaseAction
             header('Location:' . $oauthUrl);
 			exit();
         }
+
         if (isset($_GET['code']) && isset($_GET['state']) && (isset($_GET['state']) == 'user_oauth'||isset($_GET['state']) == 'base_oauth')) {
             $rt = $this->curlGet('https://api.weixin.qq.com/sns/oauth2/access_token?appid=' . $this->wxuser['appid'] . '&secret=' . $this->wxuser['appsecret'] . '&code=' . $_GET['code'] . '&grant_type=authorization_code');
             $jsonrt = json_decode($rt, 1);
             $openid = $jsonrt['openid'];
             $access_token=$jsonrt['access_token'];
             $this->wecha_id = $openid;
-			session('qchwecha_id',$openid);
+			session('bmywecha_id',$openid);
 
 
             $my = D('Distribution_member')->where(array('token'=>$this->token,'wecha_id'=>$openid))->find();
@@ -126,8 +135,8 @@ class WapAction extends BaseAction
                 }
 			}
         } else {
-        	if(session('qchwecha_id')){
-           	 	$this->wecha_id = session('qchwecha_id');
+        	if(session('bmywecha_id')){
+           	 	$this->wecha_id = session('bmywecha_id');
         	}else{
         		$account = D('Account')->where(array('username'=>$_COOKIE['login_user']))->find();
         		if($account['mid']){
@@ -136,7 +145,7 @@ class WapAction extends BaseAction
         	}
         }
         //绑定关系
-        // if(session('qchwecha_id')){
+        // if(session('bmywecha_id')){
         // 	$mid = $_GET['mid'];
         // 	if($my['bindmid'] == 0 && $mid){
         // 		$data3['bindmid'] = $mid;
@@ -149,7 +158,7 @@ class WapAction extends BaseAction
         // 		}
         // 	// }
         // 	if($data3){
-        // 		D('Distribution_member')->where(array('token'=>$this->token,'wecha_id'=>session('qchwecha_id')))->save($data3);
+        // 		D('Distribution_member')->where(array('token'=>$this->token,'wecha_id'=>session('bmywecha_id')))->save($data3);
         // 	}
         // }
 

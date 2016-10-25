@@ -1,17 +1,30 @@
 $(function($) {
 	//删除数组中指定元素
+	
 	//判断账号登陆
-	// $(document).ready(function($) {
-	// 	$.ajax({
-	// 		url: total_url + 'index.php?g=Wap&m=Distribution&a=checkLogin',
-	// 		dataType: 'json',
-	// 		success: function(data) {
-	// 			if (data && data.status == -1) {
-	// 				location.href = "login.html";
-	// 			}
-	// 		}
-	// 	});
-	// });
+	$(document).ready(function($) {
+		//判断授权
+		$.ajax({
+			url: total_url + 'index.php?g=Wap&m=Distribution&a=checkAuth',
+			dataType: 'json',
+			success: function(data) {
+				if (data.data == 'needauth') {
+					var href = 'http://bmy.tzwg.net/index.php?g=Wap&m=Distribution&a=authorization&bmyquth=1&href='+window.location.href;
+					location.href = href;
+				}
+			}
+		});
+		//判断账号登陆
+		$.ajax({
+			url: total_url + 'index.php?g=Wap&m=Distribution&a=checkLogin',
+			dataType: 'json',
+			success: function(data) {
+				if (!data || data.status == -1) {
+					location.href = "login.html";
+				}
+			}
+		});
+	});
 
 	// 选择门店
 	$(document).on('pageAnimationStart', '#reservation', function(e, id, page) {
@@ -170,8 +183,10 @@ $(function($) {
 		 */
 		function showStoreInfo(cid) {
 			$.showIndicator();
+			console.log(cid);
 			$.get(total_url + 'index.php?g=Wap&m=Store&a=getStoreByCity&cid=' + cid, function(data) {
 				data = eval('(' + data + ')');
+				console.log(data);
 				$.hideIndicator();
 				if (data.error === 0) {
 					var cityInfo = data.msg.city; // 当前选择城市
@@ -209,6 +224,7 @@ $(function($) {
 							var _self = $('.picker-selected');
 							var num = $.inArray(_self.html(), currentStoreArr);
 							storeId = storeIdArr[num];
+							console.log(storeId);
 							changeStoreInfo(storeInfo, storeId);
 							$('#reservation .wrapper').show();
 						}
@@ -237,7 +253,7 @@ $(function($) {
 		function changeStoreInfo(storeInfo, storeId) {
 			var storeinfoHtml = '';
 			var storeArr = Object.keys(storeInfo);
-			// var storeServiceArr = storeInfo[storeId].S_Service.split('');
+			var storeServiceArr = storeInfo[storeId].S_Service.split('');
 			var $service = $('#reservation-storeService .reservation-serviceList'); //门店服务
 			// var opents = parseInt(storeInfo[storeId].S_StartTime);
 			var tsNow = parseInt(+new Date() / 1000); // 获取当前的时间戳
@@ -254,21 +270,25 @@ $(function($) {
 			// 	$('.reservation-checkBtn').addClass('btn-disabled');
 			// }
 
-			$service.removeClass('off');
-			// for (var i in storeServiceArr) {
-			// 	if (storeServiceArr[i] === '0') {
-			// 		$($service[i]).addClass('off');
-			// 	}
-			// }
+			$service.removeClass('on');
+			for (var i in storeServiceArr) {
+				if (storeServiceArr[i] === '1') {
+					$($service[i]).addClass('on');
+				}
+			}
 			$service.on('click', function() {
 				var picIndex = $(this).index() + 1;
-				if ($(this).hasClass('off')) {
+				if (!$(this).hasClass('on')) {
 					return false;
 				}
-				$('.tipModelWrap').find('img').attr('src', 'http://cdn.haimati.cn/HMA_M_Static/img/fwtc_' + picIndex + '.png');
-				setTimeout(function() {
-					$('.tipModelWrap').show();
-				}, 50);
+				$('#service-warn').show();
+				$('#service-warn .close-warn').click(function(){
+					$('#service-warn').hide();
+				})
+				// $('.tipModelWrap').find('img').attr('src', 'http://cdn.haimati.cn/HMA_M_Static/img/fwtc_' + picIndex + '.png');
+				// setTimeout(function() {
+				// 	$('.tipModelWrap').show();
+				// }, 50);
 			});
 			$('#reservation-store .reservation-storename').text(storeInfo[storeId].S_Name); // 门店名
 			$('#address-maplink').attr('href', storeInfo[storeId].S_MapUrl); // 地图链接
@@ -381,6 +401,7 @@ $(function($) {
 		$.showPreloader();
 		var storeId = cookie.get('storeId');
 		cookie.set('choose_product', '');
+		console.log(storeId);
 		$.getJSON(total_url + 'index.php?g=Wap&m=Store&a=getCatsProducts&storeId=' + storeId, function(json) {
 			CatsProductsHtml(json);
 		})
@@ -480,7 +501,7 @@ $(function($) {
 					str += '    </div>';
 					str += '    <div class="item-title-row">';
 					str += '        <div class="item-title">背景颜色</div>';
-					str += '        <div class="item-after iconfont">背景颜色说明&#xe60d;</div>';
+					// str += '        <div class="item-after iconfont">背景颜色说明&#xe60d;</div>';
 					str += '    </div>';
 					colorinfo = eval('(' + el.colorinfo + ')');
 					str += '    <div class="item-title-row">';
@@ -565,7 +586,7 @@ $(function($) {
 					// str += '    </div>';
 					str += '    <div class="item-title-row">';
 					str += '        <div class="item-title">升级体验</div>';
-					str += '        <div class="item-after iconfont">升级体验说明&#xe60d;</div>';
+					// str += '        <div class="item-after iconfont">升级体验说明&#xe60d;</div>';
 					str += '    </div>';
 					artex = eval('(' + el.artex + ')');
 					str += '    <div class="item-title-row bb_1_s_pb_5 extent-flex-start">';
@@ -590,7 +611,7 @@ $(function($) {
 					str += '	</div>';
 					str += '	<div class="item-title-row">';
 					str += '		<div class="item-title">升级体验</div>';
-					str += '		<div class="item-after iconfont">升级体验说明&#xe60d;</div>';
+					// str += '		<div class="item-after iconfont">升级体验说明&#xe60d;</div>';
 					str += '	</div>';
 					str += '	<div class="item-title-row">';
 					str += '		<div class="item-title  wg_order_choose choose-whimsy" data-price="' + el.wmprice + '">搞怪结婚照</div>';
@@ -850,9 +871,19 @@ $(function($) {
 						if($.type(el.chooseartex) != 'undefined'){
 							var chooseartex = eval('('+el.chooseartex+')');
 							if(Object.keys(chooseartex).length != 0){
+								attribute +='(';
 								$.each(chooseartex,function(index2, el2) {
+									switch(index2){
+										case 'four':
+											attribute += '四宫格,';
+											break;
+										case 'nine':
+											attribute += '九宫格,';
+											break;
+									}
 									artex_price += parseInt(el2.price);
 								});
+								attribute +=')';
 							}
 						}
 						if(Object.keys(choose_art).length != 0){
@@ -890,6 +921,10 @@ $(function($) {
 					pay_price += parseInt(el.price);
 			}
 			total_price += pay_price;
+
+			pinfo[index]['total_price'] = pay_price;
+			pinfo[index]['attribute'] = attribute;
+
 			str += '<div class="item-title-row">';
 			str += '    <div class="item-title">'+el.name+attribute+'</div>';
 			str += '    <div class="item-after wg_order_pay_money">￥'+pay_price+'</div>';
@@ -916,7 +951,6 @@ $(function($) {
 			pay_data['myinfo'] = psesonal_info;
 			pay_data['totalPrice'] = total_price;
 			pay_data['city'] = getCityName(cookie.get('scid'));
-			console.log(JSON.stringify(pay_data));
 			$.ajax({
 				url: total_url + 'index.php?g=Wap&m=Store&a=payOrder',
 				data: {data:JSON.stringify(pay_data)},

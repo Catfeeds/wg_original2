@@ -16,6 +16,7 @@ $(document).on('click','#login-submit',function(){
 	});
 	if(val == 1){
 		var data = $('#login_form').serialize();
+		console.log(data);
 		$.ajax({
 			url:total_url+'index.php?g=Wap&m=Distribution&a=login',
 			data:{data:data},
@@ -24,7 +25,7 @@ $(document).on('click','#login-submit',function(){
 			success:function(data){
 				console.log(data);
 				if(data.status == 1){
-					//location.href="Distribution_index.html";
+					location.href="Distribution_index.html";
 				}else{
 					$.alert(data.info);
 				}
@@ -52,8 +53,13 @@ $(document).on('click','#register-submit',function(){
 			dataType:'json',
 			type:'post',
 			success:function(data){
-				location.href="login.html";
-				console.log(data);
+				if(data.status ==1){
+					$.alert('注册成功',function(){
+						$.router.load('login.html');
+					})
+				}else{
+					$.alert(data.info);
+				}
 			}
 		})
 	}

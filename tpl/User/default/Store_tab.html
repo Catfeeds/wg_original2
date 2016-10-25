@@ -3,19 +3,21 @@
 <ul>
 <li class="tabli spfl"     id="tab2"><a href="{wghd::U('Store/index',array('token'=>$token,'dining'=>$isDining))}">
 <if condition="$isDining neq 1">商品分类<else/>菜品分类</if>管理</a></li>
-<li class="tabli sssp"     id="tab2"><a href="{wghd::U('Store/search',array('token'=>$token))}">搜索商品</a></li>
-<li class="tabli ban"      id="tab2"><a href="{wghd::U('Store/banner',array('token'=>$token))}">轮播图管理</a></li>
-<li class="tabli ad"       id="tab2"><a href="{wghd::U('Store/guanggao',array('token'=>$token))}">广告位图管理</a></li>
-<li class="tabli discount" id="tab2"><a href="{wghd::U('Store/level',array('token'=>$token))}">会员等级管理</a></li>
-<li class="tabli city" 	   id="tab2"><a href="{wghd::U('Store/cityList',array('token'=>$token))}">城市管理</a></li>
-<li class="tabli city" 	   id="tab2"><a href="{wghd::U('Store/departList',array('token'=>$token))}">分店管理</a></li>
+
 
 <if condition="empty($catid) neq true">
 <li class="tabli pro"      id="tab0"><a href="{wghd::U('Store/product',array('token'=>$token))}">商品管理</a></li>
 
+
+
 </if>
+
+
 <li class="tabli ord"      id="tab2"><a href="{wghd::U('Store/orders',array('token'=>$token,'dining'=>$isDining))}">订单管理</a></li>
-<if condition="$isDining eq 1"><li class="tabli" id="tab2"><a href="{wghd::U('Store/tables',array('token'=>$token,'dining'=>1))}">桌台管理</a></li></if>
+
+<li class="tabli dis"      id="tab2"><a href="{wghd::U('Store/picDisplay',array('token'=>$token,'dining'=>$isDining))}">展示管理</a></li>
+
+
 <!-- <if condition="$isDining neq 1">
 <li class="tabli" id="tab5"><a href="{wghd::U('Reply_info/set',array('token'=>$token,'infotype'=>'Shop'))}">商城回复配置</a></li>
 <else/>
@@ -51,6 +53,10 @@
 			if(action_name=='discount'){
 				tab.find('.discount').addClass('current');
 			}
+			if(action_name=='picDisplay'){
+				tab.find('.dis').addClass('current');
+			}	
+
 		}
 	})(jQuery)
 </script>

@@ -13,6 +13,7 @@ class StoreAction extends WapAction{
 	}
 	//获取BANNER
 	function getBanner(){
+		//BANNER
 		$db = M('Product_banner');
 		$list = $db->order('sort desc')->select();
 		$ba_arr = array();
@@ -23,18 +24,107 @@ class StoreAction extends WapAction{
 			);
 			array_push($ba_arr, $ba);
 		}
+		//首页产品
+		$classify = M('Product_show_classify')->select();
+		foreach ($classify as $k => $v) {
+			$pro = M('Product_show')->where(array('cid'=>$v['id']))->select();
+			$PT_Product = array();
+			foreach ($pro as $k2 => $v2) {
+				$PT_Product[$k2]['P_Id'] = $v2['id'];
+				$PT_Product[$k2]['P_ImgPath'] = $v2['pic'];
+				$PT_Product[$k2]['P_Name'] = $v2['name'];
+				$PT_Product[$k2]['P_Parent'] = '0';
+				$PT_Product[$k2]['P_Price'] = $v2['price'];
+				$PT_Product[$k2]['P_Price_Ext1'] = '1';
+				$PT_Product[$k2]['P_Type'] = '1';
+			}
+
+			$product[$v['id']] = array(
+				'PT_Id' => $v['id'],
+				'PT_Name' => $v['name'],
+				'PT_Product' => $PT_Product
+			);
+		}
 		$data = array(
 			'banner' => $ba_arr,
-			'product' => '',
+			'product' => $product,
 		);
 		exit($this->returnData($data));
 	}
+	//展示产品详情
+	public function getProductDetail(){
+		$pid = $this->_get('pid');
+		$pro = M('Product_show')->where(array('id'=>$pid))->find();
+
+		$str .='<div class="list-block media-list">';
+		$str .='    <ul>';
+		$str .='        <li>';
+		$str .='            <a href="#" class="item-link item-content">';
+		$str .='                <div class="item-inner">';
+		$str .='                    <div class="item-title-row">';
+		$str .='                        <div class="item-title">'.$pro['name'].'</div>';
+		$str .='                        <div class="item-after total-color">'.$pro['price1'].'元/套</div>';
+		$str .='                    </div>';
+		$str .='                    <div class="item-text">'.$pro['desc1'].'</div>';
+		$str .='                </div>';
+		$str .='            </a>';
+		$str .='        </li>';
+		$str .='    </ul>';
+		$str .='</div>';
+
+		$str .='<div class="list-block media-list">';
+		$str .='    <ul>';
+		$str .='        <li>';
+		$str .='            <a href="#" class="item-link item-content">';
+		$str .='                <div class="item-inner">';
+		$str .='                    <div class="item-title-row">';
+		$str .='                        <div class="item-title">加修加印</div>';
+		$str .='                        <div class="item-after total-color">'.$pro['price2'].'元/套</div>';
+		$str .='                    </div>';
+		$str .='                    <div class="item-text">'.$pro['desc2'].'</div>';
+		$str .='                </div>';
+		$str .='            </a>';
+		$str .='        </li>';
+		$str .='    </ul>';
+		$str .='</div>';
+
+		$str .='<div class="list-block media-list">';
+		$str .='    <ul>';
+		$str .='        <li>';
+		$str .='            <a href="#" class="item-link item-content">';
+		$str .='                <div class="item-inner">';
+		$str .='                    <div class="item-title-row">';
+		$str .='                        <div class="item-title">加印</div>';
+		$str .='                        <div class="item-after total-color">'.$pro['price3'].'元/套</div>';
+		$str .='                    </div>';
+		$str .='                    <div class="item-text">'.$pro['desc3'].'</div>';
+		$str .='                </div>';
+		$str .='            </a>';
+		$str .='        </li>';
+		$str .='    </ul>';
+		$str .='</div>';
+
+		$str .='<div class="wg_item_order_show">';
+		$str .='    <div class="wg_item_order_show_content">';
+		$str .='        <div class="wg_item_order_show_title">客片展示</div>';
+		$str .='        <div><img class="w100" src="'.$pro['pic'].'"></div>';
+		$str .='        <div class="clear"></div>';
+		$str .='    </div>';
+		$str .='</div>';
+
+		$this->ajaxReturn($str,'',1);
+	}
+
 	//获取产品信息
 	public function getCatsProducts(){
 		//城市CODEID
 		$storeId = $this->_get('storeId');
 		$cats = M('Product_cat')->where(array('sid'=>$storeId))->select();
-		$products = M('Product')->where(array('isopen'=>1))->select();
+		$cats_str = '';
+		foreach ($cats as $k => $v) {
+			$cats_str .= $v['id'].',';
+		}
+		$products = M('Product')->where(array('isopen'=>1,'catid'=>array('in',$cats_str)))->select();
 		foreach ($cats as $k => $v) {
 			$parr = array();
 			foreach ($products as $k2 => $v2) {
@@ -244,14 +334,17 @@ class StoreAction extends WapAction{
 		$storeinfo = array();
 		$storelist = array();
 		foreach ($stores as $k => $v) {
+			$s = unserialize($v['service']);
+			$S_Service = ($s['photo']==1 ? '1' : '0') . ($s['makeup']==1 ? '1' : '0') . ($s['cloth']==1 ? '1' : '0') . ($s['ps']==1 ? '1' : '0') . ($s['nail']==1 ? '1' : '0') . ($s['sharon']==1 ? '1' : '0') . ($s['coffee']==1 ? '1' : '0');
+
 			$storeinfo[$v['id']] = array(
 				'S_Address'   => $v['address'],
 				'S_Id'        => $v['id'],
-				'S_MapUrl'    => "",
+				'S_MapUrl'    => 'http://api.map.baidu.com/marker?location='.$v['longitude'].','.$v['dimension'].'&title=台州时创数码&content=地址：台州市路桥区会展西路2-6号&output=html',
 				'S_Name'      => $v['name'],
 				'S_TELE'      => $v['tele'],
 				'S_Photo'     => $v['pic'],
-				'S_Service'   => "1111000",
+				'S_Service'   => $S_Service,
 				'S_StartTime' => "0",
 			);
 			$s = array(
@@ -426,6 +519,8 @@ class StoreAction extends WapAction{
 				'price' => $price,
 				'choosew' => $v['choosew'],
 				'chooseartex' => $v['chooseartex'],
+				'total_price' => $v['total_price'],
+				'attribute' => $v['attribute'],
 			);
 		}
 		//生成订单数据列表

@@ -851,69 +851,26 @@ class StoreAction extends UserAction{
 	public function orders()
 	{
 		$product_cart_model = M('product_cart');
-		$where = array('token' => $this->_session('token'), 'groupon' => 0, 'dining' => 0,'active'=>1,'paid'=>1);
-		if ($_REQUEST) {
-			// if ($this->_request['token'] != $this->_session('token')) {
-			// 	exit();
-			// }
-			$handleOrder = $this->_request('handleOrder');
+		$where = array('token' => $this->_session('token'), 'groupon' => 0, 'dining' => 0);
+		if (IS_POST) {
+			if ($_POST['token'] != $this->_session('token')) {
+				exit();
+			}
+			$handleOrder = $this->_post('handleOrder');
 			if (!$handleOrder) {
-				$key = $this->_post('searchkey')!='' ? $this->_post('searchkey'): $this->_request('searchkey');
-				$key2 = $this->_post('submitkey')!='' ? $this->_post('submitkey'): $this->_request('submitkey');
-				if($key){
-					//搜索账号
-					$account = D('Account')->where(array('username'=>array('like', "%$key%")))->select();
-					$account_str = '';
-					if($account){
-						foreach ($account as $k2 => $v2) {
-							$account_str .=$v2['id'].',';
-						}
-					}
-
-					// if($account){
-					// 	$where['waid'] = array('in',rtrim($account_str,','));
-					// }
-					$where['_string'] = "waid in ('".rtrim($account_str,',')."') OR truename like '%".$key."%'";
-					//$where['_query'] = 'waid=in('.rtrim($account_str,',').') & truename like '%123%'&_logic=or';
-
-					// $where['truename|address|orderid'] = array('like', "%$key%");
-					
+				$key = $this->_post('searchkey');
+				$where['truename|address|orderid'] = array('like', "%$key%");
+				if($this->_post('paid')!=''){
+					$where['paid'] = $this->_post('paid');
 				}
-				if($key2){
-					//搜索账号
-					$account = D('Account')->where(array('username'=>array('like', "%$key2%")))->select();
-					$account_str = '';
-					if($account){
-						foreach ($account as $k2 => $v2) {
-							$account_str .=$v2['id'].',';
-						}
-					}
-					$where['aid'] = array('in',rtrim($account_str,','));
+				if($this->_post('sent')!=''){
+					$where['sent'] = $this->_post('sent');
 				}
-				$paid = $this->_post('paid')!='' ? $this->_post('paid'): $this->_request('paid');
-				$sent = $this->_post('sent')!='' ? $this->_post('sent'): $this->_request('sent');
-				$receive = $this->_post('receive')!='' ? $this->_post('receive'): $this->_request('receive');
-				$handled = $this->_post('handled')!='' ? $this->_post('handled'): $this->_request('handled');
-				if($paid != ''){
-					$where['paid'] = $paid;
+				if($this->_post('receive')!=''){
+					$where['receive'] = $this->_post('receive');
 				}
-				if($sent != ''){
-					$where['sent'] = $sent;
-				}
-				if($receive != ''){
-					$where['receive'] = $receive;
-				}
-				if($handled != ''){
-					$where['handled'] = $handled;
-				}
-				//时间
-				$starttime = $this->_post('starttime')!='' ? $this->_post('starttime'): $this->_request('starttime');
-				$endtime = $this->_post('endtime')!='' ? $this->_post('endtime'): $this->_request('endtime');
-				$starttime=date(strtotime($starttime));
-				$endtime=date(strtotime($endtime))+86400;
-
-				if($starttime && $endtime){
-					$where['time'] = array(array('gt',$starttime),array('lt',$endtime),'and');
+				if($this->_post('handled')!=''){
+					$where['handled'] = $this->_post('handled');
 				}
 			} else {
 				for ($i=0;$i<40;$i++){
@@ -935,23 +892,10 @@ class StoreAction extends UserAction{
 			$where['handled'] = intval($_GET['handled']);
 		}
 		$count      = $product_cart_model->where($where)->count();
-		$Page       = new Page($count,25);
+		$Page       = new Page($count,20);
 		$show       = $Page->show();
-		session('sns_where',serialize($where));
 		$orders		= $product_cart_model->where($where)->order('time DESC')->limit($Page->firstRow . ',' . $Page->listRows)->select();
-		//遍历处理者
-		foreach ($orders as $k => $v) {
-			if($v['bindaid']){
-				$orders[$k]['dealer'] = D('Account')->where('id='.$v['bindaid'])->getField('nickname');
-			}else{
-				$orders[$k]['dealer'] = '后台';
-			}
-		}
 		$unHandledCount = $product_cart_model->where(array('token' => $this->_session('token'), 'handled' => 0))->count();
-		foreach ($orders as $k => $v) {
-			$orders[$k]['username'] = D('Account')->where('id='.$v['waid'])->getField('username');
-			$orders[$k]['binduser'] = D('Account')->where('id='.$v['aid'])->getField('username');
-		}
 		$this->assign('unhandledCount', $unHandledCount);
 		$this->assign('orders', $orders);
 		$this->assign('page', $show);
@@ -1029,7 +973,7 @@ class StoreAction extends UserAction{
 				$this->assign('cancontro',1);
 			}
 			$this->assign('thisOrder',$thisOrder);
-			$carts=unserialize($thisOrder['info']);
+			// $carts=unserialize($thisOrder['info']);
 			if($thisOrder['classid']){
 				import ( "@.Org.TypeFile" );
 				$tid = $thisOrder['classid'];
@@ -1037,25 +981,12 @@ class StoreAction extends UserAction{
 				$result = $TypeFile->getPathName ( $tid ); //获取分类路径
 				$this->assign ( 'typeNumArr', $result );
 			}
-			//
-			$totalFee=0;
-			$totalCount=0;
-			
-			$data = $this->getCat($carts);
-			if (isset($data[1])) {
-				foreach ($data[1] as $pid => $row) {
-					$totalCount += $row['total'];
-					$totalFee += $row['totalPrice'];
-					$listNum[$pid] = $row['total'];
-				}
-			}
-			$list = $data[0];
+
+			$list = unserialize($thisOrder['info']);
 //			print_r($list);die;
 			$this->assign('products', $list);
 			//
-			$this->assign('totalFee',$totalFee);
 			//
-			$this->assign('totalCount',$totalCount);
 			$this->display();
 		}
 	}
@@ -1645,7 +1576,6 @@ class StoreAction extends UserAction{
 
 			if($check==false)$this->error('非法操作');
 
-
 			if($check){
 				$worktime = split(",",$_POST['default_time']);
 				$_POST['defaultWorkTime'] = serialize($worktime);
@@ -1654,7 +1584,7 @@ class StoreAction extends UserAction{
 				$this->success('修改成功',U('Store/departList',array('token'=>session('token'),'parentid'=>$this->_post('parentid'))));
 					
 				}else{
-					$this->error('操作失败');
+					$this->error('操作失败1');
 				}
 			}else{
 				$this->error($data->getError());
@@ -1692,6 +1622,90 @@ class StoreAction extends UserAction{
                  $this->error('服务器繁忙,请稍后再试',U('Store/departList',array('token'=>session('token'))));
             }
         }        		
+	}
+
+	public function picDisplay(){
+
+		$Model = M('Product_show');
+
+		$where['delete'] = 0;
+		$count = $Model->where($where)->count();		
+		$Page  = new Page($count,10);				
+		$list  = $Model->order('id desc')->where($where)->limit($Page->firstRow.','.$Page->listRows)->select();
+        $show  = $Page->show();
+		$this->assign('page',$show);
+		$this->assign('list',$list); 
+		$this->display();
+	}
+
+	public function picEdit(){
+
+		$id = $_GET['id'];
+		$Model = M('Product_show');
+		$find = $Model->where('id='.$id)->find();
+		if(!$find){
+
+			$this->error('非法操作！');
+			exit();
+		}
+		//分类
+		$classify = M('Product_show_classify')->select();
+		$this->assign('classify',$classify);
+
+		if(IS_POST){
+
+			$data=D('Product_show');
+            $where['id']= $_POST['id'];
+
+			$check= $data->where($where)->find();
+
+			if($check==false)$this->error('非法操作');
+
+			if($check){
+
+				if($data->where($where)->save($_POST)){
+					$this->success('修改成功');
+					
+				}else{
+					$this->error('操作失败');
+				}
+			}else{
+				$this->error($data->getError());
+			}		
+		}else{
+		$res = $Model->where('id='.$id)->find();
+		//dump($res);
+		$this->assign('set',$res);
+		$this->display();			
+		}
+
+	}
+
+
+	public function addDisplay(){
+		//分类
+		$classify = M('Product_show_classify')->select();
+		$this->assign('classify',$classify);
+		if(IS_POST){
+			$this->insert('Product_show','/picDisplay');
+		}else{
+
+			$this->display('picEdit');
+		}
+	}
+
+	public function picDel(){
+
+		$this->display();
+	}
+
+	public function delDisplay(){
+		$res = M('Product_show')->where('id='.$_GET['id'])->delete();
+		if($res){
+			$this->success('删除成功');
+		} else{
+			$this->error('删除失败');
+		}
 	}
 }
 ?>

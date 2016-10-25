@@ -122,6 +122,7 @@ $(document).on('pageInit', '#index-page', function(e, id, page) {
 									$(this).show();
 								});
 								for (var j in products) {
+									console.log(products[j].PT_Product);
 									var proUnitHtml = '';
 									var pid = parseInt(products[j].PT_Id);
 									var pname = products[j].PT_Name;
@@ -136,13 +137,13 @@ $(document).on('pageInit', '#index-page', function(e, id, page) {
 									for (var z in products[j].PT_Product) {
 										var _products = products[j].PT_Product[z];
 										proUnitHtml += '<div class=\"photo-list\" data-pid=\"' +
-											_products.P_Id + '\"><img src=\"' +
+											_products.P_Id + '\"><img class=\"w100\" src=\"' +
 											_products.P_ImgPath + '\" alt=\"' +
 											_products.P_Name + '\" style=\"display:none\"><div class=\"wrapper\"><div class=\"loadingWrap\"><div class=\"cupWrap\"><div class=\"coffee_cup\"></div></div></div></div></div>';
 									}
-									tabCUnitHtml += '<div id=\"pro-' + pid + '\" class=\"tab ' + (pid === 1 ? 'active' : '') + '\"><div class=\"content-block\">' + proUnitHtml + '</div></div>';
+									tabCUnitHtml += '<div id=\"pro-' + pid + '\" class=\"tab ' + (pid === 1 ? 'active' : '') + '\"><div class=\"my-content-block\">' + proUnitHtml + '</div></div>';
 								}
-								tabHtml = '<div class=\"buttons-tab\">' + tabUnitHtml + '</div>'; tabCHtml = '<div class=\"content-block\"><div class=\"tabs\">' + tabCUnitHtml + '</div></div>'; $('#home-content').html(tabHtml + tabCHtml);
+								tabHtml = '<div class=\"buttons-tab\">' + tabUnitHtml + '</div>'; tabCHtml = '<div class=\"my-content-block\"><div class=\"tabs\">' + tabCUnitHtml + '</div></div>'; $('#home-content').html(tabHtml + tabCHtml);
 								//图片加载完成回调
 								$('.photo-list img').on('load', function() {
 									$(this).parent().find('.wrapper').remove();
@@ -156,7 +157,7 @@ $(document).on('pageInit', '#index-page', function(e, id, page) {
 			var photoHandle = function() {
 				var pid = $(this).data('pid');
 				cookie.set('pid', pid);
-				$.router.load('/Index/productDetails');
+				$.router.load('productDetails.html');
 			};
 		}); $(document).on('pageAnimationStart', '#product-details', function(e, id, page) {
 		$('#product-intro').html('');
@@ -166,16 +167,23 @@ $(document).on('pageInit', '#index-page', function(e, id, page) {
 	$(document).on('pageInit', '#product-details', function(e, id, page) {
 		var pid = cookie.get('pid') || 1; // 获得选中的产品p_id
 		var paged = 1;
-		showProDetails();
+		console.log(pid);
+		// showProDetails();
+		showProDetails2();
 		$('.product-appointment').on('click', function() {
-			window.location.href = m_module + '/Index/reservation';
+			window.location.href = 'Appointment.html';
 		});
-		$('#product-showList .product-moreBtn').on('click', function() {
-			showMoreHandle();
-		});
+		// $('#product-showList .product-moreBtn').on('click', function() {
+		// 	showMoreHandle();
+		// });
 		/**
 		 * 展示产品详情
 		 */
+		function showProDetails2(){
+			$.getJSON(m_module+'index.php?g=Wap&m=Store&a=getProductDetail&pid='+pid,function(json){
+				$('#pro-wrap').html(json.data);
+			})
+		}
 		function showProDetails() {
 			$('.content').scrollTop(0);
 			$.showIndicator();

@@ -3,6 +3,21 @@
 		public function __construct(){
 			parent::_initialize();
 		}
+		function test2(){
+			dump(session('jump_href'));
+		}
+		function test(){
+			session('bmywecha_id',null);
+			session('bmywecha_id','');
+			dump(session('bmywecha_id'));
+		}
+		//授权页面
+		public function authorization(){
+			$url=session('jump_href'); 
+			Header("HTTP/1.1 303 See Other"); 
+			Header("Location: $url"); 
+			exit;
+		}
 		public function verify(){
 			Image::buildImageVerify();
 		}
@@ -38,7 +53,7 @@
 						}else{
 							//验证图片验证码
 							if(md5($data['img_code']) != session('verify')){
-								$this->ajaxReturn(session('verify'),'图片验证码错误',2);
+								$this->ajaxReturn(session('verify'),'图片验证码错误',-1);
 							}
 						}
 						break;
@@ -61,7 +76,7 @@
 						break;
 				}
 				if($warn){
-					$this->ajaxReturn($k,$warn,2);
+					$this->ajaxReturn($k,$warn,-1);
 				}
 			}
 			//写入数据
@@ -73,7 +88,7 @@
 			if($re){
 				$this->ajaxReturn($re,'注册成功',1);
 			}else{
-				$this->ajaxReturn($re,'注册失败',2);
+				$this->ajaxReturn($re,'注册失败',-1);
 			}
 		}
 		function login(){
@@ -83,7 +98,11 @@
 				'password' => md5($data['password']),
 			);
 			if(D('Account')->where($condition)->find()){
-				$this->test();
+				setcookie("zxg_login_user", $data['username'], time()+3600*24*3);
+				if(session('bmywecha_id')){
+					$headimgurl = M('Distribution_member')->where(array('wecha_id'=>session('bmywecha_id')))->getField('headimgurl');
+					D('Account')->where($condition)->setField('headimgurl',$headimgurl);
+				}
 				$this->ajaxReturn($_COOKIE['zxg_login_user'],'登陆成功',1);
 			}else{
 				$this->ajaxReturn('','账号或密码错误',2);
@@ -125,16 +144,16 @@
 			$account = $this->checkLogin('account');
 			//判断旧密码
 			if(md5($data['oldPassword']) != $account['password']){
-				$this->ajaxReturn('','旧密码不正确',1);
+				$this->ajaxReturn('','旧密码不正确',-1);
 			}
 			if($data['newPassword'] != $data['rePassword']){
-				$this->ajaxReturn('','两次密码输入不相同',1);
+				$this->ajaxReturn('','两次密码输入不相同',-1);
 			}
 			$re = D('Account')->where(array('username'=>$account['username']))->save(array('password'=>md5($data['newPassword'])));
 			if($re){
 				$this->ajaxReturn('','修改成功',1);
 			}else{
-				$this->ajaxReturn('','修改失败',2);
+				$this->ajaxReturn('','修改失败',-1);
 			}
 		}
 		function loginOut(){
@@ -155,6 +174,7 @@
 		function checkLogin($get = ''){
 			$username = $_COOKIE['zxg_login_user'];
 			$account = D('Account')->where(array('username'=>$username))->find();
+
 			if($account){
 				switch ($get) {
 					case 'account':
@@ -164,13 +184,21 @@
 						return $username;
 						break;
 					default:
-						return true;
+						$this->ajaxReturn('','',1);
 						break;
 				}
 			}else{
-				$this->ajaxReturn('','账号未登陆',-1);
+				$this->ajaxReturn($no_auth,'账号未登陆',-1);
 			}
 		}
-
+		//判断授权
+		function checkAuth(){
+			$agent = $_SERVER['HTTP_USER_AGENT']; 
+			if(!session('bmywecha_id') && strpos($agent,"icroMessenger")){
+				$this->ajaxReturn('needauth','',-1);
+			}else{
+				$this->ajaxReturn('','',1);
+			}
+		}
 	}
 ?>
