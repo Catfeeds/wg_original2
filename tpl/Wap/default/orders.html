@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>预约拍照</title>
+    <title>支付下单</title>
     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
     <link rel="shortcut icon" href="/favicon.ico">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -12,64 +11,63 @@
     <link rel="stylesheet" href="common/original/css/sm.min.css">
     <link rel="stylesheet" href="common/original/css/sm-extend.css">
     <link rel="stylesheet" href="common/original/css/style.css">
-    <link rel="stylesheet" href="common/original/css/demo.css">
-    <link rel="stylesheet" href="common/original/css/iconfont.css">
-    <link rel="stylesheet" href="common/original/css/main.css">
-    <style type="text/css">
-    .list-block .item-link .item-inner {
-        background-image: none;
-        border-bottom: 1px solid #e7e7e7;
-        padding-left: 2%;
-        padding-right:2%;
-    }
-    
-    .list-block {
-        margin: 0;
-    }
-    
-    .list-block .item-media+.item-inner {
-        margin: 0;
-        border-bottom: 1px solid #e7e7e7;
-    }
-    
-    .list-block .item-content {
-        padding: 0;
-    }
-    .list-block .item-title.label{
-      padding-left: 2%;
-    }
-    .list-block .item-subtitle{
-      padding-bottom: 5px;
-    }
-   .list-block .item-title.label{
-    width: 13%;
-   }
-    </style>
 </head>
 
 <body>
     <div class="page-group">
         <div class="page page-current" id="orders_wrap">
-            <header class="bar bar-nav">
-                <h1 class="title">支付剩余时间</h1>
-            </header>
+             <style type="text/css">
+             .list-block .item-link .item-inner {
+                 background-image: none;
+                 border-bottom: 1px solid #e7e7e7;
+                 padding-left: 2%;
+                 padding-right:2%;
+             }
+             
+             .list-block {
+                 margin: 0;
+             }
+             
+             .list-block .item-media+.item-inner {
+                 margin: 0;
+                 border-bottom: 1px solid #e7e7e7;
+             }
+             
+             .list-block .item-content {
+                 padding: 0;
+             }
+             .list-block .item-title.label{
+               padding-left: 2%;
+             }
+             .list-block .item-subtitle{
+               padding-bottom: 5px;
+             }
+            .list-block .item-title.label{
+             width: 16%;
+            }
+             </style>
             <div class="content">
+                <div class="bc-w" style="text-align: center;line-height: 1.6rem;">订单支付</div>
                 <div class="list-block">
                     <ul>
-                        <li class="item-content item-link">
-                            <div class="item-media"><i class="icon icon-f7"></i></div>
-                            <div class="item-inner">
-                                <div class="item-title">拍摄门店：<span id="appoint_place"></span></div>
-                                <div class="item-after iconfont">重新选择&#xe613;</div>
-                            </div>
-                        </li>
-                        <li class="item-content item-link">
-                            <div class="item-media"><i class="icon icon-f7"></i></div>
-                            <div class="item-inner">
-                                <div class="item-title">预约时间:<span id="appoint_time"></span></div>
-                                <div class="item-after iconfont">重新选择&#xe613;</div>
-                            </div>
-                        </li>
+                        <!-- <a href="Appointment.html"> -->
+                            <li class="item-content item-link">
+                                <div class="item-media"><i class="icon icon-f7"></i></div>
+                                <div class="item-inner" style="    padding: 0.5rem 0 .5rem 0.3rem;">
+                                    <div class="item-title">拍摄门店：<span id="appoint_place"></span></div>
+                                    <!-- <div class="item-after iconfont">重新选择&#xe613;</div> -->
+                                </div>
+                            </li>
+                        <!-- </a> -->
+                        <a href="ChooseDate.html">
+                            <li class="item-content item-link">
+                                <div class="item-media"><i class="icon icon-f7"></i></div>
+                                <div class="item-inner" style="    padding: 0.5rem 0 .5rem 0.3rem;">
+                                    <div class="item-title">预约时间：<span id="appoint_time"></span></div>
+                                    <div class="item-after iconfont">重新选择&#xe613;</div>
+                                </div>
+                            </li>
+                        </a>
                     </ul>
                 </div>
                 <div class="list-block media-list">
@@ -78,28 +76,15 @@
                             <a href="#" class="item-link item-content">
                                 <div class="item-inner">
                                     <div class="item-subtitle">拍摄内容：</div>
-                                    <div class="item-title-row">
-                                        <div class="item-title">证件照（蓝色）</div>
-                                        <div class="item-after wg_order_pay_money">￥99.00</div>
-                                    </div>
-                                    <div class="item-title-row">
-                                        <div class="item-title">证件照（蓝色）</div>
-                                        <div class="item-after wg_order_pay_money">￥99.00</div>
-                                    </div>
-                                    <div class="item-title-row">
-                                        <div class="item-title">证件照（蓝色）</div>
-                                        <div class="item-after wg_order_pay_money">￥99.00</div>
-                                    </div>
-                                    <div class="item-title-row">
-                                        <div class="item-title">证件照（蓝色）</div>
-                                        <div class="item-after wg_order_pay_money">￥99.00</div>
+                                    <div id="choose-reservation-content">
+                                        
                                     </div>
                                 </div>
                             </a>
                         </li>
                     </ul>
                 </div>
-                <div class="list-block media-list">
+                <!-- <div class="list-block media-list">
                     <ul>
                         <li>
                             <a href="#" class="item-link item-content">
@@ -112,46 +97,43 @@
                             </a>
                         </li>
                     </ul>
-                </div>
+                </div> -->
                 <div class="list-block" style="margin-top: 10px;">
                     <ul>
                         <!-- Text inputs -->
                         <li>
                             <div class="item-content">
-                                <div class="item-media"><i class="icon icon-form-name"></i></div>
                                 <div class="item-inner">
-                                    <div class="item-title label">姓名</div>
+                                    <div class="item-title label">姓名：</div>
                                     <div class="item-input">
-                                        <input type="text" placeholder="Your name">
+                                        <span id="order-name"></span>
+                                        <!-- <input id="order-name" type="text" placeholder=""> -->
                                     </div>
                                 </div>
                             </div>
                         </li>
                         <li>
                             <div class="item-content">
-                                <div class="item-media"><i class="icon icon-form-gender"></i></div>
                                 <div class="item-inner">
-                                    <div class="item-title label">性别</div>
+                                    <div class="item-title label">性别：</div>
                                     <div class="item-input">
-                                        <select>
-                                            <option>Male</option>
-                                            <option>Female</option>
-                                        </select>
+                                        <span id="order-sex"></span>
+                                        <!-- <input id="order-sex" type="text" placeholder=""> -->
                                     </div>
-                                    <div class="item-title label iconfont" style="text-align: right;">&#xe613;</div>
+                                    <!-- <div class="item-title label iconfont" style="text-align: right;">&#xe613;</div> -->
                                 </div>
                             </div>
                         </li>
                         <!-- Date -->
                         <li>
                             <div class="item-content">
-                                <div class="item-media"><i class="icon icon-form-calendar"></i></div>
                                 <div class="item-inner">
-                                    <div class="item-title label">生日</div>
+                                    <div class="item-title label">生日：</div>
                                     <div class="item-input">
-                                        <input type="date" placeholder="Birth day" value="2014-04-30">
+                                        <span id="order-birth"></span>
+                                        <!-- <input id="order-birth" type="text" placeholder=""> -->
                                     </div>
-                                    <div class="item-title label iconfont" style="text-align: right;">&#xe613;</div>
+                                    <!-- <div class="item-title label iconfont" style="text-align: right;">&#xe613;</div> -->
                                 </div>
                             </div>
                         </li>
@@ -160,26 +142,27 @@
                 </div>
                 <div class="wg_item_pro_choose">
                     <ul>
-                        <li style="line-height: 40px; padding-left: 2%; font-size:0.8rem;">全年主打</li>
+                        <li style="line-height: 40px; padding-left: 2%; font-size:0.7rem;">支付方式</li>
                         <li>
                             <label class="label-checkbox item-content">
                                 <div class="item-inner">
                                     <div class="item-title-row">
-                                        <div class="item-title iconfont"><span>&#xe612;</span>微信支付</div>
+                                        <div class="item-title iconfont"><span>&#xe612;</span><label style="display:block;float:right;">微信支付</label></div>
                                     </div>
                                 </div>
-                                <input type="checkbox" name="my-radio">
+                               <!--  <input type="checkbox" name="my-radio">
                                 <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
-                                <div class="clear"></div>
+                                <div class="clear"></div> -->
                             </label>
                         </li>
                     </ul>
                 </div>
-                 <div class="wg_order_pay">
-                   <div class="wg_order_pay_all">总计：<span>￥99.00</span>（优惠：￥180）</div>
-                   <div class="wg_order_pay_again">重新预约</div>
-                 </div>
             </div>
+                 <div class="wg_order_pay">
+                   <div class="wg_order_pay_all">总计：￥<span id="total-price" class="total-color"></span></div>
+                   <div class="wg_order_pay_again" id="pay-btn">去支付</div>
+                 </div>
+            <div id="footer"></div>
         </div>
     </div>
     <script src="common/original/js/zepto.min.js" type="text/javascript" charset="utf-8"></script>
@@ -187,7 +170,10 @@
     <script src="common/original/js/sm-extend.js" type="text/javascript" charset="utf-8"></script>
     <script src="common/original/js/cookie.js" type="text/javascript" charset="utf-8"></script>
     <script src="common/original/js/public_parameters.js" type="text/javascript" charset="utf-8"></script>
+    <script src="common/original/js/citylist.js" type="text/javascript" charset="utf-8"></script>
+    <script src="common/original/js/choosedate.js" type="text/javascript" charset="utf-8"></script>
     <script src="common/original/js/store.js" type="text/javascript" charset="utf-8"></script>
+    <script src="common/original/js/common.js" type="text/javascript" charset="utf-8"></script>
 </body>
 
 </html>

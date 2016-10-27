@@ -1,0 +1,76 @@
+<include file="Public:head"/>
+<link rel="stylesheet" type="text/css" href="{wghd::RES}/css/cymain.css" />  
+ <div class="content">
+<div class="cLineB">
+<h4 class="left">展示管理</h4>
+<div class="clr"></div>
+</div>
+<include file="Store:tab"/>
+<div class="cLine">
+
+<div class="pageNavigator left"> 
+<a href="{wghd::U('Store/addDisplay', array('token' => $token))}" title="新增分类" class="btnGrayS vm bigbtn">
+<img src="{wghd::RES}/images/product/add.png" class="vm">新增展示
+</a>
+</div>
+
+<div class="clr"></div>
+</div>
+<div class="msgWrap">
+<form method="post" action="" id="info">
+<input name="delall" type="hidden" value="">
+<input name="wxid" type="hidden" value="">
+<table class="ListProduct" border="0" cellspacing="0" cellpadding="0" width="100%">
+<thead>
+<tr>
+<th width="80">展示类型</th>
+<th width="80">价格</th>
+<th width="200">封面图片</th>
+<th width="200" class="norightborder">操作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	
+</tr>
+<volist name="list" id="hostlist"> 
+
+<tr>
+
+<td>{wghd:$hostlist.name}</td>
+<td>
+
+基本价格：￥{wghd:$hostlist.price1}<br/>
+
+加修加印：￥{wghd:$hostlist.price2}<br/>
+
+加印　　：￥{wghd:$hostlist.price3}
+
+
+</td>
+
+<td><img style="width: 200px;" src="{wghd:$hostlist.logo}" alt="封面图片"></td>
+
+<td class="norightborder">
+	<a href="{wghd::U('Store/picEdit',array('token'=>$token,'id'=>$hostlist['id']))}">修改</a>
+
+
+<a href="javascript:drop_confirm('您确定要删除吗?', '{wghd::U('Store/delDisplay',
+
+array('id'=>$hostlist['id'],'token'=>$token))}');">删除</a>
+
+</td>
+</tr>
+</volist>
+</tbody>
+</table>
+</form>
+</div>
+<div class="cLine">
+<div class="pageNavigator right">
+<div class="pages">{wghd:$page}</div>
+</div>
+<div class="clr"></div>
+</div>
+</div>
+<include file="Public:footer"/>

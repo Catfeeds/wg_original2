@@ -1,12 +1,30 @@
 $(function() {
+	//首页判断授权
+	// $('.check_auth').click(function(event){
+	// 	var data_href = $(this).attr('data-href');
+	// 	$.ajax({
+	// 		url: total_url + 'index.php?g=Wap&m=Distribution&a=checkAuth',
+	// 		dataType: 'json',
+	// 		async:false,
+	// 		success: function(data) {
+	// 			if (data.data == 'needauth') {
+	// 				certification = 0;
+	// 				var href = 'http://bmy.tzwg.net/index.php?g=Wap&m=Distribution&a=authorization&bmyquth=1&href='+total_url+'tpl/Wap/default/'+data_href;
+	// 				location.href = href;
+	// 			}else{
+	// 				location.href=data_href;
+	// 			}
+	// 		}
+	// 	});
+	// })
 // 首页模块
 // 首页
 $(document).on('pageInit', '#index-page', function(e, id, page) {
 		var scid = cookie.get('scid');
 		$.reinitSwiper('#index-page');
 		getProductList(); // 获得产品列表
+
 		if (scid) {
-			console.log(scid);
 			var _city = getCityName(scid);
 			_city = _city + "";
 			$('.index-position em').html(_city.split('市')[0]); // 处理定位错误
@@ -41,11 +59,12 @@ $(document).on('pageInit', '#index-page', function(e, id, page) {
 		 * 定位请求,仅在移动端使用
 		 */
 		function geolocation() {
-			if (navigator.geolocation) {
-				navigator.geolocation.getCurrentPosition(getLocationCity, locationError);
-			} else {
-				$('.index-position em').html('暂无定位信息'); // 处理定位错误
-			}
+			$.router.load('ChoosePosition.html');
+			// if (navigator.geolocation) {
+			// 	navigator.geolocation.getCurrentPosition(getLocationCity, locationError);
+			// } else {
+			// 	$('.index-position em').html('暂无定位信息'); // 处理定位错误
+			// }
 		}
 		/**
 		 * 获取当前位置经纬度,通过百度地址逆解析服务获取当前城市
@@ -56,11 +75,16 @@ $(document).on('pageInit', '#index-page', function(e, id, page) {
 			var latitude = position.coords.latitude;
 			var point = new BMap.Point(longitude, latitude);
 			var gc = new BMap.Geocoder();
+			console.log(gc);
+			console.log(point);
 			gc.getLocation(point, function(rs) {
 				var addComp = rs.addressComponents;
+				console.log(addComp);
+				console.log(addComp.city);
 				var cd = getCityCode(addComp.city); // 获得定位城市
 				var _city = getCityName(cd); // 获得城市名
 				cookie.set('scid', cd); // 获取真实位置id，传值
+				_city = _city + "";
 				$('.index-position em').html(_city.split('市')[0]); // 左上角显示定位城市
 			});
 		}
@@ -93,7 +117,6 @@ $(document).on('pageInit', '#index-page', function(e, id, page) {
 			$.get(m_module + 'index.php?g=Wap&m=Store&a=getBanner',
 					function(data) {
 						var data = eval('('+data+')');
-						console.log(data);
 						if (data.error === 0) {
 							$.hideIndicator();
 							var products = data.msg.product; // 获得产品数据
@@ -136,13 +159,13 @@ $(document).on('pageInit', '#index-page', function(e, id, page) {
 									for (var z in products[j].PT_Product) {
 										var _products = products[j].PT_Product[z];
 										proUnitHtml += '<div class=\"photo-list\" data-pid=\"' +
-											_products.P_Id + '\"><img src=\"' +
+											_products.P_Id + '\"><img class=\"w100\" src=\"' +
 											_products.P_ImgPath + '\" alt=\"' +
 											_products.P_Name + '\" style=\"display:none\"><div class=\"wrapper\"><div class=\"loadingWrap\"><div class=\"cupWrap\"><div class=\"coffee_cup\"></div></div></div></div></div>';
 									}
-									tabCUnitHtml += '<div id=\"pro-' + pid + '\" class=\"tab ' + (pid === 1 ? 'active' : '') + '\"><div class=\"content-block\">' + proUnitHtml + '</div></div>';
+									tabCUnitHtml += '<div id=\"pro-' + pid + '\" class=\"tab ' + (pid === 1 ? 'active' : '') + '\"><div class=\"my-content-block\">' + proUnitHtml + '</div></div>';
 								}
-								tabHtml = '<div class=\"buttons-tab\">' + tabUnitHtml + '</div>'; tabCHtml = '<div class=\"content-block\"><div class=\"tabs\">' + tabCUnitHtml + '</div></div>'; $('#home-content').html(tabHtml + tabCHtml);
+								tabHtml = '<div class=\"buttons-tab\">' + tabUnitHtml + '</div>'; tabCHtml = '<div class=\"my-content-block\"><div class=\"tabs\">' + tabCUnitHtml + '</div></div>'; $('#home-content').html(tabHtml + tabCHtml);
 								//图片加载完成回调
 								$('.photo-list img').on('load', function() {
 									$(this).parent().find('.wrapper').remove();
@@ -156,7 +179,7 @@ $(document).on('pageInit', '#index-page', function(e, id, page) {
 			var photoHandle = function() {
 				var pid = $(this).data('pid');
 				cookie.set('pid', pid);
-				$.router.load('/Index/productDetails');
+				$.router.load('productDetails.html');
 			};
 		}); $(document).on('pageAnimationStart', '#product-details', function(e, id, page) {
 		$('#product-intro').html('');
@@ -166,16 +189,22 @@ $(document).on('pageInit', '#index-page', function(e, id, page) {
 	$(document).on('pageInit', '#product-details', function(e, id, page) {
 		var pid = cookie.get('pid') || 1; // 获得选中的产品p_id
 		var paged = 1;
-		showProDetails();
+		// showProDetails();
+		showProDetails2();
 		$('.product-appointment').on('click', function() {
-			window.location.href = m_module + '/Index/reservation';
+			window.location.href = 'Appointment.html';
 		});
-		$('#product-showList .product-moreBtn').on('click', function() {
-			showMoreHandle();
-		});
+		// $('#product-showList .product-moreBtn').on('click', function() {
+		// 	showMoreHandle();
+		// });
 		/**
 		 * 展示产品详情
 		 */
+		function showProDetails2(){
+			$.getJSON(m_module+'index.php?g=Wap&m=Store&a=getProductDetail&pid='+pid,function(json){
+				$('#pro-wrap').html(json.data);
+			})
+		}
 		function showProDetails() {
 			$('.content').scrollTop(0);
 			$.showIndicator();

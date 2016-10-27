@@ -15,44 +15,47 @@
 <body>
   <div class="page-group">
     <div class="page page-current" id="distribution_index_wrap">
-      <header class="bar bar-nav">
-        <h1 class="title">个人中心</h1>
-      </header>
       <div class="content">
+      <header class="distribution-header">
+        <span class="headimgurl">
+          <img id="my-headimgurl" src="common/original/img/logo3.png" alt="">
+        </span>
+        <span class="username" id="my-username">账号未获取</span>
+      </header>
         <div class="list-block">
           <ul>
             <a href="myInfo.html">
-              <li class="item-content item-link">
+              <li class="item-content item-link d-index-list">
                 <div class="item-inner">
-                  <div class="item-title">预约资料</div>
+                  <div class="item-title f7">预约资料</div>
                 </div>
               </li>
             </a>
 
-            <a href="#">
-              <li class="item-content item-link">
+            <a href="myCoupons.html">
+              <li class="item-content item-link d-index-list">
                 <div class="item-inner">
-                  <div class="item-title">低价卷</div>
-                  <div class="item-after">0张可用</div>
+                  <div class="item-title">抵价卷</div>
+                  <div class="item-after"><item id="my-coupons-nums"></item>张可用</div>
                 </div>
               </li>
             </a>
             <a href="changePassword.html">
-              <li class="item-content item-link">
+              <li class="item-content item-link d-index-list">
                 <div class="item-inner">
                   <div class="item-title">修改密码</div>
                 </div>
               </li>
             </a>
-            <a href="#">
-              <li class="item-content item-link">
+            <a href="feedBack.html">
+              <li class="item-content item-link d-index-list">
                 <div class="item-inner">
                   <div class="item-title">意见反馈</div>
                 </div>
               </li>
             </a>
-            <a href="#">
-              <li class="item-content item-link">
+            <a href="agreement.html">
+              <li class="item-content item-link d-index-list">
                 <div class="item-inner">
                   <div class="item-title">预约协议</div>
                 </div>
@@ -63,7 +66,7 @@
         <div class="list-block">
           <ul>
             <a href="#">
-              <li class="item-content item-link" id="login_out">
+              <li class="item-content item-link d-index-list" id="login_out">
                 <div class="item-inner">
                   <div class="item-title">退出登陆</div>
                 </div>
@@ -72,7 +75,6 @@
           </ul>
         </div>
       </div>
-      <div id="footer"></div>
   </div>
 </div>
 <script src="common/original/js/zepto.min.js" type="text/javascript" charset="utf-8"></script>
@@ -81,6 +83,6 @@
 <script src="common/original/js/common.js" type="text/javascript" charset="utf-8"></script>
   <script src="common/original/js/public_parameters.js" type="text/javascript" charset="utf-8"></script>
 
-<script src="common/original/js/distribution.js" type="text/javascript" charset="utf-8"></script>
+<script src="common/original/js/distribution.js?test=3" type="text/javascript" charset="utf-8"></script>
 </body>
 </html>

@@ -1,0 +1,83 @@
+<include file="Public:head" /> 
+<script src="{wghd::STATICS}/artDialog/jquery.artDialog.js?skin=default"></script>
+<script src="{wghd::STATICS}/artDialog/plugins/iframeTools.js"></script>
+  <div class="content"> 
+   <div class="cLineB"> 
+    <h4>展示页设置</h4> 
+    <a href="{wghd::U('Store/picDisplay',array('token'=>$token))}" class="right  btnGreen" style="margin-top:-27px">返回</a> 
+   </div> 
+   <form class="form" method="post" action="" enctype="multipart/form-data"> 
+    <input type="hidden" name="id" value="{wghd:$set.id}" /> 
+     
+    <div class="msgWrap bgfc"> 
+     <table class="userinfoArea" style=" margin:0;" border="0" cellspacing="0" cellpadding="0" width="100%"> 
+      <tbody> 
+        <input type="hidden" name="id" value="{wghd:$set.id}">
+         <tr> 
+        <th><span class="red">*</span>分类：</th> 
+        <td>
+          <select name="cid" id="">
+            <volist id="list" name="classify">
+            <option value="{wghd:$list.id}" <eq name="set.cid" value="$list['id']" >selected</eq>>{wghd:$list.name}</option>
+            </volist>
+          </select>
+        </td> 
+       </tr> 
+       <tr> 
+        <th><span class="red">*</span>名称：</th> 
+        <td><input type="text" name="name" value="{wghd:$set.name}" class="px" style="width:300px;" /></td> 
+       </tr> 
+
+     
+       <tr> 
+        <th><span class="red">*</span>价格设置：</th> 
+        <td>
+        基本价格：￥
+        <input type="text" name="price1" value="{wghd:$set.price1}" class="px" style="width:40px;" />
+        加修加印：￥
+        <input type="text" name="price2" value="{wghd:$set.price2}" class="px" style="width:40px;" />
+        加印：￥
+        <input type="text" name="price3" value="{wghd:$set.price3}" class="px" style="width:40px;" />
+        </td> 
+       </tr> 
+       <tr>
+         <th><span class="red">*</span>基本描述：</th> 
+         <td><textarea name="desc1" class="px" style="width:300px; height: 100px;" />{wghd:$set.desc1}</textarea></td>
+       </tr>
+       <tr>
+         <th><span class="red">*</span>加修加印：</th> 
+         <td><textarea name="desc2" class="px" style="width:300px; height: 100px;" />{wghd:$set.desc2}</textarea></td> 
+       </tr>
+       <tr>
+         <th><span class="red">*</span>加印：</th> 
+         <td><textarea name="desc3" class="px" style="width:300px; height: 100px;" />{wghd:$set.desc3}</textarea></td> 
+       </tr>
+
+
+
+       <tr> 
+        <th>封面图片：</th> 
+        <td>
+        <input type="text" name="logo" value="{wghd:$set.logo}" id="logo" class="px" style="width:360px;" /> 
+         <script src="{wghd::STATICS}/upyun.js"></script><a href="###" onclick="upyunPicUpload('logo',700,420,'{wghd:$token}')" class="a_upload">上传</a> <a href="###" onclick="viewImg('logo')">预览</a></td> 
+       </tr>
+	  
+
+       <tr> 
+        <th>案例图片：</th> 
+        <td><input type="text" name="pic" value="{wghd:$set.pic}" id="pic" class="px" style="width:360px;" />  <script src="{wghd::STATICS}/upyun.js"></script><a href="###" onclick="upyunPicUpload('pic',700,420,'{wghd:$token}')" class="a_upload">上传</a> <a href="###" onclick="viewImg('pic')">预览</a></td> 
+       </tr>
+
+       <tr>         
+       <th>&nbsp;</th>
+       <td>
+       <button type="submit" name="button" class="btnGreen">保存</button>
+        &nbsp; 
+        <a href="{wghd::U('Store/picDisplay',array('token'=>$token))}" class="btnGray vm">取消</a></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+     </div>
+   </form> 
+  </div> 
+  <include file="Public:footer" />

@@ -123,7 +123,7 @@ if (!isset($_SESSION['isQcloud'])){
 <td><strong>请求数：</strong>{wghd:$thisUser.connectnum}/{wghd:$userinfo.connectnum}</td>
 </tr>
 <tr>
-<td><strong>请求数剩余：</strong><php>echo ($userinfo['connectnum']-$_SESSION['connectnum']);</php></td>
+<td><strong>余：</strong><php>echo ($userinfo['connectnum']-$_SESSION['connectnum']);</php></td>
 <td><strong>已使用：</strong><php>echo $_SESSION['diynum'];</php></td>
 <td><strong>当月剩余请求数：</strong><php>echo $userinfo['connectnum']-$_SESSION['connectnum'];</php></td>
 </tr>
@@ -132,6 +132,7 @@ if (!isset($_SESSION['isQcloud'])){
     </div>
         <div class="clr"></div>
       </div>
+
       <!--左侧功能菜单-->
 
  
@@ -262,6 +263,13 @@ array('name'=>'提现记录列表','link'=>U('Distribution/moneylist',array('tok
 array('name'=>'收货地址列表','link'=>U('Distribution/address',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Distribution','a'=>'address')),
 )),
 array(
+'name'=>'分店管理',
+'iconName'=>'store',
+'display'=>0,
+'subs'=>array(
+array('name'=>'附加时间限制','link'=>U('Branch/additionalTime',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Branch')),
+)),
+array(
 'name'=>'商城系统',
 'iconName'=>'store',
 'display'=>0,
@@ -269,6 +277,16 @@ array(
 /*array('name'=>'在线支付设置','link'=>U('Alipay_config/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Alipay_config')),*/
 array('name'=>'微信商城系统','link'=>U('Store/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Store')),
 )),
+
+array(
+'name'=>'分店系统',
+'iconName'=>'shop',
+'display'=>0,
+'subs'=>array(
+
+array('name'=>'分店管理','link'=>U('Shop/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Shop')),
+)),
+
 );
 ?>
 <?php

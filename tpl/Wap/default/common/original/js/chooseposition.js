@@ -18,6 +18,7 @@ $(function() {
 			$(this).parents('.tipModelWrap').hide();
 		});
 
+
 		if (scid && (scid != 'null')) { //判断是否已经获得定位城市, 若未获得城市, 则跳到城市选择页面, 否则判断获取的城市是否有门店
 			checkNoStore(scid); // 如果没有当前城市没有门店, 跳转到选择城市页面
 		} else {
@@ -26,7 +27,7 @@ $(function() {
 
 		// 城市选择
 		$city.on('click', function() {
-			$.router.load('/Index/reservationPosition');
+			$.router.load('ChoosePosition.html');
 		});
 
 
@@ -37,7 +38,7 @@ $(function() {
 			if (navigator.geolocation) {
 				navigator.geolocation.getCurrentPosition(getLocationCity, locationError);
 			} else {
-				$.router.load('/Index/reservationPosition');
+				$.router.load('ChoosePosition.html');
 			}
 		}
 
@@ -82,7 +83,7 @@ $(function() {
 			}
 			_cityhtml = setTipText('暂无定位信息');
 			$city.html(_cityhtml); // 处理定位错误
-			$.router.load('/Index/reservationPosition');
+			$.router.load('ChoosePosition.html');
 		}
 
 
@@ -127,7 +128,7 @@ $(function() {
 					}
 					isUs = $.inArray(citycode, cityHaveStoreArr); // 定位到的城市码是否在已有门店的城市码数组中
 					if (isUs === -1) {
-						$.router.load('/Index/reservationPosition');
+						$.router.load('ChoosePosition.html');
 					} else {
 						setCurrentCity();
 					}

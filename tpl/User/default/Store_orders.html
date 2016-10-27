@@ -27,8 +27,8 @@ function selectall(name) {
 <div class="searchbar" style="margin-top:10px;">
 <form method="post" action="">
 付款状态：<select name="paid"><option value="">=请选择=</option><option value="0" <eq name="Think.request.paid" value="0">selected</eq>>待付款</option><option value="1" <eq name="Think.request.paid" value="1">selected</eq>>已付款</option></select>
-发货状态：<select name="sent"><option value="">=请选择=</option><option value="0" <eq name="Think.request.sent" value="0">selected</eq>>待发货</option><option value="1" <eq name="Think.request.sent" value="1">selected</eq>>已发货</option></select>
-收货状态：<select name="receive"><option value="">=请选择=</option><option value="0" <eq name="Think.request.receive" value="0">selected</eq>>待收货</option><option value="1" <eq name="Think.request.receive" value="1">selected</eq>>已收货</option></select>
+<!-- 发货状态：<select name="sent"><option value="">=请选择=</option><option value="0" <eq name="Think.request.sent" value="0">selected</eq>>待发货</option><option value="1" <eq name="Think.request.sent" value="1">selected</eq>>已发货</option></select> -->
+<!-- 收货状态：<select name="receive"><option value="">=请选择=</option><option value="0" <eq name="Think.request.receive" value="0">selected</eq>>待收货</option><option value="1" <eq name="Think.request.receive" value="1">selected</eq>>已收货</option></select> -->
 处理状态：<select name="handled"><option value="">=请选择=</option><option value="0" <eq name="Think.request.handled" value="0">selected</eq>>待处理</option><option value="1" <eq name="Think.request.handled" value="1">selected</eq>>已处理</option></select>
 <input type="text" id="msgSearchInput" class="txt left" placeholder="输入相关信息搜索" name="searchkey" value="{wghd:$Think.request.searchkey}">
 <input type="hidden" name="token" value="{wghd:$token}">
@@ -51,7 +51,7 @@ function selectall(name) {
 <th >电话</th>
 <th class="60">数量</th>
 <th width="70">总价（元）</th>
-<th class="160">付款状态/发货状态</th>
+<th class="160">付款状态</th>
 <th class="60">退款状态</th>
 <th class="60">退款原因</th>
 <th class="60">处理状态</th>
@@ -70,7 +70,7 @@ function selectall(name) {
 <td>{wghd:$o.tel}</td>
 <td>{wghd:$o.total}</td>
 <td>{wghd:$o.price}</td>
-<td><if condition="$o.paid eq 1"><span style="color:green">已付款</span><else/><span style="color:red">待付款</span></if> / <if condition="$o.sent eq 1"><span style="color:green">已发货</span><else/><span style="color:red">待发货</span></if> / <if condition="$o.receive eq 1"><span style="color:green">已收货</span><else/><span style="color:red">待收货</span></if></td>
+<td><if condition="$o.paid eq 1"><span style="color:green">已付款</span><else/><span style="color:red">未付款</span></if></td>
 <td><if condition="$o.returnMoney eq 2"><span style="color:green">已退款</span></if><if condition="$o.returnMoney eq 1"><span style="color:red">待退款</span></if><if condition="$o.returnMoney eq 0"><span style="color:blue">未申请</span></if></td>
 <td>{wghd:$o.returnReason}</td>
 <td><if condition="$o.handled eq 1"><span style="color:green">已处理</span><else/><span style="color:red">待处理</span></if></td>

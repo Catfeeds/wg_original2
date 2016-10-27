@@ -1,17 +1,38 @@
 $(function($) {
 	//删除数组中指定元素
+	var certification = 1;
 	//判断账号登陆
-	// $(document).ready(function($) {
-	// 	$.ajax({
-	// 		url: total_url + 'index.php?g=Wap&m=Distribution&a=checkLogin',
-	// 		dataType: 'json',
-	// 		success: function(data) {
-	// 			if (data && data.status == -1) {
-	// 				location.href = "login.html";
-	// 			}
-	// 		}
-	// 	});
-	// });
+	$(document).ready(function($) {
+		//判断授权
+		$.ajax({
+			url: total_url + 'index.php?g=Wap&m=Distribution&a=checkAuth',
+			dataType: 'json',
+			async:false,
+			success: function(data) {
+				if (data.data == 'needauth') {
+					certification = 0;
+					var href = 'http://bmy.tzwg.net/index.php?g=Wap&m=Distribution&a=authorization&bmyquth=1&href='+window.location.href;
+					location.href = href;
+				}else{
+					//判断账号登陆
+					$.ajax({
+						url: total_url + 'index.php?g=Wap&m=Distribution&a=checkLogin',
+						dataType: 'json',
+						async:false,
+						success: function(data) {
+							if (!data || data.status == -1) {
+								certification = 0;
+								location.href = "login.html";
+							}
+						}
+					});
+				}
+			}
+		});
+	});
+	if(certification == 0){
+		return false;
+	}
 
 	// 选择门店
 	$(document).on('pageAnimationStart', '#reservation', function(e, id, page) {
@@ -52,7 +73,7 @@ $(function($) {
 			// if (navigator.geolocation) {
 			// 	navigator.geolocation.getCurrentPosition(getLocationCity, locationError);
 			// } else {
-			// 	$.router.load('/Index/reservationPosition1');
+			// 	$.router.load('ChoosePosition.html');
 			// }
 		}
 
@@ -106,7 +127,6 @@ $(function($) {
 		 */
 		function setCurrentCity() {
 			var cityS = getCityName(cookie.get('scid'));
-			console.log(cityS);
 			var _cityHtml = setTipText(cityS.split('市')[0]);
 			$city.html(_cityHtml); // 改变显示城市
 			$('#reservation .wrapper').show(); //显示加载图
@@ -173,7 +193,6 @@ $(function($) {
 			$.showIndicator();
 			$.get(total_url + 'index.php?g=Wap&m=Store&a=getStoreByCity&cid=' + cid, function(data) {
 				data = eval('(' + data + ')');
-				console.log(data);
 				$.hideIndicator();
 				if (data.error === 0) {
 					var cityInfo = data.msg.city; // 当前选择城市
@@ -217,11 +236,10 @@ $(function($) {
 					});
 
 					$('.reservation-checkBtn').on('click', function() {
-						console.log('aa');
 						if ($(this).hasClass('btn-disabled')) {
 							return false;
 						}
-						var storeName = $('#reservation-storeInfo .reservation-storename').html();
+						var storeName = $('#reservation-store .reservation-storename').html();
 						cookie.set('storeId', storeId);
 						cookie.set('storeName', storeName);
 						$.router.load('SelectProduct.html');
@@ -239,7 +257,7 @@ $(function($) {
 		function changeStoreInfo(storeInfo, storeId) {
 			var storeinfoHtml = '';
 			var storeArr = Object.keys(storeInfo);
-			// var storeServiceArr = storeInfo[storeId].S_Service.split('');
+			var storeServiceArr = storeInfo[storeId].S_Service.split('');
 			var $service = $('#reservation-storeService .reservation-serviceList'); //门店服务
 			// var opents = parseInt(storeInfo[storeId].S_StartTime);
 			var tsNow = parseInt(+new Date() / 1000); // 获取当前的时间戳
@@ -256,21 +274,25 @@ $(function($) {
 			// 	$('.reservation-checkBtn').addClass('btn-disabled');
 			// }
 
-			$service.removeClass('off');
-			// for (var i in storeServiceArr) {
-			// 	if (storeServiceArr[i] === '0') {
-			// 		$($service[i]).addClass('off');
-			// 	}
-			// }
+			$service.removeClass('on');
+			for (var i in storeServiceArr) {
+				if (storeServiceArr[i] === '1') {
+					$($service[i]).addClass('on');
+				}
+			}
 			$service.on('click', function() {
 				var picIndex = $(this).index() + 1;
-				if ($(this).hasClass('off')) {
+				if (!$(this).hasClass('on')) {
 					return false;
 				}
-				$('.tipModelWrap').find('img').attr('src', 'http://cdn.haimati.cn/HMA_M_Static/img/fwtc_' + picIndex + '.png');
-				setTimeout(function() {
-					$('.tipModelWrap').show();
-				}, 50);
+				$('#service-warn').show();
+				$('#service-warn .close-warn').click(function(){
+					$('#service-warn').hide();
+				})
+				// $('.tipModelWrap').find('img').attr('src', 'http://cdn.haimati.cn/HMA_M_Static/img/fwtc_' + picIndex + '.png');
+				// setTimeout(function() {
+				// 	$('.tipModelWrap').show();
+				// }, 50);
 			});
 			$('#reservation-store .reservation-storename').text(storeInfo[storeId].S_Name); // 门店名
 			$('#address-maplink').attr('href', storeInfo[storeId].S_MapUrl); // 地图链接
@@ -310,7 +332,6 @@ $(function($) {
 			var isUs;
 			$.get(total_url + 'index.php?g=Wap&m=Store&a=getCityList', function(data) {
 				var data = eval('(' + data + ')');
-				console.log(data);
 				$.hideIndicator();
 				if (data.error === 0) {
 					var hotcity = data.msg.hotcity;
@@ -395,8 +416,8 @@ $(function($) {
 		var pid_arr = {};
 		var store_product = [];
 		$.each(json.data, function(index, item) {
-			str += '<ul>'
-			str += '<li>' + item.name + '</li>'
+			str += '<ul class="p0">'
+			str += '<li class="product_cat">' + item.name + '</li>'
 			if (item.products[0].length != 0) {
 				$.each(item.products[0], function(index2, item2) {
 					store_product[item2.id] = item2;
@@ -406,7 +427,7 @@ $(function($) {
 					str += '        <div class="item-inner">';
 					str += '            <div class="item-title-row">';
 					str += '                <div class="item-title">' + item2.name + '</div>';
-					str += '                <div class="item-after">￥' + item2.price + '</div>';
+					str += '                <div class="item-after total-color">￥' + item2.price + '</div>';
 					str += '            </div>';
 					str += '        </div>';
 					str += '        <input type="checkbox" name="my-radio">';
@@ -462,6 +483,7 @@ $(function($) {
 		})
 		//选择产品信息页面
 	$(document).on('pageInit', '#select_products_info_wrap', function() {
+			var wrap = $('#select_products_info_wrap');
 			var pinfo = cookie.get('choose_product');
 			var wrap = $('#choose_products_info');
 			var str = '';
@@ -472,9 +494,12 @@ $(function($) {
 			var colorname = '';
 			pinfo = eval('(' + pinfo + ')');
 			$.each(pinfo, function(index, el) {
+				//一般照
 				if (el.type == 0) {
 					str += '<div class="item-inner"><div class="item-title-row"><div class="item-title wg_order_choose_title">' + el.name + '</div><div class="item-after"><span>合计：</span>￥<span class="item-after-money">' + el.price + '</span></div></div></div>';
+					total_price += parseInt(el.price);
 				}
+				//证件照
 				if (el.type == 1) {
 					str += '<div class="item-inner" data-pid="' + el.pid + '">';
 					str += '    <div class="item-title-row" style="border-bottom: 1px solid #e7e7e7;">';
@@ -482,7 +507,7 @@ $(function($) {
 					str += '    </div>';
 					str += '    <div class="item-title-row">';
 					str += '        <div class="item-title">背景颜色</div>';
-					str += '        <div class="item-after iconfont">背景颜色说明&#xe60d;</div>';
+					str += '        <div class="item-after iconfont choose-meal" data-choose="color">背景颜色说明&#xe60d;</div>';
 					str += '    </div>';
 					colorinfo = eval('(' + el.colorinfo + ')');
 					str += '    <div class="item-title-row">';
@@ -517,11 +542,13 @@ $(function($) {
 					str += '            <span>合计:</span>￥';
 					str += '            <span class="item-after-money product-price">' + colorinfo.blue.price + '</span>';
 					//默认选择蓝色
-					pinfo[index]['choose'] = '{"blue":{"price":"' + colorinfo.blue.price + '"}}';
+					pinfo[index]['choose'] = '{"blue":{"price":' + colorinfo.blue.price + '}}';
+					total_price += parseInt(colorinfo.blue.price);
 					str += '        </div>';
 					str += '    </div>';
 					str += '</div>';
 				}
+				//文艺照
 				if (el.type == 2) {
 					str += '<div class="item-inner" data-pid="' + el.pid + '">';
 					str += '    <div class="item-title-row bb_1_s">';
@@ -555,6 +582,7 @@ $(function($) {
 					});
 					//默认选择单人
 					pinfo[index]['choose'] = '{"personal":{"price":' + artinfo.personal.price + '}}';
+					total_price += parseInt(artinfo.personal.price);
 
 					str += '    </div>';
 					// str += '    <div class="item-title-row bb_1_s">';
@@ -567,7 +595,7 @@ $(function($) {
 					// str += '    </div>';
 					str += '    <div class="item-title-row">';
 					str += '        <div class="item-title">升级体验</div>';
-					str += '        <div class="item-after iconfont">升级体验说明&#xe60d;</div>';
+					str += '        <div class="item-after iconfont choose-meal" data-choose="grid">升级体验说明&#xe60d;</div>';
 					str += '    </div>';
 					artex = eval('(' + el.artex + ')');
 					str += '    <div class="item-title-row bb_1_s_pb_5 extent-flex-start">';
@@ -577,7 +605,7 @@ $(function($) {
 					str += '    </div>';
 					str += '    <div class="item-title-row">';
 					str += '        <div class="item-title"></div>';
-					str += '        <div class="item-after iconfont">';
+					str += '        <div class="item-after">';
 					str += '            <span>合计：</span>￥';
 					str += '            <span class="item-after-money product-price">' + artinfo.personal.price + '</span>';
 					str += '        </div>';
@@ -592,7 +620,7 @@ $(function($) {
 					str += '	</div>';
 					str += '	<div class="item-title-row">';
 					str += '		<div class="item-title">升级体验</div>';
-					str += '		<div class="item-after iconfont">升级体验说明&#xe60d;</div>';
+					str += '		<div class="item-after iconfont choose-meal" data-choose="whimsy">升级体验说明&#xe60d;</div>';
 					str += '	</div>';
 					str += '	<div class="item-title-row">';
 					str += '		<div class="item-title  wg_order_choose choose-whimsy" data-price="' + el.wmprice + '">搞怪结婚照</div>';
@@ -605,13 +633,33 @@ $(function($) {
 					str += '		</div>';
 					str += '	</div>';
 					str += '</div>';
+					total_price += parseInt(el.price);
 				}
-				total_price += parseInt(el.price);
 			});
 			$('#total_price').text(total_price);
 			wrap.html(str);
+			$(document).on('click','#select_products_info_wrap .choose-meal',function(){
+				var type = $(this).data('choose');
+				str = '';
+				switch(type){
+					case 'color':
+						img_src = total_url+'tpl/Wap/default/common/original/img/mael-color.png';
+						break;
+					case 'grid':
+						img_src = total_url+'tpl/Wap/default/common/original/img/meal-grid.png';
+						break;
+					case 'whimsy':
+						img_src = total_url+'tpl/Wap/default/common/original/img/meal-marry.png';
+						break;
+				}
+				str += '<div class="meal-choose">';
+		        str +=     '<img src="'+img_src+'" alt="">';
+		        str +=     '<div class="close-mask iconfont"></div>';
+		        str += '</div>';
+				wrap.append(CreateMask(str));
+			})
 			//选择样色
-			$(document).on('click', '#choose_products_info .wg_order_choose_color', function() {
+			$(document).on('click', '.wg_order_choose_color', function() {
 					var product_price = parseInt($(this).parents('.item-inner').find('.product-price').text());
 					var choose_price = parseInt($(this).data('price'));
 					var choose_key = $(this).data('choose');
@@ -642,7 +690,7 @@ $(function($) {
 					//在选中的产品中记录颜色选择
 					pinfo[pid]['choose'] = JSON.stringify(choose_color);
 					$('#total_price').text(total_price);
-					wrap.find('.product-price').text(product_price);
+					$(this).parents('.item-inner').find('.product-price').text(product_price);
 				})
 				//选择文艺照类型
 			$(document).on('click', '#choose_products_info .choose-art-type', function() {
@@ -788,8 +836,235 @@ $(function($) {
 	});
 	//订单页面
 	$(document).on('pageInit', '#orders_wrap', function() {
+		var pinfo = cookie.get('choose_product');
+		if(!pinfo){
+			$.router.load('myorders.html');
+			return false;
+		}
+		var storeId = cookie.get('storeId');
+		var storeName = cookie.get('storeName');
+		var orderTime = cookie.get('orderTime')/1000;
+		var orderTime2 = getLocalTime(orderTime);
+		pinfo = eval('('+pinfo+')');
 		var appoint_time_wrap = $('#appoint_time');
-		appoint_time_wrap.text(cookie.get('choose_date') + cookie.get('choose_time'));
+		//拍摄门店
+		$('#appoint_place').text(storeName);
+		//拍摄时间
+		appoint_time_wrap.text(orderTime2);
+		//拍摄内容
+		
+		var str = '';
+		var attribute = '';
+		var pay_price = 0;
+		var total_price = 0;
+		$.each(pinfo,function(index, el) {
+			attribute = '';
+			pay_price = 0;
+			switch(el['type']){
+				//证件照
+				case '1':
+					if($.type(el.choose) != 'undefined'){
+						var choose_color = eval('('+el.choose+')');
+						if(Object.keys(choose_color).length != 0){
+							attribute +='(';
+							$.each(choose_color,function(index2, el2) {
+								switch(index2){
+									case 'blue':
+										attribute += '蓝色,';
+										break;
+									case 'white':
+										attribute += '白色,';
+										break;
+									case 'red':
+										attribute += '红色,';
+										break;
+									case 'yellow':
+										attribute += '芽黄,';
+										break;
+									case 'grey':
+										attribute += '灰色,';
+										break;
+								}
+								pay_price += parseInt(el2.price);
+							});
+							attribute +=')';
+						}
+					}
+					break;
+				//艺术照
+				case '2':
+					if($.type(el.choose) != 'undefined'){
+						var choose_art = eval('('+el.choose+')');
+						var artex_price = 0;
+						if($.type(el.chooseartex) != 'undefined'){
+							var chooseartex = eval('('+el.chooseartex+')');
+							if(Object.keys(chooseartex).length != 0){
+								attribute +='(';
+								$.each(chooseartex,function(index2, el2) {
+									switch(index2){
+										case 'four':
+											attribute += '四宫格,';
+											break;
+										case 'nine':
+											attribute += '九宫格,';
+											break;
+									}
+									artex_price += parseInt(el2.price);
+								});
+								attribute +=')';
+							}
+						}
+						if(Object.keys(choose_art).length != 0){
+							attribute +='(';
+							$.each(choose_art,function(index2, el2) {
+								switch(index2){
+									case 'childrens':
+										attribute += '亲子,';
+										break;
+									case 'friends':
+										attribute += '闺蜜,';
+										break;
+									case 'lovers':
+										attribute += '情侣,';
+										break;
+									case 'personal':
+										attribute += '个人,';
+										break;
+								}
+								pay_price += parseInt(el2.price + artex_price);
+							});
+							attribute +=')';
+						}
+					}
+					break;
+				//结婚照
+				case '3':
+					pay_price += parseInt(el.price);
+					if(el.choosew){
+						attribute = '(搞怪结婚照)';
+						pay_price += parseInt(el.wmprice);
+					}
+					break;
+				default:
+					pay_price += parseInt(el.price);
+			}
+			total_price += pay_price;
+
+			pinfo[index]['total_price'] = pay_price;
+			pinfo[index]['attribute'] = attribute;
+
+			str += '<div class="item-title-row">';
+			str += '    <div class="item-title color-grey1">'+el.name+attribute+'</div>';
+			str += '    <div class="item-after wg_order_pay_money">￥'+pay_price+'</div>';
+			str += '</div>';
+		});
+		//拍摄内容赋值
+		$('#choose-reservation-content').html(str);
+		//个人信息获取
+		var psesonal_info;
+		$.getJSON(total_url + 'index.php?g=Wap&m=Distribution&a=myInfo', function(json) {
+			psesonal_info = json.data;
+			$('#order-name').text(json.data.truename);//姓名
+			$('#order-birth').text(json.data.birth);//出生
+			$('#order-sex').text(json.data.sex == 0 ? '女' : '男');//性别
+		})
+		//总价
+		$('#total-price').text(total_price);
+		//去支付
+		$('#pay-btn').click(function(){
+			var pay_data = {};
+			pay_data['sid'] = storeId;
+			pay_data['ordertime'] = orderTime;
+			pay_data['con'] = pinfo;
+			pay_data['myinfo'] = psesonal_info;
+			pay_data['totalPrice'] = total_price;
+			pay_data['city'] = getCityName(cookie.get('scid'));
+			$.ajax({
+				url: total_url + 'index.php?g=Wap&m=Store&a=payOrder',
+				data: {data:JSON.stringify(pay_data)},
+				type: 'post',
+				dataType: 'json',
+				success:function(data){
+					if(data.status == 1){
+						cookie.set('choose_product','');
+						var order_data = eval('('+data.data+')');
+						location.href = total_url + 'index.php?g=Wap&m=Alipay&a=pay&token='+order_data.token+'&wecha_id='+order_data.wecha_id+'&success=1&from=Store&orderName='+order_data.orderid+'&single_orderid='+order_data.orderid+'&price'+order_data.price;
+					}else{
+						$.alert(data.info);
+					}
+				}
+			});
+		})
+		//时间戳转日期格式
+		function getLocalTime(nS) {     
+		   return new Date(parseInt(nS) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ');     
+		}
 	});
+	//我的订单页面
+	$(document).on('pageInit','#my-orders',function(){
+		var psesonal_info;
+		var all_wrap = $('#all-orders');
+		var payed_wrap = $('#payed-orders');
+		var finish_wrap = $('#finish-orders');
+		$.getJSON(total_url + 'index.php?g=Wap&m=Distribution&a=myOrders', function(json) {
+			console.log(json.data);
+			$.each(json.data,function(index, el) {
+				var str = '';
+				var status = '';
+				if(el.paid == 0){
+					status = '未付款';
+				}
+				if(el.paid == 1){
+					status = '进行中';
+				}
+				if(el.handled == 1){
+					status = '已完成';
+				}
+				str += '<div class="list-block">';
+				str += '    <ul>';
+				str += '        <li class="item-content">';
+				str += '            <div class="item-inner">';
+				str += '                <div class="item-title">订单号：'+el.orderid+'</div>';
+				str += '                <div class="item-after">'+status+'</div>';
+				str += '            </div>';
+				str += '        </li>';
+				str += '        <li class="item-content">';
+				str += '            <div class="item-inner">';
+				str += '                <div class="item-title">';
+				str += '                    <p>拍摄门店：<item class="store-name">'+el.sname+'</item></p>';
+				str += '                    <p>预约时间：<item class="reservation-time">'+el.rtime+'</item></p>';
+				str += '                    <p>门店号码：<item class="store-tele total-color">'+el.stel+'</item></p>';
+				str += '                </div>';
+				str += '            </div>';
+				str += '        </li>';
+				str += '        <li class="item-content1" >';
+				str += '            <div class="item-inner1">';
+				str += '                <div class="item-title"></div>';
+				str += '                <div class="item-after1">总计：￥<span class="reservation-price total-color">'+el.price+'</span></div>';
+				// str += '                <div class="item-after2 pay_choose">拍摄路线</div>';
+				if(el.paid == 0){
+					str += '<div class="item-after2 pay_unchoose pay-now" data-id="'+el.id+'">去付款</div>';
+				}
+				str += '            </div>';
+				str += '        </li>';
+				str += '    </ul>';
+				str += '</div>';
+				if(str){
+					all_wrap.append(str);
+					if(el.paid == 1 && el.finish == 0){
+						payed_wrap.append(str);
+					}
+					if(el.paid == 1 && el.finish == 1){
+						finish_wrap.append(str);
+					}
+				}
+			});
+			//立即支付
+			$(document).on('click','#my-orders .pay-now',function(){
+				var id = $(this).data('id');
+				location.href = total_url + 'index.php?g=Wap&m=Store&a=payNow&id='+id;
+			})
+		})
+	})
 	$.init();
 })

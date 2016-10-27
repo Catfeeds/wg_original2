@@ -151,7 +151,7 @@ img{
 }
 /*Popup*/
 
-button{background:none;border:0;outline:none;color:#fff; color: #f08302;}
+button{background:none;border:0;outline:none; color: #0894ec;}
 
 
 .hintl{width:80%;min-height:18rem;background:#fff;position:absolute;top:50%;left:50%;margin-left:-40%;margin-top:-9rem;z-index:111;display:block; border-radius: 5px; }
@@ -252,10 +252,8 @@ button{background:none;border:0;outline:none;color:#fff; color: #f08302;}
 
 .content-block-title{
   .wg_service_icon{
-    float: left;
-    margin-left: 2%;
-    width: 12%;
-    font-size: 25px;
+    display: inline-block;
+    margin:0 1.5%;
     text-align:center;
     span{
       font-size: .32rem;
@@ -263,6 +261,18 @@ button{background:none;border:0;outline:none;color:#fff; color: #f08302;}
   }
   .wg_service_icon_choose{
     color: #0894ec;
+    font-size: 1rem;
+  }
+  .wg_service_icon_title{
+    font-size: .5rem;
+  }
+   .wg_service_icon_title1{
+    font-size: .5rem;
+    color: #666;
+  }
+   .wg_service_icon_unchoose{
+    color: #666;
+    font-size: 1rem;
   }
 }
 
@@ -364,7 +374,7 @@ button{background:none;border:0;outline:none;color:#fff; color: #f08302;}
     line-height: 30px;
     text-align:center;
     margin-right: 2%;
-  } 
+  }
 }
 
 .wg_order_choose_title{

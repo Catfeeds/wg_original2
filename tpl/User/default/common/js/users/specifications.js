@@ -199,28 +199,28 @@
 			return;
 		}
 		//判断库存
-		var num = $("#num").val();
-		if (isNaN(num)) {
-			art.dialog({
-				title: '消息提示',
-				ok: true,
-				width: 300,
-				height: 200,
-				content: '库存应该是为正整数'
-			});
-			return false;
-		}
+		// var num = $("#num").val();
+		// if (isNaN(num)) {
+		// 	art.dialog({
+		// 		title: '消息提示',
+		// 		ok: true,
+		// 		width: 300,
+		// 		height: 200,
+		// 		content: '库存应该是为正整数'
+		// 	});
+		// 	return false;
+		// }
 		//商品轮播图片
-		var images_str = '';
-		var imagesid_str = '';
-		$('input[id^=image]').each(function($key) {
-			if ($(this).val()) {
-				images_str += $(this).val() + ',';
-				imagesid_str += $(this).attr('imageid') + ',';
-			}
-		})
-		$('#images').val(images_str);
-		$('#imagesid').val(imagesid_str);
+		// var images_str = '';
+		// var imagesid_str = '';
+		// $('input[id^=image]').each(function($key) {
+		// 	if ($(this).val()) {
+		// 		images_str += $(this).val() + ',';
+		// 		imagesid_str += $(this).attr('imageid') + ',';
+		// 	}
+		// })
+		// $('#images').val(images_str);
+		// $('#imagesid').val(imagesid_str);
 		//序列化FORM数据
 		var data = $('#formID').serialize();
 		var norms_data = [];

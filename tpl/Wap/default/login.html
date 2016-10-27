@@ -8,42 +8,41 @@
 	<link rel="shortcut icon" href="/favicon.ico">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
-	<link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/??sm.min.css,sm-extend.min.css">
-	<link rel="stylesheet" href="common/original/css/style.css">
-</head>
+	<link rel="stylesheet" href="common/original/css/sm.min.css">
+    <link rel="stylesheet" href="common/original/css/sm-extend.css">
+	<link rel="stylesheet" href="common/original/css/style.css"></head>
 <body>
 	<div class="page-group">
-        <div class="page page-current">
-        	<div class="login_content">
-        	    <div class="xx">
-        	        <div class="top">
-        	            <div class="tx">
-        	                <img src="">
-        	            </div>
-        	        </div>
-        	        <form id="login_form" method="post" action="#">
-        	            <div class="wg_form_message_wrap">
-	        	            <div class="wg_item_icon_input"> <i class="icon1 iconfont">&#xe601;</i>
-	        	                <input name="username" id="username" type="text" class="name validation" value="" placeholder="请输入手机号"/>
-	        	            </div>
-	        	        </div>
-	        	        <div class="wg_form_message_wrap">
-	        	            <div class="wg_item_icon_input"> <i class="icon1 iconfont">&#xe600;</i>
-	        	                <input name="password" id="password" type="text" class="name validation" value="" placeholder="请输入密码"/>
-	        	            </div>
-	        	        </div>
-        	        </form>
-        	            <input type="button" class="wg_button_type1 tj bgc_blue1" id="login-submit" value="登陆"/>
-	        	        <p style="text-align: center;line-height: 37px;color: #ffffff;">
-	        	            <a href="register.html">注册账号</a>
-	        	        </p>
-        	    </div>
-        	</div>
-        </div>
-    </div>
-    <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
-    <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/??sm.min.js,sm-extend.min.js' charset='utf-8'></script>
-  	<script src="common/original/js/public_parameters.js" type="text/javascript" charset="utf-8"></script>
-    <script src="common/original/js/login_register.js" type="text/javascript" charset="utf-8"></script>
+		<div class="page page-current" id="login">
+			<div class="content">
+				<div class="top">
+					<div class="tx">
+						<img src="common/original/img/logo.jpg"></div>
+				</div>
+				<form id="login_form" method="post" action="#">
+					<div class="wg_form_message_wrap">
+						<div class="wg_item_icon_input"> <i class="icon1 iconfont">&#xe601;</i>
+							<input name="username" id="username" type="text" class="name validation" value="" placeholder="请输入手机号"/>
+						</div>
+					</div>
+					<div class="wg_form_message_wrap">
+						<div class="wg_item_icon_input"> <i class="icon1 iconfont">&#xe600;</i>
+							<input name="password" id="password" type="text" class="name validation" value="" placeholder="请输入密码"/>
+						</div>
+					</div>
+				</form>
+				<input type="button" class="wg_button_type1 user-loginBtn" id="login-submit" value="登陆"/>
+				<a href="register.html">
+					<input type="button" class="wg_button_type1 user-registerBtn" value="注册"/>
+				</a>
+				<a href="javascript:;" class="user-forgetPasswordBtn" id="forgetPasswordBtn">忘记密码？</a>
+			</div>
+		</div>
+	</div>
+	<script src="common/original/js/zepto.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="common/original/js/sm.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="common/original/js/sm-extend.js" type="text/javascript" charset="utf-8"></script>
+	<script src="common/original/js/public_parameters.js" type="text/javascript" charset="utf-8"></script>
+	<script src="common/original/js/login_register.js" type="text/javascript" charset="utf-8"></script>
 </body>
 </html>

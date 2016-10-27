@@ -1,0 +1,7 @@
+[ 2016-10-27T15:36:53+08:00 ] ERR: (ThinkException) La table 'original2_data.pigcms_counpons' n'existe pas
+ [ SQL语句 ] : SHOW COLUMNS FROM `pigcms_counpons`
+[ 2016-10-27T15:37:26+08:00 ] ERR: (ThinkException) La table 'original2_data.pigcms_counpons' n'existe pas
+ [ SQL语句 ] : SHOW COLUMNS FROM `pigcms_counpons`
+[ 2016-10-27T16:22:58+08:00 ] ERR: (ThinkException) _ERROR_ACTION_:test
+[ 2016-10-27T16:23:01+08:00 ] ERR: (ThinkException) _ERROR_ACTION_:test
+[ 2016-10-27T16:23:07+08:00 ] ERR: (ThinkException) _MODULE_NOT_EXIST_:Branch

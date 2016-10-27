@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>个人中心</title>
+  <title>预约拍照</title>
   <meta name="viewport" content="initial-scale=1, maximum-scale=1">
   <link rel="shortcut icon" href="/favicon.ico">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -11,7 +11,6 @@
   <link rel="stylesheet" href="common/original/css/sm.min.css">
   <link rel="stylesheet" href="common/original/css/sm-extend.css">
   <link rel="stylesheet" href="common/original/css/style.css">
-  <link rel="stylesheet" type="text/css" href="common/original/css/main.css">
   <style type="text/css">
         .content-block-title{
           white-space: normal;
@@ -26,9 +25,9 @@
           <span class="reservation-city" id="reservation-city"></span>
         </div>
         <img style="width: 100%; height: 7rem;" src="common/original/img/photo_hdc.jpg" alt="">
-        <div class="appointment_wrap" style="background-color: #fff; overflow: hidden;">
+        <div class="appointment_wrap" style="overflow: hidden;">
 
-          <div class="content-block-title" style="margin:0.4rem .75rem .5rem;">门店选择</div>
+          <div class="content-block-title">门店选择</div>
 
           <div class="list-block" style="margin-bottom: 0">
             <ul>
@@ -39,79 +38,84 @@
                   <div class="wg_item_store_num reservation-storeNum"></div>
                 </div>
               </li>
-              <li class="item-content">
-                <div class="item-inner" id="address-maplink">
-                  <div class="item-title addressText"></div>
-                  <div class="item-after iconfont wg_item_icon_color">&#xe60c;</div>
-                </div>
-              </li>
+                <li class="item-content">
+                  <a class="item-inner external" id="address-maplink">
+                    <div class="addressText color-grey1"></div>
+                    <div class="item-after iconfont wg_item_icon_color">&#xe60c;</div>
+                  </a>
+                </li>
               <li class="item-content">
                 <a class="item-inner" href="" id="tele-wrap">
-                  <div class="item-title tele"></div>
+                  <div class="tele color-grey1"></div>
                   <div class="item-after iconfont wg_item_icon_color">&#xe60b;</div>
                 </a>
               </li>
             </ul>
           </div>
-          <div class="content-block-title" style="margin:0.4rem .75rem .5rem;">门店服务</div>
-          <div class="content-block-title" style="margin:0.4rem .75rem .5rem;">
-            <div class="wg_service_icon iconfont wg_service_icon_choose">
-              <div class="wg_item_pro_bottom_knowledge">
-                <button class="btn2">
-                  &#xe606;
-                  <br>
-                  <span>摄影</span>
-                </button>
-                <!-- <div class="wg_item_pro_bottom_all">
-                <div class="wg_item_pro_bottom_bg"></div>
-                <div class="hintl">
-                  <div class="hintl-in1">
-                    <div class="hintl1"></div>
-                    <div class="hintl2">
-                      <img src="common/original/img/logo2.png"></div>
-                    <div class="hint3"></div>
-                  </div>
-                  <div class="popup-title">游客须知</div>
-                  <div class="hintl-in2">请查看您的网络是否正常。请查看您的网络是否正常。请查看您的网络是否正常。</div>
-                  <div class="hintl-in5">我知道了</div>
+          <div class="content-block-title">门店服务</div>
+          <div class="content-block-title" style="margin: 0 auto;text-align: center;line-height: 21px; background-color:#fff; padding:.5rem 0;" id="reservation-storeService">
+              <div class="wg_item_pro_bottom_all" id="service-warn" style="display: none;">
+              <div class="wg_item_pro_bottom_bg"></div>
+              <div class="hintl">
+                <div class="hintl-in1">
+                  <div class="hintl1"></div>
+                  <div class="hintl2">
+                    <img src="common/original/img/logo2.png"></div>
+                  <div class="hint3"></div>
                 </div>
+                <div class="popup-title">标题</div>
+                <div class="hintl-in2">内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容</div>
+                <div class="hintl-in5 close-warn">我知道了</div>
               </div>
-              -->
             </div>
+           
+            <div class="wg_service_icon iconfont">
+
+              <span class="btn2">
+                <p class="m0 reservation-serviceList iconfont">&#xe606;</p>
+                <p class="m0 wg_service_icon_title">摄影</p>
+              </span>
           </div>
-          <div class="wg_service_icon iconfont wg_service_icon_choose">
-            &#xe604;
-            <br>
-            <span>化妆</span>
+          <div class="wg_service_icon iconfont">
+            <span class="btn2">
+              <p class="m0 reservation-serviceList iconfont">&#xe604;</p>
+              <p class="m0 wg_service_icon_title">化妆</p>
+            </span>
           </div>
-          <div class="wg_service_icon iconfont wg_service_icon_choose">
-            &#xe607;
-            <br>
-            <span>服装</span>
+          <div class="wg_service_icon iconfont">
+            <span class="btn2">
+              <p class="m0 reservation-serviceList iconfont">&#xe607;</p>
+              <p class="m0 wg_service_icon_title">服装</p>
+            </span>
           </div>
-          <div class="wg_service_icon iconfont wg_service_icon_choose">
-            &#xe608;
-            <br>
-            <span>修图</span>
+          <div class="wg_service_icon iconfont">
+            <span class="btn2">
+              <p class="m0 reservation-serviceList iconfont">&#xe608;</p>
+              <p class="m0 wg_service_icon_title">修图</p>
+            </span>
           </div>
-          <div class="wg_service_icon iconfont wg_service_icon_choose">
-            &#xe60a;
-            <br>
-            <span>美甲美瞳</span>
+          <div class="wg_service_icon iconfont">
+            <span class="btn2">
+              <p class="m0 reservation-serviceList iconfont">&#xe60a;</p>
+              <p class="m0 wg_service_icon_title">美甲美瞳</p>
+            </span>
           </div>
-          <div class="wg_service_icon iconfont wg_service_icon_unchoose">
-            &#xe605;
-            <br>
-            <span>沙龙</span>
+          <div class="wg_service_icon iconfont">
+            <span class="btn2">
+              <p class="m0 reservation-serviceList iconfont">&#xe605;</p>
+              <p class="m0 wg_service_icon_title1">沙龙</p>
+            </span>
           </div>
-          <div class="wg_service_icon iconfont wg_service_icon_unchoose">
-            &#xe609;
-            <br>
-            <span>咖啡</span>
+          <div class="wg_service_icon iconfont">
+            <span class="btn2">
+              <p class="m0 reservation-serviceList iconfont">&#xe609;</p>
+              <p class="m0 wg_service_icon_title1">咖啡</p>
+            </span>
           </div>
         </div>
       </div>
-      <button class="wg_button_type1 bgc_blue1 reservation-checkBtn" style="width: 90%;font-size: 18px; margin-top: 20px;">选择套餐</button>
+      <button class="wg_button_type1 bgc_blue1 reservation-checkBtn" style="width: 95%;margin-top: 15px; height: 2rem;">选择套餐</button>
+      <div style="height: 58px;"></div>
     </div>
     <div id="footer"></div>
   </div>
@@ -119,6 +123,11 @@
 <script src="common/original/js/zepto.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="common/original/js/sm.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="common/original/js/sm-extend.js" type="text/javascript" charset="utf-8"></script>
-<script src="common/original/js/require.js" data-main="common/original/js/show-reservation" type="text/javascript" charset="utf-8"></script>
+<script src="common/original/js/cookie.js" type="text/javascript" charset="utf-8"></script>
+<script src="common/original/js/public_parameters.js" type="text/javascript" charset="utf-8"></script>
+<script src="common/original/js/citylist.js" type="text/javascript" charset="utf-8"></script>
+<script src="common/original/js/choosedate.js" type="text/javascript" charset="utf-8"></script>
+<script src="common/original/js/common.js" type="text/javascript" charset="utf-8"></script>
+<script src="common/original/js/store.js" type="text/javascript" charset="utf-8"></script>
 </body>
 </html>

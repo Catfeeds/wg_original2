@@ -135,8 +135,7 @@ button {
   background: none;
   border: 0;
   outline: none;
-  color: #fff;
-  color: #f08302; }
+  color: #0894ec; }
 
 .hintl {
   width: 80%;
@@ -302,15 +301,22 @@ button {
   color: #0894ec; }
 
 .content-block-title .wg_service_icon {
-  float: left;
-  margin-left: 2%;
-  width: 12%;
-  font-size: 25px;
+  display: inline-block;
+  margin: 0 1.5%;
   text-align: center; }
   .content-block-title .wg_service_icon span {
     font-size: .32rem; }
 .content-block-title .wg_service_icon_choose {
-  color: #0894ec; }
+  color: #0894ec;
+  font-size: 1rem; }
+.content-block-title .wg_service_icon_title {
+  font-size: .5rem; }
+.content-block-title .wg_service_icon_title1 {
+  font-size: .5rem;
+  color: #666; }
+.content-block-title .wg_service_icon_unchoose {
+  color: #666;
+  font-size: 1rem; }
 
 .item-title-row .wg_order_choose {
   line-height: 25px;

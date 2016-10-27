@@ -12,7 +12,7 @@
 <div style="line-height:200%;padding:10px 20px;">
 支付状态：<if condition="$thisOrder.paid eq 1">已付款<else/>未付款</if><br>
 <if condition="$thisOrder.paid eq 1">购买状态：<if condition="$thisOrder.beDistri eq 1"><span style="color:green">首次购买</span><else/><span style="color:red">非首次购买</span></if><br></if>
-订购人：{wghd:$thisOrder.truename}<br>
+预约人：{wghd:$thisOrder.truename}<br>
 电话：{wghd:$thisOrder.tel}<br>
 地址：{wghd:$thisOrder.province}{wghd:$thisOrder.city}{wghd:$thisOrder.county}{wghd:$thisOrder.address}<br>
 备注信息：{wghd:$thisOrder.remark}<br>
@@ -32,26 +32,26 @@
         <th><span class="red">*</span>支付状态：</th> 
         <td><select name="paid"><option value="0" <if condition="$thisOrder.paid eq 0">selected</if>>未付款</option><option value="1" <if condition="$thisOrder.paid eq 1">selected</if>>已付款</option></select></td> 
        </tr> 
-       <tr> 
+       <!-- <tr> 
         <th><span class="red">*</span>发货状态：</th> 
         <td><select name="sent"><option value="0" <if condition="$thisOrder.sent eq 0">selected</if>>未发货</option><option value="1" <if condition="$thisOrder.sent eq 1">selected</if>>已发货</option></select></td> 
-       </tr>
-	   <tr> 
+       </tr> -->
+	   <!-- <tr> 
         <th><span class="red">*</span>收货状态：</th> 
         <td><select name="receive"><option value="0" <if condition="$thisOrder.receive eq 0">selected</if>>未收货</option><option value="1" <if condition="$thisOrder.receive eq 1">selected</if>>已收货</option></select></td> 
-       </tr>
+       </tr> -->
 	   <tr> 
         <th><span class="red">*</span>退款状态：</th> 
         <td><select name="returnMoney"><option value="0" <if condition="$thisOrder.returnMoney eq 0">selected</if>>未申请</option><option value="1" <if condition="$thisOrder.returnMoney eq 1">selected</if>>未退款</option><option value="2" <if condition="$thisOrder.returnMoney eq 2">selected</if>>已退款</option></select></td> 
        </tr> 
-       <tr> 
+       <!-- <tr> 
         <th><span class="red">*</span>快递公司：</th>
         <td><input type="text" name="logistics" value="{wghd:$thisOrder.logistics}" class="px" style="width:200px;" /></td> 
        </tr>
         <tr> 
         <th><span class="red">*</span>快递单号：</th>
         <td><input type="text" name="logisticsid" value="{wghd:$thisOrder.logisticsid}" class="px" style="width:200px;" /></td> 
-       </tr>
+       </tr> -->
        
        <tr>         
        <th>&nbsp;</th>
@@ -79,24 +79,11 @@
 <volist name="products" id="o"> 
 <tr>
 <td align="center">
-<img src="{wghd:$o.logourl}"  width="100"/><br>{wghd:$o.name}</td>
+{wghd:$o.name}</td>
 <td align="center">
-<if condition="empty($o['detail']) neq true">
-<volist name="o['detail']" id="row">
-单价：￥{wghd:$row.price}<br/>
-{wghd:$o.colorTitle}<if condition="empty($row['colorName']) neq true">：{wghd:$row.colorName}<br/></if>
-{wghd:$o.formatTitle}<if condition="empty($row['formatName']) neq true">：{wghd:$row.formatName}<br/></if>
-数量：{wghd:$row.count}<br/>
-</volist>
-<else/>
-数量：{wghd:$o.count}<br/>
-</if>
+  {wghd:$o.attribute}
 </td>
-<if condition="empty($o['detail']) neq true">
-<td align="center"><php>{echo $o['detail'][0]['price'];}</php></td>
-<else/>
-<td align="center">{wghd:$o.price}</td>
-</if>
+<td align="center">{wghd:$o.total_price}</td>
 </tr>
 </volist>
 </tbody>

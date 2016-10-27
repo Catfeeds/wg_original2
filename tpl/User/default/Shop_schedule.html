@@ -1,0 +1,69 @@
+<include file="Public:head"/>
+<link rel="stylesheet" type="text/css" href="{wghd::RES}/css/cymain.css" />  
+ <div class="content">
+<div class="cLineB">
+<h4 class="left">日程列表</h4>
+<div class="clr"></div>
+</div>
+<!--tab start-->
+
+<!--tab end-->
+<div class="cLine">
+<div class="pageNavigator left">
+<a href="{wghd::U('Shop/additionalTime',array('token'=>$token,'id'=>$_GET['id'],'storename'=>$storename,'type'=>'add'))}" title="添加" class="btnGrayS vm bigbtn">
+<img src="{wghd::RES}/images/product/add.png" width="16" class="vm">添加日程安排</a>
+
+
+</div>
+<!-- 
+<div style="text-align: center; font-size: 15px" float="left">
+  <span>
+              <form action="" method="post">
+              城市关键词：
+              <input type="text" name="searchkey" class="px" value="{wghd:$Think.request.searchkey}" style="width: 200px;">
+              <input type="submit" class="btnGrayS" value="搜索"style="font-size: 15px !important;
+    background-color: #53A953 !important;
+    color: #fff !important;">
+               </form>
+    </span>
+</div>  -->
+
+<div class="clr"></div>
+</div>
+<div class="msgWrap">
+<form method="post" action="" id="info">
+<input name="delall" type="hidden" value="">
+<input name="wxid" type="hidden" value="">
+<table class="ListProduct" border="0" cellspacing="0" cellpadding="0" width="100%">
+<thead>
+<tr>
+<th width="100">日期</th>
+<th width="100">店铺</th>
+<th width="100" class="norightborder">操作</th>
+</tr>
+</thead>
+<tbody>
+<tr></tr>
+<volist name="list" id="hostlist"> 
+<tr>
+<td hidden >{wghd:$hostlist.id}</td>
+<td>{wghd:$hostlist.time|date="Y-m-d",###}</td>
+<td>{wghd:$storename}</td>
+<td class="norightborder">
+
+	<a href="{wghd::U('Shop/dataEdit',array('token'=>$token,'id'=>$hostlist['id']))}">详情</a>
+</td>
+</tr>
+</volist>
+</tbody>
+</table>
+</form>
+</div>
+<div class="cLine">
+<div class="pageNavigator right">
+<div class="pages">{wghd:$page}</div>
+</div>
+<div class="clr"></div>
+</div>
+</div>
+<include file="Public:footer"/>

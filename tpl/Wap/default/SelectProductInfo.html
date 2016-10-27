@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>个人中心</title>
+    <title>细节选择</title>
     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
     <link rel="shortcut icon" href="/favicon.ico">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -12,183 +11,32 @@
     <link rel="stylesheet" href="common/original/css/sm.min.css">
     <link rel="stylesheet" href="common/original/css/sm-extend.css">
     <link rel="stylesheet" href="common/original/css/style.css">
-    <link rel="stylesheet" type="text/css" href="common/original/css/main.css"></head>
+</head>
 
 <body>
     <div class="page-group">
         <div class="page page-current" id="select_products_info_wrap">
             <div class="content">
-                <style type="text/css">
-                .list-block {
-                    margin: 0;
-                }
-                
-                .list-block .item-link .item-inner {
-                    background-image: none;
-                    padding: 0;
-                }
-                
-                .list-block.media-list .item-title {
-                    font-size: 0.5rem;
-                    line-height: 1.8rem;
-                }
-                
-                .item-after span {
-                    color: #000;
-                }
-                
-                .list-block .item-after {
-                    color: #0894ec;
-                    font-size: 0.5rem;
-                    line-height: 1.8rem;
-                }
-
-                .list-block .item-after .item-after-money{
-                    color: #0894ec;
-                }
-                
-                .list-block.media-list .item-title-row {
-                    padding: 0px 2%;
-                    background-color: #fff;
-                }
-                .extent-flex-start{
-                    -webkit-justify-content: flex-start !important;
-                    justify-content: flex-start !important;
-                }
-                .extend-mr7{
-                    margin-right: 7px;
-                }
-                .list-block.media-list .item-inner,
-                .list-block .item-inner {
-                    padding-right: 0;
-                    padding-top: 0;
-                }
-                .bb_1_s{
-                    border-bottom: 1px solid #e7e7e7;
-                }
-                .bb_1_s_pb_5{
-                    border-bottom: 1px solid #e7e7e7 !important;
-                    padding-bottom: 5px !important;
-                }
-                .lh25{
-                    line-height: 25px !important;
-                }
-                .choose-active{
-                    background-color: #0894ec;
-                    border: none !important;
-                    padding: 2px 6px !important;
-                    color: #fff;
-                }
-                </style>
-                <div class="list-block media-list" id="choose_products_info">
-                    <div class="item-inner">
-                        <div class="item-title-row">
-                            <div class="item-title wg_order_choose_title">签证照</div>
-                            <div class="item-after">
-                                <span>合计：</span>
-                                ￥
-                                <span class="item-after-money">99.00</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="item-inner">
-                        <div class="item-title-row bb_1_s">
-                            <div class="item-title wg_order_choose_title">证件照</div>
-                        </div>
-                        <div class="item-title-row">
-                            <div class="item-title">升级体验</div>
-                            <div class="item-after iconfont">升级体验说明&#xe60d;</div>
-                        </div>
-                        <div class="item-title-row">
-                            <div class="item-title wg_order_choose_color card-product-color card-product-blue">蓝色</div>
-                            <div class="item-title wg_order_choose_color card-product-color card-product-white">白色</div>
-                            <div class="item-title wg_order_choose_color card-product-color card-product-red">红色</div>
-                            <div class="item-title wg_order_choose_color card-product-color card-product-yellow">芽黄</div>
-                            <div class="item-title wg_order_choose_color card-product-color card-product-gray">灰色</div>
-                        </div>
-
-                        <div class="item-title-row">
-                            <div class="item-title"></div>
-                            <div class="item-after">
-                                <span>合计：</span>
-                                ￥<span class="item-after-money" class="product-price"></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="item-inner">
-                        <div class="item-title-row bb_1_s">
-                            <div class="item-title wg_order_choose_title">结婚登记照</div>
-                        </div>
-                        <div class="item-title-row">
-                            <div class="item-title">升级体验</div>
-                            <div class="item-after iconfont">升级体验说明&#xe60d;</div>
-                        </div>
-                        <div class="item-title-row">
-                            <div class="item-title  wg_order_choose">搞怪结婚照</div>
-                        </div>
-                        <div class="item-title-row">
-                            <div class="item-title"></div>
-                            <div class="item-after">
-                                <span>合计：</span>￥<span class="item-after-money product-price">99</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="item-inner">
-                        <div class="item-title-row bb_1_s">
-                            <div class="item-title wg_order_choose_title">文艺照</div>
-                        </div>
-                        <div class="item-title-row">
-                            <div class="item-title">选择类型</div>
-                        </div>
-                        <div class="item-title-row bb_1_s_pb_5">
-                            <div class="item-title  wg_order_choose lh25 choose-active">单人</div>
-                            <div class="item-title  wg_order_choose lh25">闺蜜</div>
-                            <div class="item-title  wg_order_choose lh25">亲子</div>
-                            <div class="item-title  wg_order_choose lh25">情侣</div>
-                        </div>
-                        <div class="item-title-row bb_1_s">
-                            <div class="item-title">闺蜜拍摄人数</div>
-                            <div class="item-after">
-                                <div class="product-photo-reduce">-</div>
-                                <div class="product-photo-num">1</div>
-                                <div class="product-photo-add">+</div>
-                            </div>
-                        </div>
-                        <div class="item-title-row">
-                            <div class="item-title">升级体验</div>
-                            <div class="item-after iconfont">升级体验说明&#xe60d;</div>
-                        </div>
-                        <div class="item-title-row bb_1_s_pb_5">
-                            <div class="item-title  wg_order_choose lh25">搞怪结婚照</div>
-                        </div>
-                        <div class="item-title-row">
-                            <div class="item-title"></div>
-                            <div class="item-after iconfont">
-                                <span>合计：</span>
-                                ￥
-                                <span class="item-after-money product-price">99</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <div class="list-block media-list" id="choose_products_info"></div>
                 <div style="height: 40px;"></div>
+            </div>
                 <div class="wg_order_pay">
-                    <div class="wg_order_pay_all">
-                        总计：
-                        <span>￥<span id="total_price"></span></span>
+                    <div class="wg_order_pay_all f7">
+                        总计：￥<span id="total_price" class="f7"></span>
                     </div>
                     <div class="wg_order_pay_again" id="next_btn">下一步</div>
                 </div>
-            </div>
         </div>
     </div>
     <script src="common/original/js/zepto.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="common/original/js/sm.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="common/original/js/sm-extend.js" type="text/javascript" charset="utf-8"></script>
-    <script src="common/original/js/require.js" data-main="common/original/js/show-reservation" type="text/javascript" charset="utf-8"></script>
+    <script src="common/original/js/cookie.js" type="text/javascript" charset="utf-8"></script>
+    <script src="common/original/js/public_parameters.js" type="text/javascript" charset="utf-8"></script>
+    <script src="common/original/js/citylist.js" type="text/javascript" charset="utf-8"></script>
+    <script src="common/original/js/choosedate.js" type="text/javascript" charset="utf-8"></script>
+    <script src="common/original/js/common.js" type="text/javascript" charset="utf-8"></script>
+    <script src="common/original/js/store.js" type="text/javascript" charset="utf-8"></script>
 </body>
 
 </html>

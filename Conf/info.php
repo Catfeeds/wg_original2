@@ -3,7 +3,7 @@ return array (
   'site_name' => '微广互动多用户分销系统',
   'site_title' => '微广互动分销平台',
   'site_logo' => 'tpl/Home/pigcms/common/images/logo-pigcms.png',
-  'site_url' => 'http://yxmr.tzwg.net',
+  'site_url' => 'http://bmy.tzwg.net/',
   'site_my' => '小小',
   'server_key' => 'b135ba612d3f5a1d2a07f4a72fb253e6',
   'server_topdomain' => 'tzwg.net',
