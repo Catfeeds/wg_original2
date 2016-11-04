@@ -52,7 +52,6 @@ $(function($) {
 			var $reservationDate = $(selector); // 目标容器
 			var monthArr = new Array('一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月');
 			var storeId = cookie.get('storeId');
-			console.log(storeId);
 			$.showPreloader();
 			$.get(total_url + 'index.php?g=Wap&m=Store&a=getWorkDate&storeId=' + storeId, function(data) {
 				data = eval('(' + data + ')');
@@ -85,10 +84,10 @@ $(function($) {
 						// 判断是否需要风控
 						if (!((dateK.couponLimit >= spareCount) && (dateK.needRM === 1))) {
 							// 判断是否有余量, 若无余量, 则设置off状态
-							if ((spareCount > 0 && spareCount <= 20 && countPlaceHold <= spareCount)) {
+							if ((spareCount > 0 && spareCount <= 5 && countPlaceHold <= spareCount)) {
 								nodeStatus = '';
 								spareHtml = '<span class=\"reservation-timeNum\">余 ' + spareCount + '</span>';
-							} else if (spareCount > 20) {
+							} else if (spareCount >= 5) {
 								nodeStatus = '';
 								spareHtml = '<span class=\"reservation-timeNum\"></span>';
 							} else {
@@ -253,12 +252,9 @@ $(function($) {
 			var $headDateNode = $('.reservation-dateNum');
 			var $timeListNode = $('.reservation-timeList'); // 时间节点目标容器
 			var storeId = cookie.get('storeId');
-			console.log(storeId);
-			console.log(dateFormat);
 			$.get(total_url + 'index.php?g=Wap&m=Store&a=getWorkTime',{storeId:storeId,dateFormat:dateFormat}, function(data) {
 				$.hidePreloader();
 				data = eval('(' + data + ')');
-				console.log(data);
 				// 获得时间节点列表
 				if (data.error === 0) {
 					var dateN = data.msg;
@@ -305,7 +301,26 @@ $(function($) {
 						setTimeout(function() {
 							cookie.set('orderTime', orderTime); // 设置预约时间, 用cookie传到下一页
 							cookie.set('createTime', createTime); // 创建订单时间
-							$.router.load('orders.html');
+							//判断是否是改约
+							var change_rtime_id = cookie.get('order_chang_rtime_id');
+							if(change_rtime_id != ''){
+								$.ajax({
+									url:total_url+'index.php?g=Wap&m=Distribution&a=changeOrderRtime',
+									data:{id:change_rtime_id,newrtime:orderTime/1000},
+									dataType:'json',
+									type:'post',
+									success:function(data){
+										cookie.set('order_chang_rtime_id','');
+										$.alert(data.info,function(){
+											$.router.load('myorders.html');
+										});
+									}
+								});
+							}else{
+								//订单倒计时清空
+								cookie.set('last_time','');
+								$.router.load('orders.html');
+							}
 						}, 500);
 					});
 				} else if (data.error === 401) {
@@ -322,5 +337,4 @@ $(function($) {
 			});
 		}
 	});
-		$.init();
 });

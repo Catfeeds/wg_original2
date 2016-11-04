@@ -38,9 +38,27 @@ afterBlur: function(){this.sync();}
   <form method="post" action="" id="formID">
     <input type="hidden" name="token" value="{wghd:$token}">
     <input type="hidden" name="id" id="id" value="{wghd:$set.id}"/>
+    <input type="hidden" name="storeid" value="{wghd:$set.storeid}">
     <div class="msgWrap bgfc">
       <table class="userinfoArea" style=" margin:0;" border="0" cellspacing="0" cellpadding="0" width="100%">
         <tbody>
+          <tr>
+            <th>
+              所属店铺：
+            </th>
+            <td>
+              <notempty name="set">
+                <input type="text" value="{wghd:$set.store.name}" readonly="true"  style="width:400px;" />
+                <else/>
+                <input type="text" value="{wghd:$storename}" readonly="true"  style="width:400px;" />
+                <!-- <select name="storeid">
+                              <volist id="list" name="store_list">
+                                <option value="{wghd:$list.id}">{wghd:$list.name}</option>
+                              </volist>
+                            </select> -->
+              </notempty>
+            </td>
+          </tr>
           <tr>
             <th>
               <span class="red">*</span>
@@ -166,6 +184,16 @@ afterBlur: function(){this.sync();}
       <script>
         $('#type').on('change',function(){
          var type = $(this).val();
+         // if(type == 1 || type == 2){
+         //  $('#re-price-item').hide();
+         // }else{
+         //  $('#re-price-item').show();
+         // }
+         if(type == 0){
+          $('.color-wrap').hide();
+          $('.art-wrap').hide();
+          $('.whimsy-merry-wrap').hide();
+         }
          if(type == 1){
           $('.color-wrap').show().siblings('.extend-wrap').hide();
          }
@@ -215,17 +243,17 @@ afterBlur: function(){this.sync();}
        </style>
   <tr id="norms_wrap"></tr>
   <tr></tr>
-  <tr>
+  <tr id="re-price-item">
     <th>
       <span class="red">*</span>
       预约价：
     </th>
     <td>
-      <input type="text" id="price" name="price" value="{wghd:$set.price|default=0}" class="validate norms_control px" data-warn="预约价不能为空"/>
+      <input type="text" id="price" name="price" value="{wghd:$set.price|default=0}" class="norms_control px" data-warn="预约价不能为空"/>
       元
     </td>
   </tr>
-  <tr>
+  <!-- <tr>
     <th>
       <span class="red">*</span>
       市场价：
@@ -234,7 +262,10 @@ afterBlur: function(){this.sync();}
       <input type="text" id="oprice" name="oprice" value="{wghd:$set.oprice|default=0}" class="px"/>
       元
     </td>
-  </tr>
+  </tr> -->
+
+
+
   <if condition="$isgroup eq 1">
     <tr>
       <th>
@@ -265,13 +296,13 @@ afterBlur: function(){this.sync();}
     (0为不限购)
   </td>
 </tr> -->
-<tr>
+<!-- <tr>
   <th>预约基数：</th>
   <td>
     <input type="text" id="fakemembercount" name="fakemembercount" value="{wghd:$set.fakemembercount}" class="px"/>
     (如果您不做假数据就设置为0)
   </td>
-</tr>
+</tr> -->
 <tr>
   <th>是否下架：</th>
   <td>
@@ -291,7 +322,7 @@ afterBlur: function(){this.sync();}
 元
 </td>
 </tr> -->
-<tr>
+<!-- <tr>
 <th>
 <span class="red">*</span>
 关键词：
@@ -299,8 +330,8 @@ afterBlur: function(){this.sync();}
 <td>
 <input type="text" name="keyword" id="keyword" value="{wghd:$set.keyword}" class="px" style="width:400px;" />
 </td>
-</tr>
-<tr>
+</tr> -->
+<!-- <tr>
 <th>Logo地址：</th>
 <td>
 <input type="text" name="logourl" value="{wghd:$set.logourl}" class="px" id="pic" style="width:400px;" />
@@ -308,7 +339,7 @@ afterBlur: function(){this.sync();}
 <a href="###" onclick="upyunPicUpload('pic',700,700,'{wghd:$token}')" class="a_upload">上传</a>
 <a href="###" onclick="viewImg('pic')">预览</a>
 </td>
-</tr>
+</tr> -->
 <!-- <tr>
 <th>展示图片一：</th>
 <td>
@@ -372,20 +403,20 @@ afterBlur: function(){this.sync();}
 数字越大排在越前（大于等于0的整数）
 </td>
 </tr>
-<tr>
+<!-- <tr>
 <th>简介：</th>
 <td>
 <input type="text" id="des" name="des" value="{wghd:$set.des}" class="px" style="width:640px;" />
 </td>
-</tr>
-<!-- <TR>
+</tr> -->
+<TR>
 <TH valign="top">
 <label for="info">图文详细页内容：</label>
 </TH>
 <TD>
 <textarea name="intro" id="intro"  rows="5" style="width:590px;height:360px">{wghd:$set.intro}</textarea>
 </TD>
-</TR> -->
+</TR>
 <tr>
 <th>&nbsp;</th>
 <td>
@@ -400,10 +431,12 @@ afterBlur: function(){this.sync();}
 </form>
 </div>
 <script type="text/javascript">
+
 var href = "{wghd::U('Store/product',array('token'=>$token,'catid'=>$catid,'parentid'=>$_GET['parentid'],'p'=>$_GET['p']))}";
 var pid = "{wghd:$set.id}";
 var pdataJson = {wghd:$pdataJson};
 var color_name = "{wghd:$productCatData.color}";
 var format_name = "{wghd:$productCatData.norms}";
+
 </script>
 <include file="Public:footer" />

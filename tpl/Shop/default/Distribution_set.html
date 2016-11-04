@@ -1,0 +1,78 @@
+<include file="Public:head"/>
+<link rel="stylesheet" href="{wghd::STATICS}/kindeditor/themes/default/default.css" />
+<link rel="stylesheet" href="{wghd::STATICS}/kindeditor/plugins/code/prettify.css" />
+<script src="{wghd::STATICS}/kindeditor/kindeditor.js" type="text/javascript"></script>
+<script src="{wghd::STATICS}/kindeditor/lang/zh_CN.js" type="text/javascript"></script>
+<script src="{wghd::STATICS}/kindeditor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="/tpl/static/artDialog/jquery.artDialog.js?skin=default"></script>
+<script src="/tpl/static/artDialog/plugins/iframeTools.js"></script>
+<script>
+
+var editor;
+KindEditor.ready(function(K) {
+editor = K.create('#process', {
+resizeType : 1,
+allowPreviewEmoticons : false,
+allowImageUpload : true,
+uploadJson : '/index.php?g=User&m=Upyun&a=kindedtiropic',
+items : [
+						'source','fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+						'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+						'insertunorderedlist', '|', 'emoticons', 'image', 'multiimage', 'link', 'music', 'video']
+});
+
+});
+</script>
+<div class="content">
+
+<div class="cLineB">
+  <h4>分销基础设置</h4>
+ </div>
+ 
+         <form class="form" method="post" action="" target="_top" enctype="multipart/form-data">
+         
+         <div class="msgWrap bgfc">
+  	 
+<table class="userinfoArea" style="margin:0;" border="0" cellspacing="0" cellpadding="0" width="100%"><tbody>
+ <tr>
+<th style="width:150px;color:red">三级分佣比例</th>
+</tr>
+ <tr>
+<th style="width:150px;">一维分销佣金比例：</th>
+<td><input type="text" name="firstPer" value="{wghd:$set.firstPer}" class="px" style="width:50px;" id="firstPer">&nbsp;%
+</td>
+</tr>
+ <tr>
+<th style="width:150px;">二维分销佣金比例：</th>
+<td><input type="text" name="secondPer" value="{wghd:$set.secondPer}" class="px" style="width:50px;" id="secondPer">&nbsp;%
+</td>
+</tr>
+ <tr>
+<th style="width:150px;">三维分销佣金比例：</th>
+<td><input type="text" name="thirdPer" value="{wghd:$set.thirdPer}" class="px" style="width:50px;" id="thirdPer">&nbsp;%
+</td>
+</tr>
+ <tr>
+<th style="width:150px;">起始会员数量：</th>
+<td><input type="text" name="startNums" value="{wghd:$set.startNums}" class="px" style="width:50px;" id="startNums">&nbsp;个
+</td>
+</tr>
+                <TR>
+                  <TH valign="top"><label for="info">佣金结算流程说明：</label></TH>
+                  <TD><textarea name="process" id="process"  rows="5" style="width:590px;height:360px">{wghd:$set.process}</textarea></TD>
+                </TR>
+<tr>
+<td>&nbsp;</td>
+<td><button type="submit" name="button" class="btnGreen">保存</button>
+</td>
+</tr>
+
+</tbody>
+</table>
+</div> 
+  
+ </form>
+  
+        </div>
+<include file="Public:footer"/>  
+ 

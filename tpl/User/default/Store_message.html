@@ -1,0 +1,56 @@
+<include file="Public:head"/>
+<link rel="stylesheet" type="text/css" href="{wghd::RES}/css/cymain.css" />  
+ <div class="content">
+<div class="cLineB">
+<h4 class="left">反馈列表</h4>
+<div class="clr"></div>
+<include file="Store:tab"/>
+<!--tab end-->
+<div class="cLine">
+<div class="pageNavigator left">
+
+
+
+</div>
+
+
+<div class="clr"></div>
+</div>
+<div class="msgWrap">
+<form method="post" action="" id="info">
+<input name="delall" type="hidden" value="">
+<input name="wxid" type="hidden" value="">
+<table class="ListProduct" border="0" cellspacing="0" cellpadding="0" width="100%">
+<thead>
+<tr>
+
+<th width="100">编号</th>
+<th width="100">用户</th>
+<th width="100">日期</th>
+<th width="100" class="norightborder">操作</th>
+</tr>
+</thead>
+<tbody>
+<tr></tr>
+<volist name="list" id="hostlist"> 
+<tr>
+<td>{wghd:$hostlist.id}</td>
+<td>{wghd:$hostlist.id}</td>
+<td>{wghd:$hostlist.addtime|date="Y-m-d ",###}</td>
+<td class="norightborder">
+	<a href="{wghd::U('Store/msgConte',array('token'=>$token,'id'=>$hostlist['id']))}">详情</a>
+</td>
+</tr>
+</volist>
+</tbody>
+</table>
+</form>
+</div>
+<div class="cLine">
+<div class="pageNavigator right">
+<div class="pages">{wghd:$page}</div>
+</div>
+<div class="clr"></div>
+</div>
+</div>
+<include file="Public:footer"/>

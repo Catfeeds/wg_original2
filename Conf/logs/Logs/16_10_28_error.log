@@ -1,0 +1,9 @@
+[ 2016-10-28T11:06:17+08:00 ] ERR: (ThinkException) _ERROR_ACTION_:shoppingCoupons
+[ 2016-10-28T11:06:26+08:00 ] ERR: (ThinkException) La table 'original2_data.pigcms_counpons' n'existe pas
+ [ SQL语句 ] : SHOW COLUMNS FROM `pigcms_counpons`
+[ 2016-10-28T14:41:42+08:00 ] ERR: (ThinkException) Erreur de syntaxe près de 'LIMIT 1' à la ligne 1
+ [ SQL语句 ] : SELECT * FROM `pigcms_coupons` WHERE id= LIMIT 1  
+[ 2016-10-28T14:42:00+08:00 ] ERR: (ThinkException) Erreur de syntaxe près de 'LIMIT 1' à la ligne 1
+ [ SQL语句 ] : SELECT * FROM `pigcms_coupons` WHERE id= LIMIT 1  
+[ 2016-10-28T14:42:12+08:00 ] ERR: (ThinkException) Erreur de syntaxe près de 'LIMIT 1' à la ligne 1
+ [ SQL语句 ] : SELECT * FROM `pigcms_coupons` WHERE id= LIMIT 1  

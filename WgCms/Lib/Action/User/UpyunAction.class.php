@@ -480,6 +480,11 @@ class UpyunAction extends UserAction{
 	function editorUpload(){
 		echo $json->encode(array('error' => 1, 'message' => $msg));
 	}
+	function test($dir_pic,$fh){
+		$api_access = array(UpYun::ED_AUTO, UpYun::ED_TELECOM, UpYun::ED_CNC, UpYun::ED_CTT);
+		$upyun_pic = new UpYun(UNYUN_BUCKET, UNYUN_USERNAME, UNYUN_PASSWORD, $api_access[0]);
+		return $upyun_pic->writeFile($dir_pic, $fh, True);
+	}
 	function kindedtiropic(){
 		if ($this->upload_type=='upyun'){
 			$upyun_pic = new UpYun(UNYUN_BUCKET, UNYUN_USERNAME, UNYUN_PASSWORD, $api_access[0]);

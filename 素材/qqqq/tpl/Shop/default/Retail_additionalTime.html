@@ -1,0 +1,128 @@
+<include file="Public:head" />
+<script language="javascript" type="text/javascript" src="{wghd::RES}/My97DatePicker/WdatePicker.js"></script>
+<script language="javascript" type="text/javascript" src="{wghd::RES}/js/jquery-1.11.1.min.js"></script>
+<div class="content">
+  <div class="cLineB">
+    <h4>附加时间限制</h4>
+  </div>
+  <form class="form" method="post" action="" enctype="multipart/form-data" id="store-form">
+
+    <input type="hidden" name="id" value="{wghd:$set.id}" />
+    <input type="hidden" name="sid" value="{wghd:$sid}" />
+
+    <div class="msgWrap bgfc">
+      <table class="userinfoArea" style=" margin:0;" border="0" cellspacing="0" cellpadding="0" width="100%">
+        <tbody>
+        <tr>
+          <th>店铺:</th>
+          <td>
+           <p>{wghd:$store.name}</p>
+          </td>
+        </tr>
+          <tr>
+            <th>时间选择:</th>
+            <td>
+              <input class="Wdate" id="starttime" name="limittime" value = "
+              <?php
+              if($set['time']){
+                echo date("Y-m-d",$set['time']);
+              }else{
+                echo date("Y-m-d",time());
+              }              
+              ?>
+              "
+              type="text" 
+              onClick="WdatePicker()" style="width:190px">
+            </td>
+          </tr>
+
+          <input type="hidden" name="default_time" id="work_default_time">
+          <tr>
+            <th>设置预约个数：</th>
+            <td>
+              <input type="text" name="timeNums" class="px" id="default_time" style="width:120px;" value="{wghd:$set.timeNum}"/>
+            </td>
+          </tr>
+          <style>
+         .w15{
+          width: 15px;
+          margin: 0 10px 10px 5px;
+         }
+       </style>
+          <tr>
+            <th>具体设置：</th>
+            <td>
+              <form action="#" method="post" id="work-form">
+                <dl id="word-time">
+                 
+                </dl>
+              </form>
+            </td>
+          </tr>
+
+
+             <script>
+             console.log('defaultWorkTime');
+            var str='';
+            for (var i = 0; i < 10; i++) {
+               str += '<dt>';
+               for (var j = 0; j < 4; j++) {
+                 var h = 10+1*i;
+                 var mi = 00+15*j ==0?'00':00+15*j;
+                 str += '<span>'+h+':'+mi+'<input type="text" class="px w15 default-time-item"></span>';
+               }
+               str += '</dt>';
+               $('#word-time').html(str);
+            }
+            var defaultWorkTime = '{wghd:$set.defaultWorkTime}';
+            if(defaultWorkTime.length != 0){
+             w = eval('('+defaultWorkTime+')');
+             $('.default-time-item').each(function(index){
+                  $(this).val(w[index]);
+             })
+              
+            }
+
+            $('#default_time').bind('keyup',function(){
+              var work_num = parseInt($(this).val());
+              if(!isNaN(work_num)){
+               $('.default-time-item').val(work_num);
+              }else{
+               $('.default-time-item').val(0);
+              }
+            })
+          </script>
+
+
+          <th>&nbsp;</th>
+          <td>
+            <button type="submit" name="button" class="btnGreen" id="save-btn">保存</button>
+            &nbsp;
+            <a href="{wghd::U('Retail/schedule',array('token'=>$token,'sid'=>$_SESSION['sid']))}" class="btnGray vm">取消</a>
+          </td>
+        </tbody>
+      </table>
+    </div>
+  </form>
+  <script>
+     $('#save-btn').bind('click',function(){
+      //判断时间
+      var starttime=$("#starttime").val();
+      starttime = Date.parse(new Date(starttime))/1000;
+      var nowtime = Date.parse(new Date())/1000;
+
+      if(starttime < nowtime){
+        alert('日期有误');
+        return false;
+      }
+
+      var work_time_str = '';
+      $('.default-time-item').each(function(){
+        work_time_str += $(this).val() + ',';
+      })
+      $('#work_default_time').val(work_time_str);
+      $('#store-form').submit();
+     })
+   </script>
+</div>
+<include file="Public:footer" />

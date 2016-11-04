@@ -1,0 +1,36 @@
+<include file="Public:head" /> 
+<script src="/tpl/static/artDialog/jquery.artDialog.js?skin=default"></script>
+<script src="/tpl/static/artDialog/plugins/iframeTools.js"></script>
+  <div class="content"> 
+   <div class="cLineB"> 
+    <h4>展示分类设置</h4> 
+    <a href="{wghd::U('Store/showClass',array('token'=>$token,'parentid'=>$_GET['parentid']))}" class="right  btnGreen" style="margin-top:-27px">返回</a> 
+   </div> 
+   <form class="form" method="post" action="" enctype="multipart/form-data"> 
+    <input type="hidden" name="id" value="{wghd:$set.id}" /> 
+    <input type="hidden" name="cid" value="{wghd:$cid}" /> 
+    <input type="hidden" name="parentid" value="{wghd:$parentid}" /> 
+     
+    <div class="msgWrap bgfc"> 
+     <table class="userinfoArea" style=" margin:0;" border="0" cellspacing="0" cellpadding="0" width="100%"> 
+      <tbody>
+
+
+       <tr> 
+        <th><span class="red">*</span>展示名称：</th> 
+        <td><input type="text" name="name" value="{wghd:$set.name}" class="px" style="width:400px;" />
+          <input type="hidden" name="id" value="{wghd:$set.id}">
+        </td> 
+       </tr> 
+
+       <tr>         
+       <th>&nbsp;</th>
+       <td>
+       <button type="submit" name="button" class="btnGreen">保存</button> &nbsp; <a href="{wghd::U('Store/showClass',array('token'=>$token,'cid'=>$_GET['cid']))}" class="btnGray vm">取消</a></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+     </div>
+   </form> 
+  </div> 
+  <include file="Public:footer" />

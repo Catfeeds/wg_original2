@@ -16,14 +16,26 @@
         <tr>
           <th>店铺:</th>
           <td>
-           <p>{wghd:$_GET['storename']}</p>
+           <p>{wghd:$stores.name}</p>
           </td>
         </tr>
           <tr>
             <th>时间选择:</th>
+
+
+
             <td>
-              <input class="Wdate" id="starttime" name="limittime" value="{wghd:$set.time|date='Y-m-d',###}" type="text" onClick="WdatePicker()" style="width:190px">
+            <if condition="$set.time  neq null ">
+                <input class="Wdate" id="starttime" name="limittime" value="{wghd:$set.time|date="Y-m-d",###}" type="text" onClick="WdatePicker()" style="width:190px">     
+              <else/>
+                <input class="Wdate" id="starttime" name="limittime" value="" type="text" onClick="WdatePicker()" style="width:190px">
+            </if>
+            
             </td>
+
+
+
+
           </tr>
 
           <input type="hidden" name="default_time" id="work_default_time">
@@ -44,7 +56,7 @@
             <td>
               <form action="#" method="post" id="work-form">
                 <dl id="word-time">
-                 
+
                 </dl>
               </form>
             </td>
@@ -54,23 +66,24 @@
              <script>
              console.log('defaultWorkTime');
             var str='';
-            for (var i = 0; i < 10; i++) {
-               str += '<dt>';
-               for (var j = 0; j < 4; j++) {
-                 var h = 10+1*i;
-                 var mi = 00+15*j ==0?'00':00+15*j;
-                 str += '<span>'+h+':'+mi+'<input type="text" class="px w15 default-time-item"></span>';
-               }
-               str += '</dt>';
-               $('#word-time').html(str);
-            }
+            var h = 9.5;
+           for (var i = 0; i < 5; i++) {
+              str += '<dt>';
+              for (var j = 0; j < 4; j++) {
+                h += 0.5;
+                var mi = j%2 ==0?'00':00+30;
+                str += '<span>'+parseInt(h)+':'+mi+'<input type="text" class="px w15 default-time-item"></span>';
+              }
+              str += '</dt>';
+              $('#word-time').html(str);
+           }
             var defaultWorkTime = '{wghd:$set.defaultWorkTime}';
             if(defaultWorkTime.length != 0){
              w = eval('('+defaultWorkTime+')');
              $('.default-time-item').each(function(index){
                   $(this).val(w[index]);
              })
-              
+
             }
 
             $('#default_time').bind('keyup',function(){
@@ -88,7 +101,7 @@
           <td>
             <button type="submit" name="button" class="btnGreen" id="save-btn">保存</button>
             &nbsp;
-            <a href="{wghd::U('Shop/departList',array('token'=>$token))}" class="btnGray vm">取消</a>
+            <a href="{wghd::U('Shop/schedule',array('token'=>$token,'sid'=>$_GET['sid']))}" class="btnGray vm">取消</a>
           </td>
         </tbody>
       </table>

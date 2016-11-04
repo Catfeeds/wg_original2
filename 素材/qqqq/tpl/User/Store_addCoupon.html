@@ -1,0 +1,81 @@
+<include file="Public:head" />
+<script language="javascript" type="text/javascript" src="{wghd::RES}/My97DatePicker/WdatePicker.js"></script>
+<script language="javascript" type="text/javascript" src="{wghd::RES}/js/jquery-1.11.1.min.js"></script>
+<div class="content">
+  <div class="cLineB">
+    <h4>批量生成优惠券</h4>
+  </div>
+  <form class="form" method="post" action="" enctype="multipart/form-data" id="store-form">
+
+    <div class="msgWrap bgfc">
+      <table class="userinfoArea" style=" margin:0;" border="0" cellspacing="0" cellpadding="0" width="100%">
+        <tbody>
+
+
+          <tr>
+            
+            <th> <span style="color:red">*</span>截止时间:</th>
+            <td>
+              <input class="Wdate" id="starttime" name="endtime" value="{wghd:$time|date='Y-m-d',###}" type="text" onClick="WdatePicker()" style="width:190px">
+            </td>
+          </tr>
+
+
+          <tr>
+            <th><span style="color:red">*</span>抵用价格：</th>
+            <td>
+              <input type="text" name="price" class="px" id="default_time" style="width:120px;"/>
+            </td>
+          </tr>
+
+          <tr>
+             
+            <th><span style="color:red">*</span>最低消费：</th>
+            <td>
+              <input type="text" name="limitprice" class="px" id="default_time" style="width:120px;" />
+            </td>
+          </tr>
+
+          <tr>
+
+            <th><span style="color:red">*</span>生成数量：</th>
+            <td>
+              <input type="text" name="Nums" class="px" id="default_time" style="width:120px;"/>
+            </td>
+          </tr>
+
+
+          <th>&nbsp;</th>
+          <td>
+            <button type="submit" name="button" class="btnGreen" id="save-btn">生成</button>
+            &nbsp;
+            <a href="{wghd::U('Store/coupon',array('token'=>$token,'sid'=>$_SESSION['sid']))}" class="btnGray vm">取消</a>
+          </td>
+        </tbody>
+      </table>
+    </div>
+  </form>
+  <script>
+
+
+     $('#save-btn').bind('click',function(){
+      //判断时间
+      var starttime=$("#starttime").val();
+      starttime = Date.parse(new Date(starttime))/1000;
+      var nowtime = Date.parse(new Date())/1000;
+
+      if(starttime < nowtime){
+        alert('日期有误');
+        return false;
+      }
+
+      var work_time_str = '';
+      $('.default-time-item').each(function(){
+        work_time_str += $(this).val() + ',';
+      })
+      $('#work_default_time').val(work_time_str);
+      $('#store-form').submit();
+     })
+   </script>
+</div>
+<include file="Public:footer" />

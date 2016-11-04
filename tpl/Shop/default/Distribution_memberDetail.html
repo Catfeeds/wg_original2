@@ -1,0 +1,162 @@
+<include file="Public:head"/>
+<div class="content">
+
+<div class="cLineB">
+  <h4> 
+    会员详细信息 
+</h4>
+
+<a href="javascript:history.go(-1);" class="right btnGrayS vm" style="margin-top:-27px">返回</a>
+</div>
+
+         <div class="msgWrap bgfc">
+<table class="userinfoArea" style=" margin:0;float:left" border="0" cellspacing="0" cellpadding="0" width="50%"><tbody>
+<tr>
+<th width="120">微信名：</th>
+<td>{wghd:$member.nickname}</td>
+</tr>
+                            <tr>
+<th width="120">微信头像：</th>
+<td><img src="{wghd:$member.headimgurl}" width="80"></td>
+</tr>
+<tr>
+<th width="120">关注时间：</th>
+<td>{wghd:$member.createtime|date='Y-m-d',###}</td>
+</tr>
+<tr>
+<th width="120">来自好友：</th>
+<td><eq name="from_user" value="">{wghd:$wxuser.wxname}<else/>(会员ID：{wghd:$from_user.id}){wghd:$from_user.nickname}</eq></td>
+</tr>
+<tr>
+<th width="120">姓名：</th>
+<td>{wghd:$member.name}</td>
+</tr>
+<tr>
+<th width="120">联系电话：</th>
+<td>{wghd:$member.tele}</td>
+</tr>
+<tr>
+<th width="120">QQ：</th>
+<td>{wghd:$member.email}</td>
+</tr>
+<tr>
+<th width="120">地址：</th>
+<td>{wghd:$member.province}{wghd:$member.city}{wghd:$member.county}{wghd:$member.address}</td>
+</tr>
+</tbody>
+</table>
+<table class="userinfoArea" style=" margin:0;float:left" border="0" cellspacing="0" cellpadding="0" width="50%"><tbody>
+<tr>
+<th width="120">会员积分：</th>
+<td>{wghd::intval($totalScore)}&nbsp;分</td>
+</tr>
+<tr>
+<th width="120">累计销售：</th>
+<td>{wghd::sprintf("%.2f",$totalMoney/100)}&nbsp;元</td>
+</tr>
+<tr>
+<th width="120">累计佣金：</th>
+<td>{wghd::sprintf("%.2f",$totalOfferMoney/100)}&nbsp;元</td>
+</tr>
+<tr>
+<th width="120">分店总人数：</th>
+<td>{wghd::$member[firstNums]+$member[secondNums]+$member[thirdNums]}&nbsp;人</td>
+</tr>
+<tr>
+<th width="120">A分店个数：</th>
+<td>{wghd:$member.firstNums}&nbsp;人</td>
+</tr>
+                            <tr>
+<th width="120">B分店个数：</th>
+<td>{wghd:$member.secondNums}&nbsp;人</td>
+</tr>
+<tr>
+<th width="120">C分店个数：</th>
+<td>{wghd:$member.thirdNums}&nbsp;人</td>
+</tr>
+<tr>
+<th width="120">点击链接人数：</th>
+<td>{wghd:$member.clickNums}&nbsp;人</td>
+</tr>
+<tr>
+<th width="120">成功关注人数：</th>
+<td>{wghd:$member.followNums}&nbsp;人</td>
+</tr>
+<tr>
+<th width="120">分店下单购买：</th>
+<td>{wghd:$orderNums}&nbsp;单</td>
+</tr>
+<tr>
+<th width="120">正式A分店：</th>
+<td>{wghd:$distriCount}&nbsp;人</td>
+</tr>
+<!--tr>
+<th width="120">未付款订单佣金：</th>
+<td>{wghd::sprintf("%.2f",$order['status_0']/100)}&nbsp;元</td>
+</tr-->
+<tr>
+<th width="120">已付款订单佣金：</th>
+<td>{wghd::sprintf("%.2f",$order['status_1']/100)}&nbsp;元</td>
+</tr>
+<tr>
+<th width="120">未收货订单佣金：</th>
+<td>{wghd::sprintf("%.2f",$order['status_2']/100)}&nbsp;元</td>
+</tr>
+<tr>
+<th width="120">已收货订单佣金：</th>
+<td>{wghd::sprintf("%.2f",$order['status_3']/100)}&nbsp;元</td>
+</tr>
+<!--tr>
+<th width="120">已审核订单佣金：</th>
+<td>{wghd::sprintf("%.2f",$order['status_4']/100)}&nbsp;元</td>
+</tr-->
+<tr>
+<th width="120">可提现订单佣金：</th>
+<td>{wghd::sprintf("%.2f",($order['status_4']-$member['alreadyGetMoney'])/100)}&nbsp;元</td>
+</tr>
+<tr>
+<th width="120">已提现订单佣金：</th>
+<td>{wghd::sprintf("%.2f",$member['alreadyGetMoney']/100)}&nbsp;元</td>
+</tr>
+<tr>
+<th width="120">已退款订单佣金：</th>
+<td>{wghd::sprintf("%.2f",$order['status_-1']/100)}&nbsp;元</td>
+</tr>
+</tbody>
+</table>
+<div style="clear:both;"></div>
+  <h4> 
+    分店人员列表 
+</h4>
+<table class="ListProduct" border="0" cellspacing="0" cellpadding="0" width="100%">
+              <thead>
+                <tr>
+					<th>微信名</th>
+					<th>微信头像</th>
+					<th>会员等级</th>
+					<th>是否成为分店</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr></tr>
+                  <volist id="list" name="childmember">
+                <tr>
+                  <td>{wghd:$list.nickname}</td>
+                  <td><img src="{wghd:$list.headimgurl}" width="50"></td>
+                  <td><eq name="list.fid" value="$member.id">A分店</eq><eq name="list.sid" value="$member.id">B分店</eq><eq name="list.tid" value="$member.id">C分店</eq></td>
+				  <td><eq name="list.distritime" value="0">否<else/><span style="color:red">是</span></eq></td>
+                </tr>
+                  </volist>
+
+              </tbody>
+            </table>
+			      			                
+                  <div class="cLine">
+					<div class="pageNavigator right">
+					<div class="pages">{wghd:$page}</div>
+					</div>
+  </div>
+
+
+        </div>
+<include file="Public:footer"/>

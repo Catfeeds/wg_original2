@@ -37,13 +37,14 @@
 <thead>
 <tr>
 <th width="160">商品名称</th>
-<th width="160">商品URL</th>
+<!-- <th width="160">商品URL</th> -->
 <th width="60">价格</th>
 <!--th width="60">会员价</th-->
-<th width="60">提供佣金比例</th>
-<th width="60">销量</th>
+<!-- <th width="60">提供佣金比例</th> -->
+<!-- <th width="60">销量</th> -->
+<th width="60">所属店铺</th>
 <th width="60">排序值</th>
-<th width="170">关键词</th>
+<!-- <th width="170">关键词</th> -->
 <th width="200">创建时间</th>
 <th width="150" class="norightborder">操作</th>
 </tr>
@@ -53,13 +54,14 @@
 <volist name="list" id="hostlist"> 
 <tr>
 <td>{wghd:$hostlist.name}</td>
-<td>{wghd::C('site_url')}{wghd::U('Wap/Store/product',array('token'=>$token,'id'=>$hostlist['id']))}</td>
+<!-- <td>{wghd::C('site_url')}{wghd::U('Wap/Store/product',array('token'=>$token,'id'=>$hostlist['id']))}</td> -->
 <td>{wghd:$hostlist.price}元</td>
 <!--td>{wghd:$hostlist.vprice}元</td-->
-<td>{wghd:$hostlist.offerprice}%</td>
-<td>{wghd:$hostlist.salecount}</td>
+<!-- <td>{wghd:$hostlist.offerprice}%</td> -->
+<!-- <td>{wghd:$hostlist.salecount}</td> -->
+<td>{wghd:$hostlist.store.name}</td>
 <td>{wghd:$hostlist.sort}</td>
-<td>{wghd:$hostlist.keyword}</td>
+<!-- <td>{wghd:$hostlist.keyword}</td> -->
 <td>{wghd:$hostlist.time|date="Y-m-d H:i:s",###}</td> 
 <td class="norightborder" align="center">
 	<a href="{wghd::U('Store/addNew',array('id' => $hostlist['id'], 'token' => $token,'catid' => $catid,'parentid' => $_GET['parentid']))}">修改</a>&nbsp;&nbsp;&nbsp;&nbsp;

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>摄影展示</title>
+  <title>北溟鱼照相馆</title>
   <meta name="viewport" content="initial-scale=1, maximum-scale=1">
   <link rel="shortcut icon" href="/favicon.ico">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -34,35 +34,33 @@
           <span class="icon icon-right"></span>
         </div>
       </div>
-      <nav class="bar bar-tab">
-        <a class="tab-item external" href="Store_index.html" id="store_index_tab">
-          <span class="icon icon-home"></span>
-          <span class="tab-label">展示</span>
-        </a>
-        <span class="tab-item external check_auth" href="javascript:;" data-href="Appointment.html" id="footer_appointment_tab">
-          <span class="icon icon-star"></span>
-          <span class="tab-label">预约</span>
-        </span>
-        <a class="tab-item external check_auth" href="myorders.html" data-href="myorders.html" id="footer_myorders_tab">
-          <span class="icon icon-cart"></span>
-          <span class="tab-label">订单</span>
-        </a>
-        <a class="tab-item external check_auth" href="Distribution_index.html" data-href="Distribution_index.html" id="distribution_index_tab">
-          <span class="icon icon-me"></span>
-          <span class="tab-label">我的</span>
-        </a>
-      </nav>
     </div>
   </div>
   <script src="common/original/js/zepto.min.js" type="text/javascript" charset="utf-8"></script>
   <script src="common/original/js/sm.min.js" type="text/javascript" charset="utf-8"></script>
   <script src="common/original/js/sm-extend.js" type="text/javascript" charset="utf-8"></script>
-  <script src="common/original/js/common.js" type="text/javascript" charset="utf-8"></script>
+  <script src="common/original/js/common.js?test=51" type="text/javascript" charset="utf-8"></script>
   <script src="common/original/js/cookie.js" type="text/javascript" charset="utf-8"></script>
   <script src="common/original/js/public_parameters.js?test=2" type="text/javascript" charset="utf-8"></script>
   <script src="common/original/js/citylist.js" type="text/javascript" charset="utf-8"></script>
   <script src="common/original/js/bMap.js" type="text/javascript" charset="utf-8"></script>
-  <script src="common/original/js/slider.js" type="text/javascript" charset="utf-8"></script>
-  <script src="common/original/js/chooseposition.js" type="text/javascript" charset="utf-8"></script>
+  <script src="common/original/js/slider.js?test=1" type="text/javascript" charset="utf-8"></script>
+  <script src="common/original/js/chooseposition.js?test=1" type="text/javascript" charset="utf-8"></script>
+  <script>
+    function onBridgeReady(){
+     WeixinJSBridge.call('showOptionMenu');
+    }
+
+    if (typeof WeixinJSBridge == "undefined"){
+        if( document.addEventListener ){
+            document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+        }else if (document.attachEvent){
+            document.attachEvent('WeixinJSBridgeReady', onBridgeReady); 
+            document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+        }
+    }else{
+        onBridgeReady();
+    }
+  </script>
 </body>
 </html>

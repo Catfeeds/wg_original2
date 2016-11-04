@@ -18,7 +18,6 @@ $(function() {
 			$(this).parents('.tipModelWrap').hide();
 		});
 
-
 		if (scid && (scid != 'null')) { //判断是否已经获得定位城市, 若未获得城市, 则跳到城市选择页面, 否则判断获取的城市是否有门店
 			checkNoStore(scid); // 如果没有当前城市没有门店, 跳转到选择城市页面
 		} else {
@@ -55,7 +54,7 @@ $(function() {
 			gc.getLocation(point, function(rs) {
 				var addComp = rs.addressComponents;
 				var cd = getCityCode(addComp.city); // 获得定位城市
-				cookie.set('scid', cd); // 获取真实位置id，传值
+				cookie.set('scid', cd,100); // 获取真实位置id，传值
 				checkNoStore(cd);
 			});
 		}
@@ -92,7 +91,6 @@ $(function() {
 		 */
 		function setCurrentCity() {
 			var cityS = getCityName(cookie.get('scid'));
-			console.log(cityS);
 			var _cityHtml = setTipText(cityS.split('市')[0]);
 			$city.html(_cityHtml); // 改变显示城市
 			$('#reservation .wrapper').show(); //显示加载图
@@ -117,7 +115,7 @@ $(function() {
 			$.showIndicator();
 			$.get(total_url + 'index.php?g=Wap&m=Store&a=getCityList', function(data) {
 				$.hideIndicator();
-				data = eval('('+data+')');
+				data = eval('(' + data + ')');
 				if (data.error === 0) {
 					var cityHaveStoreArr = [];
 					var citylist = data.msg.city;
@@ -158,8 +156,7 @@ $(function() {
 		function showStoreInfo(cid) {
 			$.showIndicator();
 			$.get(total_url + 'index.php?g=Wap&m=Store&a=getStoreByCity&cid=' + cid, function(data) {
-				data = eval('('+data+')');
-				console.log(data);
+				data = eval('(' + data + ')');
 				$.hideIndicator();
 				if (data.error === 0) {
 					var cityInfo = data.msg.city; // 当前选择城市
@@ -206,10 +203,10 @@ $(function() {
 						if ($(this).hasClass('btn-disabled')) {
 							return false;
 						}
-						var storeName = $('#reservation-storeInfo .reservation-storename').html();
+						var storeName = $('#reservation-store .reservation-storename').html();
 						cookie.set('storeId', storeId);
 						cookie.set('storeName', storeName);
-						$.router.load('/Index/selectMeal');
+						$.router.load('SelectProduct.html');
 					});
 				} else {
 					$.toast(data.msg);
@@ -224,7 +221,7 @@ $(function() {
 		function changeStoreInfo(storeInfo, storeId) {
 			var storeinfoHtml = '';
 			var storeArr = Object.keys(storeInfo);
-			// var storeServiceArr = storeInfo[storeId].S_Service.split('');
+			var storeServiceArr = storeInfo[storeId].S_Service.split('');
 			var $service = $('#reservation-storeService .reservation-serviceList'); //门店服务
 			// var opents = parseInt(storeInfo[storeId].S_StartTime);
 			var tsNow = parseInt(+new Date() / 1000); // 获取当前的时间戳
@@ -241,26 +238,30 @@ $(function() {
 			// 	$('.reservation-checkBtn').addClass('btn-disabled');
 			// }
 
-			$service.removeClass('off');
-			// for (var i in storeServiceArr) {
-			// 	if (storeServiceArr[i] === '0') {
-			// 		$($service[i]).addClass('off');
-			// 	}
-			// }
+			$service.removeClass('on');
+			for (var i in storeServiceArr) {
+				if (storeServiceArr[i] === '1') {
+					$($service[i]).addClass('on');
+				}
+			}
 			$service.on('click', function() {
 				var picIndex = $(this).index() + 1;
-				if ($(this).hasClass('off')) {
+				if (!$(this).hasClass('on')) {
 					return false;
 				}
-				$('.tipModelWrap').find('img').attr('src', 'http://cdn.haimati.cn/HMA_M_Static/img/fwtc_' + picIndex + '.png');
-				setTimeout(function() {
-					$('.tipModelWrap').show();
-				}, 50);
+				$('#service-warn').show();
+				$('#service-warn .close-warn').click(function(){
+					$('#service-warn').hide();
+				})
+				// $('.tipModelWrap').find('img').attr('src', 'http://cdn.haimati.cn/HMA_M_Static/img/fwtc_' + picIndex + '.png');
+				// setTimeout(function() {
+				// 	$('.tipModelWrap').show();
+				// }, 50);
 			});
 			$('#reservation-store .reservation-storename').text(storeInfo[storeId].S_Name); // 门店名
 			$('#address-maplink').attr('href', storeInfo[storeId].S_MapUrl); // 地图链接
 			$('#address-maplink .addressText').html(storeInfo[storeId].S_Address); // 地址
-			$('#tele-wrap').attr('href','tel:'+storeInfo[storeId].S_TELE); // 电话
+			$('#tele-wrap').attr('href', 'tel:' + storeInfo[storeId].S_TELE); // 电话
 			$('#tele-wrap .tele').html(storeInfo[storeId].S_TELE); // 电话
 			$('#reservation-store .reservation-storeNum').text(storeArr.length); // 门店数量
 			$('.reservation-top img').attr('src', storeInfo[storeId].S_Photo);
@@ -270,6 +271,94 @@ $(function() {
 		}
 	});
 
+	$(document).on('pageInit','#index-page',function(){
+
+		var scid = cookie.get('scid');
+
+		if (scid) {
+			var _city = getCityName(scid);
+			_city = _city + "";
+			$('.index-position em').html(_city.split('市')[0]); // 处理定位错误
+		} else {
+			geolocation(); // 定位请求及处理
+		}
+		$('.index-position').on('click', function() {
+			$.router.load('ChoosePosition.html'); // 前往选择城市页面
+		});
+		$('nav a').on('click', function() {
+			var linkfrom = $(this).data('link');
+			cookie.set('linkfrom', linkfrom);
+			window.location.href = m_module + linkfrom;
+		});
+		/**
+		 * 根据百度逆解析获得的城市名得到城市码,并更改cookie -> scid(当前选择城市)的值
+		 * @param  {String} scname 城市名,要求完整,比如'杭州市'
+		 * @return {Object}        设置cookie对象
+		 */
+		function getCityCode(scname) {
+			var cityCodeArr = []; // 城市码数组
+			var cityNameArr = []; // 城市名数组,两者一一对应
+			var n, returnCookieStr;
+			for (var i in cityCodeList) {
+				cityCodeArr.push(cityCodeList[i].citycode);
+				cityNameArr.push(cityCodeList[i].cityname);
+			}
+			n = $.inArray(scname, cityNameArr);
+			return cityCodeArr[n];
+		}
+		/**
+		 * 定位请求,仅在移动端使用
+		 */
+		function geolocation() {
+			// $.router.load('ChoosePosition.html');
+			if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(getLocationCity, locationError);
+			} else {
+				// $('.index-position em').html('暂无定位信息'); // 处理定位错误
+				$.router.load('ChoosePosition.html'); // 前往选择城市页面
+			}
+		}
+		/**
+		 * 获取当前位置经纬度,通过百度地址逆解析服务获取当前城市
+		 * @param  {[type]} position 经纬度信息处理
+		 */
+		function getLocationCity(position) {
+			var longitude = position.coords.longitude;
+			var latitude = position.coords.latitude;
+			var point = new BMap.Point(longitude, latitude);
+			var gc = new BMap.Geocoder();
+			gc.getLocation(point, function(rs) {
+				var addComp = rs.addressComponents;
+				var cd = getCityCode(addComp.city); // 获得定位城市
+				var _city = getCityName(cd); // 获得城市名
+				cookie.set('scid', cd,100); // 获取真实位置id，传值
+				_city = _city + "";
+				$('.index-position em').html(_city.split('市')[0]); // 左上角显示定位城市
+			});
+		}
+		/**
+		 * 定位失败时处理方法
+		 * @param  {[type]} error 定位失败处理
+		 */
+		function locationError(error) {
+			var msg = '';
+			switch (error.code) {
+				case 1:
+					msg = '用户拒绝了位置服务';
+					break;
+				case 2:
+					msg = '无法获取位置信息';
+					break;
+				case 3:
+					msg = '获取信息超时';
+					break;
+				default:
+					msg = 'code: ' + error.code + 'msg: ' + error.messgae;
+			}
+			$('.index-position em').html('暂无定位信息'); // 处理定位错误
+			$.router.load('ChoosePosition.html'); // 前往选择城市页面
+		}
+	})
 
 
 	// 选择城市

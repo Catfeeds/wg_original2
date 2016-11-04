@@ -32,69 +32,41 @@ final class Sms {
 	 * @param string $charset 短信字符类型 gbk / utf-8
 	 * @param string $id_code 唯一值 、可用于验证码
 	 */
-	public function sendSms($token, $content='',$mobile='', $send_time='', $charset='utf-8',$id_code = '') {
-		$companyid=0;
-		if(!(strpos($token,'_') === FALSE)){
-			$sarr=explode('_',$token);
-			$token=$sarr[0];
-			$companyid=intval($sarr[1]);
-		}
-		if (!$mobile){
-			$companyWhere=array();
-			$companyWhere['token']=$token;
-			if ($companyid){
-				$companyWhere['id']=$companyid;
-			}
-			$company=M('Company')->where($companyWhere)->find();
-			$mobile=$company['mp'];
-		}
-		//
+	public function sendSms($content='',$mobile='') {
+		$content = '您的验证码是：'.Sms::_safe_replace($content);
+		$token = 'mhfcjx1421158741';
 		$thisWxUser=M('Wxuser')->where(array('token'=>Sms::_safe_replace($token)))->find();
 		$thisUser=M('Users')->where(array('id'=>$thisWxUser['uid']))->find();
 		if ($token=='admin'){
 			$thisUser=array('id'=>0);
 			$thisWxUser=array('uid'=>0,'token'=>$this->token);
 		}
-		if (intval($thisUser['smscount'])<1&&$token!='admin'){
-			return '已用完或者未购买短信包';
-			exit();
-		}else {
-			//
-			//短信发送状态
-			if(is_array($mobile)){
-				$mobile = implode(",", $mobile);
-			}
-
-			$content = Sms::_safe_replace($content);
-			$data = array(
-			'topdomain' => C('server_topdomain'),
-			'key' => trim(C('sms_key')),
-			'token' => $token,
-			'content' => $content,
+		$data = array(
+			'sms' => iconv('UTF-8','GB2312',$content),
 			'mobile'=>$mobile,
-			'sign'=>trim(C('sms_sign'))
-			);
-			$post = '';
-			foreach($data as $k=>$v) {
-				$post .= $k.'='.$v.'&';
-			}
-
-			$smsapi_senturl = 'http://up.pigcms.cn/oa/admin.php?m=sms&c=sms&a=send';
-
-			$return = Sms::_post($smsapi_senturl, 0, $post);
-			$arr = explode('#',$return);
-			$this->statuscode = $arr[0];
-			//增加到本地数据库
-			if ($mobile){
-			$row=array('uid'=>$thisUser['id'],'token'=>$thisWxUser['token'],'time'=>time(),'mp'=>$mobile,'text'=>$content,'status'=>$this->statuscode,'price'=>C('sms_price'));
-			M('Sms_record')->add($row);
-			if (intval($this->statuscode)==0&&$token!='admin'){
-				M('Users')->where(array('id'=>$thisWxUser['uid']))->setDec('smscount');
-			}
-			}
-			//end
-			return $return;
+			'usr' => "991145",
+			'pwd' => "bmy@145",
+		);
+		$post = '';
+		foreach($data as $k=>$v) {
+			$post .= $k.'='.$v.'&';
 		}
+
+		$smsapi_senturl = 'http://202.91.244.252/qd/SMSSendYD';
+
+		$return = Sms::_post($smsapi_senturl, 0, $post);
+		$arr = explode('#',$return);
+		$this->statuscode = $arr[0];
+		//增加到本地数据库
+		if ($mobile){
+		$row=array('uid'=>$thisUser['id'],'token'=>$thisWxUser['token'],'time'=>time(),'mp'=>$mobile,'text'=>$content,'status'=>$this->statuscode,'price'=>C('sms_price'));
+		M('Sms_record')->add($row);
+		if (intval($this->statuscode)==0&&$token!='admin'){
+			M('Users')->where(array('id'=>$thisWxUser['uid']))->setInc('smscount');
+		}
+		}
+		//end
+		return $return;
 	}
 		
 	

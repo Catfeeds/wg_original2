@@ -1,0 +1,94 @@
+<include file="Public:head"/>
+<link rel="stylesheet" type="text/css" href="{wghd::RES}/css/cymain.css" />  
+ <div class="content">
+<div class="cLineB">
+<h4 class="left">分店管理</h4>
+<div class="clr"></div>
+</div>
+<!--tab start-->
+<div class="tab">
+<ul>
+<li class="tabli" id="tab2"><a href="{wghd::U('Store/index',array('token'=>$token))}">商品分类管理</a></li>
+<li class="tabli" id="tab2"><a href="{wghd::U('Store/banner',array('token'=>$token))}">轮播图管理</a></li>
+<li class="tabli" id="tab2"><a href="{wghd::U('Store/guanggao',array('token'=>$token))}">会员等级管理</a></li>
+<li class="city" id="tab2"><a href="{wghd::U('Store/cityList',array('token'=>$token))}">城市管理</a></li>
+<li class="current city" id="tab2"><a href="{wghd::U('Store/departList',array('token'=>$token))}">分店管理</a></li>
+<if condition="empty($catid) neq true">
+<li class="tabli" id="tab0"><a href="{wghd::U('Store/product',array('token'=>$token))}">商品管理</a></li>
+</if>
+<li class="tabli" id="tab2"><a href="{wghd::U('Store/orders',array('token'=>$token))}">订单管理</a></li>
+<!-- <li class="tabli" id="tab5"><a href="{wghd::U('Reply_info/set',array('token'=>$token,'infotype'=>'Shop'))}">商城回复配置</a></li> -->
+</ul>
+</div>
+<!--tab end-->
+<div class="cLine">
+<div class="pageNavigator left">
+<a href="{wghd::U('Store/departAdd', array('token' => $token, 'catid' => $catid))}" title="添加" class="btnGrayS vm bigbtn">
+<img src="{wghd::RES}/images/product/add.png" width="16" class="vm">添加店铺</a>
+
+
+</div>
+
+<div style="text-align: center; font-size: 15px" float="left">
+	<span>
+              <form action="" method="post">
+              店铺关键词：
+              <input type="text" name="searchkey" class="px" value="{wghd:$Think.request.searchkey}" style="width: 200px;">
+              <input type="submit" class="btnGrayS" value="搜索"style="font-size: 15px !important;
+    background-color: #53A953 !important;
+    color: #fff !important;">
+               </form>
+    </span>
+    <a href="" float="left">添加店铺</a>
+</div> 
+
+<div class="clr"></div>
+</div>
+<div class="msgWrap">
+<form method="post" action="" id="info">
+<input name="delall" type="hidden" value="">
+<input name="wxid" type="hidden" value="">
+<table class="ListProduct" border="0" cellspacing="0" cellpadding="0" width="100%">
+<thead>
+<tr>
+
+<th width="100">店名</th>
+<th width="100">电话</th>
+<th width="100">地址</th>
+<th width="100">账号</th>
+<th width="100">经度</th>
+<th width="100">纬度</th>
+<th width="100" class="norightborder">操作</th>
+</tr>
+</thead>
+<tbody>
+<tr></tr>
+<volist name="list" id="hostlist"> 
+<tr>
+<td hidden>{wghd:$hostlist.id}</td>
+<td>{wghd:$hostlist.name}</td>
+<td>{wghd:$hostlist.tele}</td>
+<td>{wghd:$hostlist.address}</td>
+<td>{wghd:$hostlist.username}</td>
+<td>{wghd:$hostlist.longitude}</td>
+<td>{wghd:$hostlist.dimension}</td>
+
+
+<td class="norightborder">
+	<a href="{wghd::U('Store/departSet',array('token'=>$token,'id'=>$hostlist['id']))}">修改</a>
+	<a href="javascript:drop_confirm('您确定要删除吗?', '{wghd::U('Store/departDel',array('id'=>$hostlist['id'],'token'=>$token))}');">删除</a>
+</td>
+</tr>
+</volist>
+</tbody>
+</table>
+</form>
+</div>
+<div class="cLine">
+<div class="pageNavigator right">
+<div class="pages">{wghd:$page}</div>
+</div>
+<div class="clr"></div>
+</div>
+</div>
+<include file="Public:footer"/>

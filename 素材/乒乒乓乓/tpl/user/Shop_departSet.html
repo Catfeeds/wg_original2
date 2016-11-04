@@ -1,0 +1,216 @@
+<include file="Public:head" />
+<script src="{wghd::STATICS}/artDialog/jquery.artDialog.js?skin=default"></script>
+<script src="{wghd::STATICS}/artDialog/plugins/iframeTools.js"></script>
+<script>
+  function setlatlng(longitude,latitude){
+  art.dialog.data('longitude', longitude);
+  art.dialog.data('latitude', latitude);
+  // 此时 iframeA.html 页面可以使用 art.dialog.data('test') 获取到数据，如：
+  // document.getElementById('aInput').value = art.dialog.data('test');
+  art.dialog.open('{wghd::U('Map/setLatLng',array('token'=>$token,'id'=>$id))}',{lock:false,title:'设置经纬度',width:600,height:400,yesText:'关闭',background: '#000',opacity: 0.87});
+}
+
+</script>
+<div class="content">
+  <div class="cLineB">
+    <h4>分店设置</h4>
+    <a href="{wghd::U('Shop/departList',array('token'=>
+      $token))}" class="right  btnGreen" style="margin-top:-27px">返回
+    </a>
+  </div>
+  <form class="form" method="post" action="" enctype="multipart/form-data" id="store-form">
+    <input type="hidden" name="id" value="{wghd:$set.id}" />
+
+    <div class="msgWrap bgfc">
+      <table class="userinfoArea" style=" margin:0;" border="0" cellspacing="0" cellpadding="0" width="100%">
+        <tbody>
+
+          <tr>
+            <th>店名:</th>
+            <td>
+              <input type="text" name="name" value="{wghd:$set.name}" class="px" style="width:120px;" />
+            </td>
+          </tr>
+
+          <tr>
+            <th>城市：</th>
+            <td>
+              <select style="width:120px;" name="cid" id="ww">
+                <if condition = "$set.cid eq null">
+                  <option value="0">----请选择-----</option>
+                  <else/>
+                  <option value="{wghd:$setcity.id}">{wghd:$setcity.name}</option>
+                </if>
+                {wghd:$str}
+              </select>
+            </td>
+          </tr>
+
+          <tr>
+            <th>电话：</th>
+            <td>
+              <input type="text" name="tele" value="{wghd:$set.tele}" class="px" style="width:120px;" />
+            </td>
+          </tr>
+
+          <tr>
+            <th>用户：</th>
+            <td>
+              <input type="text" name="username" value="{wghd:$set.username}" class="px" style="width:120px;" />
+            </td>
+          </tr>
+
+
+          
+          <if condition = "$set.name eq null">
+
+          <tr>
+            <th>密码：</th>
+            <td>
+              <input type="text" name="password" value="" class="px" style="width:120px;" />
+            </td>
+          </tr>
+
+          <else/>  
+
+          <tr>
+            <th>密码：</th>
+            <td>
+             <span>*******</span>
+            </td>
+          </tr>
+
+          <tr>
+            <th>设置新密码：</th>
+            <td>
+              <input type="text" name="password" value="" class="px" style="width:120px;" />
+            </td>
+          </tr>  
+
+          </if>
+
+
+
+
+          <input type="hidden" name="default_time" id="work_default_time">
+          <tr>
+            <th>默认平均预约个数：</th>
+            <td>
+              <input type="text" name="timeNums" value="{wghd:$set.timeNums}" class="px" id="default_time" style="width:120px;" />
+            </td>
+          </tr>
+          <style>
+         .w15{
+          width: 15px;
+          margin: 0 10px 10px 5px;
+         }
+       </style>
+          <tr>
+            <th>具体设置：</th>
+            <td>
+              <form action="#" method="post" id="work-form">
+                <dl id="word-time">
+                 
+                </dl>
+              </form>
+            </td>
+          </tr>
+          <script>
+         var str='';
+         for (var i = 0; i < 10; i++) {
+            str += '<dt>';
+            for (var j = 0; j < 4; j++) {
+              var h = 10+1*i;
+              var mi = 00+15*j ==0?'00':00+15*j;
+              str += '<span>'+h+':'+mi+'<input type="text" class="px w15 default-time-item"></span>';
+            }
+            str += '</dt>';
+            $('#word-time').html(str);
+         }
+          var defaultWorkTime = '{wghd:$set.defaultWorkTime}';
+          console.log(defaultWorkTime);
+          if(defaultWorkTime.length != 0){
+           w = eval('('+defaultWorkTime+')');
+           $('.default-time-item').each(function(index){
+                $(this).val(w[index]);
+           })
+            
+          }
+
+         $('#default_time').bind('keyup',function(){
+           var work_num = parseInt($(this).val());
+           if(!isNaN(work_num)){
+            $('.default-time-item').val(work_num);
+           }else{
+            $('.default-time-item').val(0);
+           }
+         })
+       </script>
+          <tr>
+            <th>门店服务：</th>
+            <td>
+                  <input type="checkbox" name="photo" class="service" value="1" id="service_0" <if condition="$set['service']['photo'] neq 0">checked</if>
+                <label>摄影</label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="checkbox" name="makeup" class="service" value="1" id="service_1" <if condition="$set['service']['makeup'] neq 0">checked</if>
+              <label>化妆</label>
+              <input type="checkbox" name="cloth" class="service" value="1" id="service_1" <if condition="$set['service']['cloth'] neq 0">checked</if>
+              <label>服装</label>
+              <input type="checkbox" name="ps" class="service" value="1" id="service_1" <if condition="$set['service']['ps'] neq 0">checked</if>
+              <label>修图</label>
+              <input type="checkbox" name="nail" class="service" value="1" id="service_1" <if condition="$set['service']['nail'] neq 0">checked</if>
+              <label>美甲美睫</label>
+              <input type="checkbox" name="sharon" class="service" value="1" id="service_1" <if condition="$set['service']['sharon'] neq 0">checked</if>
+              <label>沙龙</label><input type="checkbox" name="coffee" class="service" value="1" id="service_1" <if condition="$set['service']['coffee'] neq 0">checked</if>
+              <label>咖啡</label>
+            </td>
+          </tr>
+          <tr>
+            <th>地址：</th>
+            <td>
+              <input type="text" name="address" value="{wghd:$set.address}" class="px" style="width:120px;" />
+            </td>
+          </tr>
+
+          <tr>
+            <th>经纬度：</th>
+            <td>
+              经度
+              <input type="text" id="longitude"  name="longitude" size="14" class="px" value="{wghd:$set.longitude}" />
+              纬度
+              <input type="text"  name="dimension" size="14" id="latitude" class="px" value="{wghd:$set.dimension}" />
+              <a href="###" onclick="setlatlng($('#longitude').val(),$('#latitude').val())">在地图中查看/设置</a>
+            </td>
+          </tr>
+
+          <tr>
+            <th>广告位图片：</th>
+            <td>
+              <input type="text" name="pic" value="{wghd:$set.pic}" id="pic" class="px" style="width:400px;" />
+              <script src="{wghd::STATICS}/upyun.js"></script>
+              <a href="###" onclick="upyunPicUpload('pic',700,420,'{wghd:$token}')" class="a_upload">上传</a>
+              <a href="###" onclick="viewImg('pic')">预览</a>
+            </td>
+          </tr>
+          <th>&nbsp;</th>
+          <td>
+            <button type="submit" name="button" class="btnGreen" id="save-btn">保存</button>
+            &nbsp;
+            <a href="{wghd::U('Store/departList',array('token'=>$token))}" class="btnGray vm">取消</a>
+          </td>
+        </tbody>
+      </table>
+    </div>
+  </form>
+  <script>
+     $('#save-btn').bind('click',function(){
+      var work_time_str = '';
+      $('.default-time-item').each(function(){
+        work_time_str += $(this).val() + ',';
+      })
+      $('#work_default_time').val(work_time_str);
+      $('#store-form').submit();
+     })
+   </script>
+</div>
+<include file="Public:footer" />

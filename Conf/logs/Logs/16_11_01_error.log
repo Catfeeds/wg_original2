@@ -1,0 +1,16 @@
+[ 2016-11-01T09:09:48+08:00 ] ERR: (ThinkException) La table 'original2_data.pigcms_product_show_pic' n'existe pas
+ [ SQL语句 ] : SHOW COLUMNS FROM `pigcms_product_show_pic`
+[ 2016-11-01T09:09:53+08:00 ] ERR: (ThinkException) La table 'original2_data.pigcms_product_show_pic' n'existe pas
+ [ SQL语句 ] : SHOW COLUMNS FROM `pigcms_product_show_pic`
+[ 2016-11-01T09:10:18+08:00 ] ERR: (ThinkException) La table 'original2_data.pigcms_product_show_pic' n'existe pas
+ [ SQL语句 ] : SHOW COLUMNS FROM `pigcms_product_show_pic`
+[ 2016-11-01T09:32:10+08:00 ] ERR: (ThinkException) La table 'original2_data.pigcms_store_products' n'existe pas
+ [ SQL语句 ] : SHOW COLUMNS FROM `pigcms_store_products`
+[ 2016-11-01T09:32:10+08:00 ] ERR: (ThinkException) La table 'original2_data.pigcms_store_products' n'existe pas
+ [ SQL语句 ] : SHOW COLUMNS FROM `pigcms_store_products`
+[ 2016-11-01T09:32:10+08:00 ] ERR: (ThinkException) La table 'original2_data.pigcms_store_products' n'existe pas
+ [ SQL语句 ] : SHOW COLUMNS FROM `pigcms_store_products`
+[ 2016-11-01T09:32:11+08:00 ] ERR: (ThinkException) La table 'original2_data.pigcms_store_products' n'existe pas
+ [ SQL语句 ] : SHOW COLUMNS FROM `pigcms_store_products`
+[ 2016-11-01T11:22:46+08:00 ] ERR: (ThinkException) Erreur de syntaxe près de 'LIMIT 0,0' à la ligne 1
+ [ SQL语句 ] : SELECT * FROM `pigcms_products_show_pic` WHERE pid= LIMIT 0,0  

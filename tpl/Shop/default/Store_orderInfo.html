@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title> 微信公众平台源码,微信机器人源码,微信自动回复源码 PigCms多用户微信营销系统</title>
+<meta http-equiv="MSThemeCompatible" content="Yes" />
+<link rel="stylesheet" type="text/css" href="{wghd::RES}/css/style_2_common.css?BPm" />
+<script src="{wghd::RES}/js/common.js" type="text/javascript"></script>
+<link href="{wghd::RES}/css/style.css" rel="stylesheet" type="text/css" />
+
+<link rel="stylesheet" type="text/css" href="{wghd::RES}/diyUpload/css/webuploader.css">
+<link rel="stylesheet" type="text/css" href="{wghd::RES}/diyUpload/css/diyUpload.css">
+
+<script type="text/javascript" src="{wghd::RES}/diyUpload/js/jquery.js"></script>
+<script type="text/javascript" src="{wghd::RES}/diyUpload/js/webuploader.html5only.min.js"></script>
+<script type="text/javascript" src="{wghd::RES}/diyUpload/js/diyUpload.js"></script>
+
+</head>
+<body id="nv_member">
+<div style="line-height:200%;padding:10px 20px;">
+支付状态：<if condition="$thisOrder.paid eq 1">已付款<else/>未付款</if><br>
+<if condition="$thisOrder.paid eq 1">购买状态：<if condition="$thisOrder.beDistri eq 1"><span style="color:green">首次购买</span><else/><span style="color:red">非首次购买</span></if><br></if>
+预约人：{wghd:$thisOrder.truename}<br>
+电话：{wghd:$thisOrder.tel}<br>
+地址：{wghd:$thisOrder.province}{wghd:$thisOrder.city}{wghd:$thisOrder.county}{wghd:$thisOrder.address}<br>
+备注信息：{wghd:$thisOrder.remark}<br>
+总数：{wghd:$thisOrder.total}<br>
+总价：<span style="color:#f30;font-size:16px;font-weight:bold">{wghd:$thisOrder.price}</span>元
+</div>
+
+<form class="form" method="post" id="form" action=""> 
+<if condition="$isUpdate eq 1">
+<input type="hidden" name="id" value="{wghd:$set.id}" />
+</if>
+<input type="hidden" name="discount" id="discount" value="{wghd:$set.discount}" />
+    <div class="msgWrap bgfc"> 
+     <table class="userinfoArea" style=" margin:0;" border="0" cellspacing="0" cellpadding="0" width="100%"> 
+      <tbody> 
+      <tr> 
+        <th><span class="red">*</span>支付状态：</th> 
+        <td><select name="paid"><option value="0" <if condition="$thisOrder.paid eq 0">selected</if>>未付款</option><option value="1" <if condition="$thisOrder.paid eq 1">selected</if>>已付款</option></select></td> 
+       </tr> 
+       <!-- <tr> 
+        <th><span class="red">*</span>发货状态：</th> 
+        <td><select name="sent"><option value="0" <if condition="$thisOrder.sent eq 0">selected</if>>未发货</option><option value="1" <if condition="$thisOrder.sent eq 1">selected</if>>已发货</option></select></td> 
+       </tr> -->
+     <!-- <tr> 
+        <th><span class="red">*</span>收货状态：</th> 
+        <td><select name="receive"><option value="0" <if condition="$thisOrder.receive eq 0">selected</if>>未收货</option><option value="1" <if condition="$thisOrder.receive eq 1">selected</if>>已收货</option></select></td> 
+       </tr> -->
+     <tr> 
+        <th><span class="red">*</span>退款状态：</th> 
+        <td><select name="returnMoney"><option value="0" <if condition="$thisOrder.returnMoney eq 0">selected</if>>未申请</option><option value="1" <if condition="$thisOrder.returnMoney eq 1">selected</if>>未退款</option><option value="2" <if condition="$thisOrder.returnMoney eq 2">selected</if>>已退款</option></select></td> 
+      </tr>
+       <tr> 
+        <th><span class="red">*</span>处理状态：</th> 
+        <td><select name="handled"><option value="0" <if condition="$thisOrder.handled eq 0">selected</if>>未处理</option><option value="1" <if condition="$thisOrder.handled eq 1">selected</if>>已处理</option></select></td> 
+       </tr> 
+       <!-- <tr> 
+        <th><span class="red">*</span>快递公司：</th>
+        <td><input type="text" name="logistics" value="{wghd:$thisOrder.logistics}" class="px" style="width:200px;" /></td> 
+       </tr>
+        <tr> 
+        <th><span class="red">*</span>快递单号：</th>
+        <td><input type="text" name="logisticsid" value="{wghd:$thisOrder.logisticsid}" class="px" style="width:200px;" /></td> 
+       </tr> -->
+       
+       <tr>         
+       <th>&nbsp;</th>
+       <td>
+      <input type="hidden" name="groupon" value="1" />
+       <button type="submit" name="button" class="btnGreen">保存</button> </td> 
+       </tr> 
+      </tbody> 
+     </table> 
+     <notempty name="cart_pics">
+      <div class="parentFileBox">
+        <ul class="fileBoxUl">
+          <volist id="list" name="cart_pics">
+          <li class="diyUploadHover">
+            <div class="viewThumb">
+              <img src="{wghd:$list.url}"></div>
+            <div class="diyCancel"  onclick="deletePic(this)" data-id="{wghd:$list.id}"></div>
+            <div class="diySuccess"></div>
+            <!-- <div class="diyFileName">test - 副本 (2).jpg</div> -->
+            <div class="diyBar">
+              <div class="diyProgress"></div>
+              <div class="diyProgressText">0%</div>
+            </div>
+          </li>
+         </volist>
+        </ul>
+      </div>
+     </notempty>
+   <div id="as"></div>
+     </div>
+    
+   </form> 
+   <script>
+     function deletePic(obj){
+       if(window.confirm('确认删除')){
+         var id = $(obj).data('id');
+         $.ajax({
+           url:"{wghd::U('Store/delCartPic')}",
+           data:{id:id},
+           dataType:'json',
+           async:false,
+           success:function(data){
+             if(data.status==1){
+               $(obj).parents('.diyUploadHover').remove();
+             }
+           }
+         })
+       }
+     }
+   </script>
+   <script type="text/javascript">
+
+   /*
+   * 服务器地址,成功返回,失败返回参数格式依照jquery.ajax习惯;
+   * 其他参数同WebUploader
+   */
+   $('#test').diyUpload({
+     url:'{wghd::U("Store/fileUpload",array("oid"=>$thisOrder["id"]))}',
+     success:function( data ) {
+       console.info( data );
+     },
+     error:function( err ) {
+       console.info( err );  
+     }
+   });
+
+   $('#as').diyUpload({
+     url:'{wghd::U("Store/fileUpload",array("oid"=>$thisOrder["id"]))}',
+     success:function( data ) {
+       console.info( data );
+     },
+     error:function( err ) {
+       console.info( err );  
+     },
+     buttonText : '选择文件',
+     chunked:true,
+     // 分片大小
+     chunkSize:512 * 1024,
+     //最大上传的文件数量, 总文件大小,单个文件大小(单位字节);
+     fileNumLimit:50,
+     fileSizeLimit:500000 * 1024,
+     fileSingleSizeLimit:50000 * 1024,
+     accept: {}
+   });
+   </script>
+<table class="ListProduct" border="0" cellspacing="0" cellpadding="0" width="100%">
+<thead>
+<tr>
+<th width="120" align="center" style="text-align:center">名称</th>
+<th class="60" align="center" style="text-align:center">详情</th>
+<th width="160" align="center" style="text-align:center">单价（元）</th>
+
+</tr>
+</thead>
+<tbody>
+<tr></tr>
+<volist name="products" id="o"> 
+<tr>
+<td align="center">
+{wghd:$o.name}</td>
+<td align="center">
+  {wghd:$o.attribute}
+</td>
+<td align="center">{wghd:$o.total_price}</td>
+</tr>
+</volist>
+</tbody>
+</table>
+</body>
+</html>

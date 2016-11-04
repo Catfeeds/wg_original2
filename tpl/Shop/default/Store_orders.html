@@ -1,0 +1,112 @@
+<include file="Public:head"/>  
+<link rel="stylesheet" type="text/css" href="{wghd::RES}/css/cymain.css" />
+<script src="{wghd::STATICS}/artDialog/jquery.artDialog.js?skin=default"></script>
+<script src="{wghd::STATICS}/artDialog/plugins/iframeTools.js"></script>
+        <div class="content">
+<div class="cLineB">
+<h4 class="left">订单管理（<a href="{wghd::U('Store/orders',array('token'=>$token,'handled'=>0))}">未处理订单<span style="color:#f00">{wghd:$unhandledCount}</span>个</a>） ({wghd:$page}) </h4>
+<script>
+function selectall(name) {
+	var checkItems=$('.cbitem');
+	if ($("#check_box").attr('checked')==false) {
+		$.each(checkItems, function(i,val){
+			val.checked=false;
+		});
+		
+	} else {
+		$.each(checkItems, function(i,val){
+			val.checked=true;
+		});
+	}
+}
+</script>
+<div class="clr"></div>
+</div>
+<include file="Store:tab"/>
+<div class="msgWrap">
+<div class="searchbar" style="margin-top:10px;">
+<form method="post" action="">
+
+付款状态：<select name="paid">
+<option value="">=请选择=</option>
+<option value="0" <eq name="Think.request.paid" value="0">selected</eq>>待付款</option><option value="1" <eq name="Think.request.paid" value="1">selected</eq>>已付款</option></select>
+
+<!-- 发货状态：<select name="sent"><option value="">=请选择=</option><option value="0" <eq name="Think.request.sent" value="0">selected</eq>>待发货</option><option value="1" <eq name="Think.request.sent" value="1">selected</eq>>已发货</option></select> -->
+<!-- 收货状态：<select name="receive"><option value="">=请选择=</option><option value="0" <eq name="Think.request.receive" value="0">selected</eq>>待收货</option><option value="1" <eq name="Think.request.receive" value="1">selected</eq>>已收货</option></select> -->
+
+处理状态：<select name="handled">
+<option value="">=请选择=</option>
+<option value="0" <eq name="Think.request.handled" value="0">selected</eq>>待处理</option><option value="1" <eq name="Think.request.handled" value="1">selected</eq>>已处理</option></select>
+
+<input type="text" id="msgSearchInput" class="txt left" placeholder="输入相关信息搜索" name="searchkey" value="{wghd:$Think.request.searchkey}">
+<input type="hidden" name="token" value="{wghd:$token}">
+<input type="submit" value="搜索" class="btnGrayS" />
+</form>
+</div>
+<form method="post" action="" id="info">
+<input type="hidden" name="handleOrder" value="1">
+<!-- <div class="cLine">
+<div class="pageNavigator left"> <a href="###" onclick="$('#info').submit()" title="" class="btnGrayS vm bigbtn"><img src="{wghd::RES}/images/product/arrow_switch.png" class="vm">审核处理订单</a>&nbsp;<span style="color:red">付款后订单可进行审核处理，订单处理后分销商佣金累加（退款的订单不能进行审核处理）</span></div>
+<div class="clr"></div>
+</div> -->
+
+<table class="ListProduct" border="0" cellspacing="0" cellpadding="0" width="100%">
+<thead>
+<tr>
+<!-- <th class="select"><input type="checkbox" value="" id="check_box" onclick="selectall('id[]');"></th> -->
+<th width="50">订单号</th>
+<th width="50">姓名</th>
+<th >电话</th>
+<th class="60">数量</th>
+<th width="70">总价（元）</th>
+<th class="160">付款状态</th>
+<th class="60">退款状态</th>
+<!-- <th class="60">退款原因</th> -->
+<th class="60">处理状态</th>
+<!-- <th class="60">付款方式</th> -->
+<th >创建时间</th>
+<th width="70" class="norightborder">操作</th>
+</tr>
+</thead>
+<tbody>
+<tr></tr>
+<volist name="orders" id="o"> 
+<tr>
+<!-- <td><eq name="o.handled" value="0"><eq name="o.paid" value="1"><eq name="o.returnMoney" value="0"><input type="checkbox" value="{wghd:$o.id}" class="cbitem" name="id_{wghd:$i}"></eq></eq></eq></td> -->
+<td>{wghd:$o.orderid}</td>
+<td>{wghd:$o.truename} <if condition="$isDining eq 1"><span style="color:#f60">[<if condition="$o.diningtype eq 1">点餐<elseif condition="$o.diningtype eq 2" />外卖<elseif condition="$o.diningtype eq 3" />预定<else /></if>]</span></if></td>
+<td>{wghd:$o.tel}</td>
+<td>{wghd:$o.total}</td>
+<td>{wghd:$o.price}</td>
+<td><if condition="$o.paid eq 1"><span style="color:green">已付款</span><else/><span style="color:red">未付款</span></if></td>
+<td><if condition="$o.returnMoney eq 2"><span style="color:green">已退款</span></if><if condition="$o.returnMoney eq 1"><span style="color:red">待退款</span></if><if condition="$o.returnMoney eq 0"><span style="color:blue">未申请</span></if></td>
+<!-- <td>{wghd:$o.returnReason}</td> -->
+<td><if condition="$o.handled eq 1"><span style="color:green">已处理</span><else/><span style="color:red">待处理</span></if></td>
+<!-- <td>
+	<if condition="$o['paymode'] eq 0"><span style="color:green">其他方式</span>
+	<elseif condition="$o['paymode'] eq 1" /><span style="color:green">在线支付</span>
+	<else /><span style="color:green">货到付款</span></if>
+</td> -->
+<td>{wghd:$o.time|date="Y-m-d H:i:s",###}</td> 
+<td class="norightborder"><eq name="o.returnMoney" value="1"><a href="{wghd::U('Store/returnMoney',array('token'=>$token,'id'=>$o['id']))}" onclick="return confirm('确定已完成退款了么');">退款完成</a>&nbsp;&nbsp;</eq><a href="###" onclick="showIntroDetail({wghd:$o.id})">详细</a>&nbsp;&nbsp;<a href="javascript:drop_confirm('您确定要删除吗?', '{wghd::U('Store/deleteOrder',array('token'=>$token,'id'=>$o['id'],'dining'=>$isDining))}');">删除</a></td>
+</tr>
+</volist>
+</tbody>
+</table>
+<input type="hidden" name="token" value="{wghd:$_GET['token']}" />
+</form>
+
+   <script>
+function showIntroDetail(id){
+	art.dialog.open('{wghd::U('Store/orderInfo',array('token'=>$token,'dining'=>$isDining))}&id='+id,{lock:false,title:'订单详情',width:1000,height:620,yesText:'关闭',background: '#000',opacity: 0.87,close: function(){location.reload();}});
+}
+</script>
+</div>
+<div class="cLine">
+<div class="pageNavigator right">
+<div class="pages">{wghd:$page}</div>
+</div>
+<div class="clr"></div>
+</div>
+</div>
+<include file="Public:footer"/>

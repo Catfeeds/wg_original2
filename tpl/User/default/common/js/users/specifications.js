@@ -170,15 +170,17 @@
 	//保存按钮
 	$(document).on('click','#save',function(){
 		//判断是否填写规格
-		if($('.norms_data').is(':visible')){
-			$('input[id^=price]').removeClass('validate');
-		}else{
-			$('input[id^=price]').addClass('validate');
-		}
+		// if($('.norms_data').is(':visible')){
+		// 	$('input[id^=price]').removeClass('validate');
+		// }else{
+		// 	$('input[id^=price]').addClass('validate');
+		// }
 		//基础判断
 		var validate_item = $('.validate');
 		var check_validata = 0;
 		validate_item.each(function(index, el) {
+			console.log(index);
+			console.log($(this).html());
 			if (check_validata == 0) {
 				validate_con = $(this).val();
 				validate_warn = $(this).attr('data-warn');

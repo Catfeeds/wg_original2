@@ -1,0 +1,121 @@
+<include file="Public:head"/>  
+<link rel="stylesheet" type="text/css" href="{wghd::RES}/css/cymain.css" />
+<script src="/tpl/static/artDialog/jquery.artDialog.js?skin=default"></script>
+<script src="/tpl/static/artDialog/plugins/iframeTools.js"></script>
+        <div class="content">
+<div class="cLineB">
+<h4 class="left">优惠券管理</h4>
+<script>
+function selectall(name) {
+	var checkItems=$('.cbitem');
+	if ($("#check_box").attr('checked')==false) {
+		$.each(checkItems, function(i,val){
+			val.checked=false;
+		});
+		
+	} else {
+		$.each(checkItems, function(i,val){
+			val.checked=true;
+		});
+	}
+}
+</script>
+<div class="clr"></div>
+</div>
+<include file="Store:tab"/>
+<div class="msgWrap">
+<div class="searchbar" style="margin-top:10px;">
+<form method="post" action="">
+状态：
+<select name="status">
+<option value="">=请选择=</option>
+<option value="0">未领取</option>
+<option value="1">已领取</option>
+<option value="2">已过期</option>
+<option value="3">已使用</option>
+</select>
+<input type="text" id="msgSearchInput" class="txt left" placeholder="输入相关信息搜索" name="searchkey" value="{wghd:$Think.request.searchkey}">
+<input type="hidden" name="token" value="{wghd:$token}">
+<input type="submit" value="搜索" class="btnGrayS" />
+</form>
+</div>
+
+
+<form method="post" action="" id="info">
+<input type="hidden" name="handleOrder" value="1">
+<div class="cLine">
+<div class="pageNavigator left"> 
+<a href="{wghd::U('Store/addCoupon')}" title="" class="btnGrayS vm bigbtn">批量生成优惠券</a>
+</div>
+<div class="clr"></div>
+</div>
+
+<table class="ListProduct" border="0" cellspacing="0" cellpadding="0" width="100%">
+<thead>
+<tr>
+<!-- <th class="select"><input type="checkbox" value="" id="check_box" onclick="selectall('id[]');"></th> -->
+<th width="50">优惠券编号</th>
+<th width="50">兑换码</th>
+<th width="50">抵扣价格</th>
+<th width="50">截止时间</th>
+<th width="50">最低消费</th>
+<th width="50">状态</th>
+<th width="50">领取人</th>
+<th width="70" class="norightborder">操作</th>
+</tr>
+</thead>
+<tbody>
+<tr></tr>
+<volist name="list" id="o"> 
+<tr>
+<!-- <td><eq name="o.handled" value="0"><eq name="o.paid" value="1"><eq name="o.returnMoney" value="0"><input type="checkbox" value="{wghd:$o.id}" class="cbitem" name="id_{wghd:$i}"></eq></eq></eq></td> -->
+<td>{wghd:$o.id}</td>
+<td>{wghd:$o.code}</td>
+<td>{wghd:$o.price}</td>
+<td>{wghd:$o.endtime|date="Y-m-d",###}</td>
+<td>{wghd:$o.limitprice}</td>
+<td>
+
+<switch name="o.status">
+
+	<case value="0">未领取</case>
+	<case value="1">已领取</case>	
+	<case value="2">已过期</case>
+	<case value="3">已使用</case>
+</switch>
+
+</td>
+
+<td>
+	{wghd:$o.account.username|default="还未领取"}
+
+</td>
+
+<td class="norightborder">
+<!-- <a href="{wghd::U('Store/editCoupon',array('token'=>$token,'id'=>$o['id']))}">查看优惠券</a> -->&nbsp;&nbsp;
+<if condition="$o.status eq 0">
+	<a href="javascript:drop_confirm('您确定要删除吗?', '{wghd::U('Store/delCoupon',array('token'=>$token,'id'=>$o['id'],'dining'=>$isDining))}');">删除</a>
+</if>
+
+</td>
+</tr>
+</volist>
+</tbody>
+</table>
+<input type="hidden" name="token" value="{wghd:$_GET['token']}" />
+</form>
+
+<script>
+function showIntroDetail(id){
+	art.dialog.open('{wghd::U('Store/orderInfo',array('token'=>$token,'dining'=>$isDining))}&id='+id,{lock:false,title:'订单详情',width:1000,height:620,yesText:'关闭',background: '#000',opacity: 0.87,close: function(){location.reload();}});
+}
+</script>
+</div>
+<div class="cLine">
+<div class="pageNavigator right">
+<div class="pages">{wghd:$page}</div>
+</div>
+<div class="clr"></div>
+</div>
+</div>
+<include file="Public:footer"/>

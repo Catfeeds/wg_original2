@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>预约资料</title>
+  <title>个人中心</title>
   <meta name="viewport" content="initial-scale=1, maximum-scale=1">
   <link rel="shortcut icon" href="/favicon.ico">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -35,7 +35,7 @@
                   <div class="item-inner">
                     <div class="item-title label">生日:</div>
                     <div class="item-input">
-                      <input name="birth" type="text" class="validation" value="" id="myInfo_myBirthday" data-toggle='date' />
+                      <input name="birth" type="text" class="validation" value="" id="myInfo_myBirthday" data-toggle='date' placeholder="请输入生日"/>
                     </div>
                   </div>
                 </div>
@@ -43,13 +43,22 @@
               <li>
                 <div class="item-content item-link">
                   <div class="item-inner">
-                    <div class="item-title label">性别</div>
+                    <div class="item-title label">性别:</div>
                     <div class="item-input">
                       <select name="sex" class="validation" id="myInfo_mySex">
                         <option class="man" value="1">男</option>
                         <option class="girl" value="0">女</option>
                       </select>
                     </div>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title label">邮箱:</div>
+                    <div class="item-input">
+                      <input name="email" type="text" class="validation" value="" id="myInfo_myEmail" placeholder="请输入邮箱地址"></div>
                   </div>
                 </div>
               </li>
@@ -66,7 +75,8 @@
   <script src="common/original/js/sm.min.js" type="text/javascript" charset="utf-8"></script>
   <script src="common/original/js/sm-extend.js" type="text/javascript" charset="utf-8"></script>
   <script src="common/original/js/public_parameters.js" type="text/javascript" charset="utf-8"></script>
-  
+<script src="common/original/js/cookie.js" type="text/javascript" charset="utf-8"></script>
+  <script src="common/original/js/common.js" type="text/javascript" charset="utf-8"></script>
   <script src="common/original/js/distribution.js" type="text/javascript" charset="utf-8"></script>
 </body>
 </html>

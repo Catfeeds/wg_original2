@@ -12,32 +12,39 @@ class StoreAction extends UserAction{
 		$this->level_cat_id = 2;
 		$this->assign('level_cat_id',$this->level_cat_id);
 	}
+	function test(){
+		$this->display()
+	}
 	
 	/**
 	 * 分类列表
 	 */
 	public function index() {
 		$parentid = isset($_GET['parentid']) ? intval($_GET['parentid']) : 0;
-		$data = M('Product_cat');
+		$data = D('Product_cat');
 		// $where = array('token' => session('token'), 'cid' => $this->_cid, 'parentid' => $parentid, 'id'=>array('neq',$this->level_cat_id));
 		$where = array('token' => session('token'), 'cid' => $this->_cid, 'parentid' => $parentid);
         if (IS_POST) {
             $key = $this->_post('searchkey');
-            if(empty($key)){
-                $this->error("关键词不能为空");
+            if(!empty($key)){
+            	$map['name'] = array('like',"%$key%"); 
+            	$store = M('Store_list')->where($map)->select();
+            	if($store){
+	            	foreach ($store as $k => $v) {
+	            		$sid_str .= $v['id'] . ','; 
+	            	}
+	            	$condition['sid'] = array('in',$sid_str);
+            	}
             }
-
-            $map['token'] = $this->get('token'); 
-            $map['name|des'] = array('like',"%$key%"); 
-            $list = $data->where($map)->order("sort DESC, id ASC")->select(); 
-            $count      = $data->where($map)->count();       
+            $list = $data->where($condition)->relation(true)->order("sort DESC, id ASC")->select(); 
+            $count      = $data->where($condition)->count();       
             $Page       = new Page($count,20);
         	$show       = $Page->show();
         } else {
         	$count      = $data->where($where)->count();
         	$Page       = new Page($count,20);
         	$show       = $Page->show();
-        	$list = $data->where($where)->order("sort DESC, id ASC")->limit($Page->firstRow.','.$Page->listRows)->select();
+        	$list = $data->where($where)->order("sort DESC, id ASC")->limit($Page->firstRow.','.$Page->listRows)->relation(true)->select();
         }
 		$this->assign('page',$show);		
 		$this->assign('list',$list);
@@ -256,6 +263,8 @@ class StoreAction extends UserAction{
 			$list = M('Product_cat')->where(array('parentid' => 0, 'cid' => $this->_cid))->select();
 			$this->assign('list', $list);
 		}
+		$store_list = M('Store_list')->select();
+		$this->assign('store_list',$store_list);
 		if (IS_POST) {
 			if($_POST['pc_show']){
 				$database_pc_product_category = D('Pc_product_category');
@@ -267,9 +276,10 @@ class StoreAction extends UserAction{
 			$_POST['isfinal'] = 0;
 			$_POST['time'] = time();
 			$_POST['token'] = session('token');
-			if (D('Product_cat')->add($_POST)) {
+			D('Product_cat')->create();
+			if (D('Product_cat')->add()) {
 				D('Product_cat')->where(array('id' => $_POST['parentid']))->save(array('isfinal' => 2));
-				$this->success('修改成功', U('Store/index', array('token' => session('token'), 'cid' => $this->_cid, 'parentid' => $parentid)));
+				$this->success('操作成功', U('Store/index', array('token' => session('token'), 'cid' => $this->_cid, 'parentid' => $parentid)));
 			}
 		} else {
 			$parentid = isset($_GET['parentid']) ? intval($_GET['parentid']) : 0;
@@ -284,7 +294,6 @@ class StoreAction extends UserAction{
 			if(strpos(strtolower($queryname),strtolower('website')) !== false){
 				$this->assign('has_website',true);
 			}
-			
 			$this->display('catSet');
 		}
 	}
@@ -294,7 +303,7 @@ class StoreAction extends UserAction{
 	 */
 	public function catSet(){
         $id = $this->_get('id'); 
-		$checkdata = M('Product_cat')->where(array('id'=>$id))->find();
+		$checkdata = D('Product_cat')->where(array('id'=>$id))->relation(true)->find();
 		if(empty($checkdata)){
             $this->error("没有相应记录.您现在可以添加.",U('Store/catAdd'));
         }
@@ -304,11 +313,11 @@ class StoreAction extends UserAction{
 			$check=$data->where($where)->find();
 			if($check==false)$this->error('非法操作');
 			if($data->create()){
-				if($data->where($where)->save($_POST)){
+				if($data->where($where)->save()){
 					if (!$this->isDining){
-						$this->success('修改成功',U('Store/index',array('token'=>session('token'),'parentid'=>$this->_post('parentid'))));
+						$this->success('操作成功',U('Store/index',array('token'=>session('token'),'parentid'=>$this->_post('parentid'))));
 					}else {
-						$this->success('修改成功',U('Store/index',array('token'=>session('token'),'parentid'=>$this->_post('parentid'),'dining'=>1)));
+						$this->success('操作成功',U('Store/index',array('token'=>session('token'),'parentid'=>$this->_post('parentid'),'dining'=>1)));
 					}
 					
 				}else{
@@ -537,7 +546,7 @@ class StoreAction extends UserAction{
 	 */
 	public function product() {		
 		$catid = intval($_GET['catid']);
-		$product_model = M('Product');
+		$product_model = D('Product');
 		$product_cat_model = M('Product_cat');
 		if ($catid){
 			$where['catid'] = $catid;
@@ -550,7 +559,7 @@ class StoreAction extends UserAction{
 
             $map['token'] = $this->get('token'); 
             $map['name|intro|keyword'] = array('like',"%$key%"); 
-            $list = $product_model->where($map)->select(); 
+            $list = $product_model->where($map)->relation(true)->select(); 
             $count      = $product_model->where($map)->count();       
             $Page       = new Page($count,20);
         	$show       = $Page->show();
@@ -558,7 +567,7 @@ class StoreAction extends UserAction{
         	$count      = $product_model->where($where)->count();
         	$Page       = new Page($count,20);
         	$show       = $Page->show();
-        	$list = $product_model->where($where)->order('sort desc,id asc')->limit($Page->firstRow.','.$Page->listRows)->select();
+        	$list = $product_model->where($where)->order('sort desc,id asc')->limit($Page->firstRow.','.$Page->listRows)->relation(true)->select();
         }
 		$this->assign('page',$show);		
 		$this->assign('list',$list);
@@ -590,7 +599,7 @@ class StoreAction extends UserAction{
         	$normsList[$row['id']] = $row['value'];
         }
         $attributeData = array();
-        if ($id && ($product = M('Product')->where(array('catid' => $catid, 'token' => session('token'), 'id' => $id))->find())) {
+        if ($id && ($product = D('Product')->where(array('catid' => $catid, 'token' => session('token'), 'id' => $id))->relation(true)->find())) {
         	$attributeData = M("Product_attribute")->where(array('pid' => $id))->select();
         	$productDetailData = M("Product_detail")->where(array('pid' => $id))->select();
         	$productimage = M("Product_image")->where(array('pid' => $id))->order('id asc')->select();
@@ -620,6 +629,11 @@ class StoreAction extends UserAction{
         	$this->assign('formatList', $formatList);
         	$this->assign('colorList', $colorList);
         	$this->assign('imageList', $productimage);
+        }else{
+        	$storename = M('Store_list')->where('id='.$productCatData['sid'])->getField('name');
+        	$this->assign('storename',$storename);
+        	// $store_list = M('Store_list')->select();
+        	// $this->assign('store_list',$store_list);
         }
         $array = array();
         if ($attributeData) {
@@ -736,7 +750,7 @@ class StoreAction extends UserAction{
 			}
 			$pid = $product->save($_POST);
 		} else {
-			$pid = $product->add();
+			$pid = $product->add($_POST);
 		}
 		if (empty($pid) && !$_POST['id']) {
 			exit(json_encode(array('error_code' => false, 'msg' => '商品添加出错了')));
@@ -924,7 +938,7 @@ class StoreAction extends UserAction{
 			if(intval($_POST['receive'])==1){//已收货
 				$status = 3;
 			}
-			$product_cart_model->where(array('orderid'=>$thisOrder['orderid']))->save(array('sent'=>intval($_POST['sent']),'paid'=>intval($_POST['paid']),'receive'=>intval($_POST['receive']),'returnMoney'=>intval($_POST['returnMoney']),'logistics'=>$_POST['logistics'],'logisticsid'=>$_POST['logisticsid'],'handled'=>0));
+			$product_cart_model->where(array('orderid'=>$thisOrder['orderid']))->save(array('sent'=>intval($_POST['sent']),'paid'=>intval($_POST['paid']),'receive'=>intval($_POST['receive']),'handled'=>intval($_POST['handled']),'returnMoney'=>intval($_POST['returnMoney']),'logistics'=>$_POST['logistics'],'logisticsid'=>$_POST['logisticsid']));
 			//TODO 发货的短信提醒
 			if ($_POST['sent']) {
 				$company = D('Company')->where(array('token' => $thisOrder['token'], 'isbranch' => 0))->find();
@@ -972,6 +986,9 @@ class StoreAction extends UserAction{
 			if($thisOrder['bindaid'] == 0){
 				$this->assign('cancontro',1);
 			}
+			//订单照片
+			$cart_pics = M('Cart_pics')->where('oid='.$thisOrder['id'])->select();
+			$this->assign('cart_pics',$cart_pics);
 			$this->assign('thisOrder',$thisOrder);
 			// $carts=unserialize($thisOrder['info']);
 			if($thisOrder['classid']){
@@ -1285,7 +1302,7 @@ class StoreAction extends UserAction{
 					foreach($ordermoney as $key=>$value){
 						M('Distribution_member')->where('id='.$value['mid'])->setDec('orderNums');
 					}*/
-					$this->returnCartOpration($cart['orderid'],0,2);
+					// $this->returnCartOpration($cart['orderid'],0,2);
 					$this->success('退款完成成功');
 				}else{
 					$this->error('退款完成失败');
@@ -1469,8 +1486,14 @@ class StoreAction extends UserAction{
 
 	public function departList(){
 
-		$departModel = M('Store_list');
+		$departModel  = M('Store_list');
+		$where['cid'] = $_GET['id'];
+		$depart = $departModel->where($where1)->select();
+		$this->assign('list',$depart);
+		dump($_GET['id']);
+		dump($depart);
 
+		exit();
 		if(IS_POST){
             $key = $this->_post('searchkey');
             	if(empty($key)){
@@ -1485,12 +1508,15 @@ class StoreAction extends UserAction{
         		}  
         }else{ 
 
+
+
 			$count  = $departModel->count();       
         	$Page   = new Page($count,10);
         	$show   = $Page->show();
         	$where['delete']  = 0; 
         	$depart = $departModel->where($where)->order('id asc')->limit($Page->firstRow.','.$Page->listRows)->select();
-        
+
+		
 		}
 
 		$this->assign('page',$show);
@@ -1578,6 +1604,8 @@ class StoreAction extends UserAction{
 
 			if($check){
 				$worktime = split(",",$_POST['default_time']);
+				dump($worktime);
+				exit();
 				$_POST['defaultWorkTime'] = serialize($worktime);
 				if($data->where($where)->save($_POST)){
 					
@@ -1627,12 +1655,20 @@ class StoreAction extends UserAction{
 	public function picDisplay(){
 
 		$Model = M('Product_show');
-
-		$where['delete'] = 0;
+		$where['cid']    = $_GET['cid'];
 		$count = $Model->where($where)->count();		
 		$Page  = new Page($count,10);				
 		$list  = $Model->order('id desc')->where($where)->limit($Page->firstRow.','.$Page->listRows)->select();
         $show  = $Page->show();
+
+       foreach ($list as $key => $value) {
+       		$where1['id'] = $value['cid'];
+
+       		$class = M('Product_show_classify')->where($where1)->find();
+
+       		$list[$key]['name1']=$class['name'];
+       }
+        
 		$this->assign('page',$show);
 		$this->assign('list',$list); 
 		$this->display();
@@ -1664,7 +1700,7 @@ class StoreAction extends UserAction{
 			if($check){
 
 				if($data->where($where)->save($_POST)){
-					$this->success('修改成功');
+					$this->success('修改成功',U('Store/picDisplay',array('token'=>session('token'),'cid'=>$this->_get('cid'))));
 					
 				}else{
 					$this->error('操作失败');
@@ -1674,7 +1710,12 @@ class StoreAction extends UserAction{
 			}		
 		}else{
 		$res = $Model->where('id='.$id)->find();
-		//dump($res);
+		//获取客户照片
+		if($_GET['id']){
+			$store_pros = M('Products_show_pic')->where('pid='.$_GET['id'])->select();
+			$this->assign('store_pros',$store_pros);
+		}
+
 		$this->assign('set',$res);
 		$this->display();			
 		}
@@ -1684,20 +1725,26 @@ class StoreAction extends UserAction{
 
 	public function addDisplay(){
 		//分类
-		$classify = M('Product_show_classify')->select();
+		$where['id'] = $_GET['cid'];
+
+		$classify = M('Product_show_classify')->where($where)->find();
 		$this->assign('classify',$classify);
 		if(IS_POST){
-			$this->insert('Product_show','/picDisplay');
+
+			$data=D('Product_show');
+			$_POST['cid'] = $_GET['cid'];
+
+			if($data->data($_POST)->add()){
+				$this->success('修改成功',U('Store/picDisplay',array('token'=>session('token'),'cid'=>$this->_get('cid'))));	
+			}else{
+					$this->error('操作失败');
+				}
 		}else{
 
-			$this->display('picEdit');
+			$this->display();
 		}
 	}
 
-	public function picDel(){
-
-		$this->display();
-	}
 
 	public function delDisplay(){
 		$res = M('Product_show')->where('id='.$_GET['id'])->delete();
@@ -1707,5 +1754,422 @@ class StoreAction extends UserAction{
 			$this->error('删除失败');
 		}
 	}
+
+	public function showClass(){
+
+		$list = M('Product_show_classify')->where(array('delete' =>0))->select();
+		$this->assign('list',$list);
+		$this->display();
+	}
+
+	public function delClass(){
+
+		$data['delete'] = 1;
+		$where['id'] = $_GET['id'];
+		$res = M('Product_show_classify')->where($where)->data($data)->delete();
+		if($res){
+			$this->success('删除成功');
+		}else{
+			$this->success('删除失败');
+		}
+		
+	}
+
+	public function addClass(){
+
+		if(IS_POST){
+			if(empty($_POST['name'])){
+				$this->error('数据不能为空');
+			}else{
+				$this->insert('Product_show_classify','/showClass');
+			}
+		}else{
+			$this->display('setClass');
+		}
+
+	}
+
+	public function setClass(){
+		
+		if(IS_POST){
+
+			$data = D('Product_show_classify');
+            $where= array('id'=>$this->_post('id'));
+
+			$check= $data->where($where)->find();
+
+			if($check==false)$this->error('非法操作');
+
+			if($check){
+				if($data->where($where)->save($_POST)){
+					$this->success('修改成功',U('Store/showClass',array('token'=>session('token'),)));
+					
+				}else{
+					$this->error('操作失败');
+				}
+			}else{
+				$this->error($data->getError());
+			}		
+		}else{
+			$where['id'] = $_GET['id'];
+			$list = M('Product_show_classify')->where($where)->find();
+			$this->assign('set',$list);
+			$this->display();
+		}
+
+	}
+
+	public function coupon(){
+
+		if(IS_POST){
+			$keys   = $_POST['searchkey'];
+			$map['code|id'] = array('like',"%$keys%");
+			if($_POST['status'] != ''){
+				$map['status']   = $_POST['status'];
+			}
+			$count  = M('Coupons')->count();
+			$page   = new Page($count,20);
+			$show   = $page->show();
+			$coupon = D('Coupons')->where($map)->relation(true)
+							  	  ->limit($page->firstRow.','.$page->listRows)->order('addtime desc')
+							      ->select();
+
+		}else{
+
+			$count  = M('Coupons')->count();
+			$page   = new Page($count,20);
+			$show   = $page->show();
+			$coupon = D('Coupons')->relation(true)
+							  ->limit($page->firstRow.','.$page->listRows)->order('addtime desc')
+							  ->select();
+
+		}
+
+			$this->assign('page',$show);					  
+			$this->assign('list',$coupon);
+			$this->display();
+	}
+
+	public function delCoupon(){
+
+		$where['id'] = $_GET['id']; 
+		$res =  M('Coupons')->where($where)->delete();
+		if($res){
+			$this->success('删除成功！');
+		}
+	}
+
+	public function addCoupon(){
+
+		$rand = new String();
+
+		if(IS_POST){
+			
+			if($_POST['endtime']&&$_POST['price']&&$_POST['limitprice']&&$_POST['Nums']){	
+
+				$date  = explode('-',$_POST['endtime']);
+				$count = $_POST['Nums'];
+
+				for($i=0;$i<$count;$i++){
+
+					$datalist [] = array(
+						'name'   =>$_POST['name'],
+						'year'	 =>$date[0],
+						'month'	 =>$date[1],
+						'day'	 =>$date[2],
+						'code'	 =>$rand->randString(6,0),
+						'addtime'=>time(),
+						'endtime'=>strtotime($_POST['endtime']),
+						'price'  =>$_POST['price'],
+						'limitprice'=>$_POST['limitprice'],
+						 );
+				}
+
+				$res = M('coupons')->addAll($datalist);
+				if($res){
+					$this->success('操作成功',U('Store/coupon'));
+					exit();
+				}else{ 
+				$this->error('插入失败');		
+				}
+			}else{
+				$this->error('有数值未输入，请核对');
+			}
+		}
+		$this->assign('time',time());
+		$this->display();
+	}
+
+	public function  message(){
+
+		$count  = M('Feedback_list')->count();
+		$page   = new Page($count,20);
+		$show   = $page->show();
+		$list   = D('Feedback_list')->limit($page->firstRow.','.$page->listRows)->select();
+		$this->assign('page',$show);
+		$this->assign('list',$list);
+		$this->display();
+
+
+	}
+
+	public function msgConte(){
+		$list =  M('Feedback_list')->where(array('id'=>$_GET['id']))->find();
+		$this->assign('list',$list);
+		$this->display();
+	}
+	//删除展示图片
+	public function delShowPic(){
+		$id = $this->_get('id');
+		$db = M('Products_show_pic');
+		$show_pic = $db->where('id='.$id)->find();
+		if($show_pic){
+			// $file = $show_pic['pic'];
+			// $res = @unlink($file);
+			$res = $db->where('id='.$id)->delete();
+			if($res){
+				$this->ajaxReturn('','删除成功',1);
+			}else{
+				$this->ajaxReturn('','删除失败',-1);
+			}
+		}else{
+			$this->ajaxReturn('','图片不存在',-1);
+		}
+	}
+	//删除展示图片
+	public function delCartPic(){
+		$id = $this->_get('id');
+		$db = M('Cart_pics');
+		$show_pic = $db->where('id='.$id)->find();
+		if($show_pic){
+			// $file = $show_pic['pic'];
+			// $res = @unlink($file);
+			$res = $db->where('id='.$id)->delete();
+			if($res){
+				$this->ajaxReturn('','删除成功',1);
+			}else{
+				$this->ajaxReturn('','删除失败',-1);
+			}
+		}else{
+			$this->ajaxReturn('','图片不存在',-1);
+		}
+	}
+	//批量上传图片
+	public function fileUpload(){
+		/**
+		 * upload.php
+		 *
+		 * Copyright 2013, Moxiecode Systems AB
+		 * Released under GPL License.
+		 *
+		 * License: http://www.plupload.com/license
+		 * Contributing: http://www.plupload.com/contributing
+		 */
+
+		#!! IMPORTANT:
+		#!! this file is just an example, it doesn't incorporate any security checks and
+		#!! is not recommended to be used in production environment as it is. Be sure to
+		#!! revise it and customize to your needs.
+
+
+		// Make sure file is not cached (as it happens for example on iOS devices)
+		header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+		header("Cache-Control: no-store, no-cache, must-revalidate");
+		header("Cache-Control: post-check=0, pre-check=0", false);
+		header("Pragma: no-cache");
+
+
+		// Support CORS
+		// header("Access-Control-Allow-Origin: *");
+		// other CORS headers if any...
+		if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+		    exit; // finish preflight CORS requests here
+		}
+
+
+		if ( !empty($_REQUEST[ 'debug' ]) ) {
+		    $random = rand(0, intval($_REQUEST[ 'debug' ]) );
+		    if ( $random === 0 ) {
+		        header("HTTP/1.0 500 Internal Server Error");
+		        exit;
+		    }
+		}
+
+		// header("HTTP/1.0 500 Internal Server Error");
+		// exit;
+
+
+		// 5 minutes execution time
+		@set_time_limit(5 * 60);
+
+		// Uncomment this one to fake upload time
+		usleep(5000);
+
+		// Settings
+		// $targetDir = ini_get("upload_tmp_dir") . DIRECTORY_SEPARATOR . "plupload";
+		// $pid = $this->_get('pid');
+		$targetDir = 'upload_tmp';
+		$uploadDir = 'upload';
+
+		$cleanupTargetDir = true; // Remove old files
+		$maxFileAge = 5 * 3600; // Temp file age in seconds
+
+
+		// Create target dir
+		if (!file_exists($targetDir)) {
+		    @mkdir($targetDir);
+		}
+
+		// Create target dir
+		if (!file_exists($uploadDir)) {
+		    @mkdir($uploadDir);
+		}
+
+		// Get a file name
+		// if (isset($_REQUEST["name"])) {
+		//     $fileName = $_REQUEST["name"].time();
+		//     $fileName = String::randString(6).'.jpg';
+		// } elseif (!empty($_FILES)) {
+		//     $fileName = $_FILES["file"]["name"];
+		// } else {
+		//     $fileName = uniqid("file_");
+		// }
+		$fileName = String::randString(12).'.jpg';
+
+		$md5File = @file('md5list.txt', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+		$md5File = $md5File ? $md5File : array();
+
+		if (isset($_REQUEST["md5"]) && array_search($_REQUEST["md5"], $md5File ) !== FALSE ) {
+		    die('{"jsonrpc" : "2.0", "result" : null, "id" : "id", "exist": 1}');
+		}
+
+		$filePath = $targetDir . DIRECTORY_SEPARATOR . $fileName;
+		$uploadPath = $uploadDir . DIRECTORY_SEPARATOR . $fileName;
+
+		// Chunking might be enabled
+		$chunk = isset($_REQUEST["chunk"]) ? intval($_REQUEST["chunk"]) : 0;
+		$chunks = isset($_REQUEST["chunks"]) ? intval($_REQUEST["chunks"]) : 1;
+
+
+		// Remove old temp files
+		// if ($cleanupTargetDir) {
+		//     if (!is_dir($targetDir) || !$dir = opendir($targetDir)) {
+		//         die('{"jsonrpc" : "2.0", "error" : {"code": 100, "message": "Failed to open temp directory."}, "id" : "id"}');
+		//     }
+
+		//     while (($file = readdir($dir)) !== false) {
+		//         $tmpfilePath = $targetDir . DIRECTORY_SEPARATOR . $file;
+
+		//         // If temp file is current file proceed to the next
+		//         if ($tmpfilePath == "{$filePath}_{$chunk}.part" || $tmpfilePath == "{$filePath}_{$chunk}.parttmp") {
+		//             continue;
+		//         }
+
+		//         // Remove temp file if it is older than the max age and is not the current file
+		//         if (preg_match('/\.(part|parttmp)$/', $file) && (@filemtime($tmpfilePath) < time() - $maxFileAge)) {
+		//             @unlink($tmpfilePath);
+		//         }
+		//     }
+		//     closedir($dir);
+		// }
+
+
+		// Open temp file
+		// if (!$out = @fopen("{$filePath}_{$chunk}.parttmp", "wb")) {
+		//     die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}');
+		// }
+
+		// if (!empty($_FILES)) {
+		//     if ($_FILES["file"]["error"] || !is_uploaded_file($_FILES["file"]["tmp_name"])) {
+		//         die('{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "Failed to move uploaded file."}, "id" : "id"}');
+		//     }
+
+		//     // Read binary input stream and append it to temp file
+		//     if (!$in = @fopen($_FILES["file"]["tmp_name"], "rb")) {
+		//         die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
+		//     }
+		// } else {
+		//     if (!$in = @fopen("php://input", "rb")) {
+		//         die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
+		//     }
+		// }
+		$in = @fopen($_FILES["file"]["tmp_name"], "rb");
+		$upyun = A('User/Upyun');
+		$dir_pic = '/'.$this->token.'/'.date('Y').'/'.date('m').'/'.date('d').'/123_'.time().'.jpg';
+		$test2 = $upyun->test($dir_pic, $in);
+		$img_src = "http://".UNYUN_DOMAIN.$dir_pic;
+
+		// while ($buff = fread($in, 4096)) {
+		// 	$upyun = A('User/Upyun');
+		// 	$dir_pic = '/'.$this->token.'/'.date('Y').'/'.date('m').'/'.date('d').'/123_'.time().'.jpg';
+		// 	$test2 = $upyun->test($dir_pic, $in);
+		// 	$img_src = "http://".UNYUN_DOMAIN.$dir_pic;
+		//     // fwrite($out, $buff);
+		// }
+
+		@fclose($out);
+		@fclose($in);
+
+		rename("{$filePath}_{$chunk}.parttmp", "{$filePath}_{$chunk}.part");
+
+		$index = 0;
+		$done = true;
+		for( $index = 0; $index < $chunks; $index++ ) {
+		    if ( !file_exists("{$filePath}_{$index}.part") ) {
+		        $done = false;
+		        break;
+		    }
+		}
+		if ( $done ) {
+		    if (!$out = @fopen($uploadPath, "wb")) {
+		        die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}');
+		    }
+
+		    if ( flock($out, LOCK_EX) ) {
+		        for( $index = 0; $index < $chunks; $index++ ) {
+		            if (!$in = @fopen("{$filePath}_{$index}.part", "rb")) {
+		                break;
+		            }
+
+		            while ($buff = fread($in, 4096)) {
+		                fwrite($out, $buff);
+		            }
+
+		            @fclose($in);
+		            @unlink("{$filePath}_{$index}.part");
+		        }
+
+		        flock($out, LOCK_UN);
+		    }
+		    @fclose($out);
+		}
+
+		// Return Success JSON-RPC response
+		//注入店铺照片表
+		$pid = $this->_get('pid');
+		$oid = $this->_get('oid');
+		if($pid){
+			$data = array(
+				'pid' => $pid,
+				'pic' => $img_src,
+			);
+			M('Products_show_pic')->add($data);
+		}
+		if($oid){
+			$data = array(
+				'oid' => $oid,
+				'url' => $img_src,
+				'addtime' => time(),
+				'year' => date('Y',time()),
+				'month' => date('m',time()),
+				'day' => date('d',time()),
+			);
+			M('Cart_pics')->add($data);
+		}
+
+		die('{'.$img_src.' : "2.0", "result" : null, "id" : "id"}');
+	}
+	
 }
 ?>

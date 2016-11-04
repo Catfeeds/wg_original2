@@ -1,0 +1,25 @@
+[ 2016-10-29T10:25:13+08:00 ] ERR: (ThinkException) _TEMPLATE_NOT_EXIST_[./tpl/User/default/Store_showClass.html]
+[ 2016-10-29T10:25:19+08:00 ] ERR: (ThinkException) _TEMPLATE_NOT_EXIST_[./tpl/User/default/Store_showClass.html]
+[ 2016-10-29T10:29:52+08:00 ] ERR: (ThinkException) _TEMPLATE_NOT_EXIST_[./tpl/User/default/Store_showClass.html]
+[ 2016-10-29T10:30:08+08:00 ] ERR: (ThinkException) _TEMPLATE_NOT_EXIST_[./tpl/User/default/Store_showClass.html]
+[ 2016-10-29T10:36:20+08:00 ] ERR: (ThinkException) Model:relation_METHOD_NOT_EXIST_
+[ 2016-10-29T10:40:30+08:00 ] ERR: (ThinkException) _MODULE_NOT_EXIST_:Shop
+[ 2016-10-29T10:41:34+08:00 ] ERR: (ThinkException) _MODULE_NOT_EXIST_:Retail
+[ 2016-10-29T10:45:12+08:00 ] ERR: (ThinkException) _TEMPLATE_NOT_EXIST_[./tpl/Shop/Retail/departset.html]
+[ 2016-10-29T10:45:13+08:00 ] ERR: (ThinkException) _TEMPLATE_NOT_EXIST_[./tpl/Shop/Retail/departset.html]
+[ 2016-10-29T10:47:58+08:00 ] ERR: (ThinkException) _TEMPLATE_NOT_EXIST_[./tpl/User/default/Store_showClass.html]
+[ 2016-10-29T16:15:26+08:00 ] ERR: (ThinkException) La table 'original2_data.pigcms_couponse' n'existe pas
+ [ SQL语句 ] : SHOW COLUMNS FROM `pigcms_couponse`
+[ 2016-10-29T16:20:35+08:00 ] ERR: (ThinkException) _TEMPLATE_NOT_EXIST_[./tpl/Shop/Index/index.html]
+[ 2016-10-29T16:31:36+08:00 ] ERR: (ThinkException) Duplicata du champ '136' pour la clef 'PRIMARY'
+ [ SQL语句 ] : INSERT INTO `pigcms_product` (`token`,`id`,`storeid`,`name`,`catid`,`type`,`wmprice`,`price`,`oprice`,`fakemembercount`,`isopen`,`keyword`,`sort`,`des`,`colorinfo`,`artinfo`,`artex`,`time`) VALUES ('mhfcjx1421158741','136','1','222','12','0','0','1','1','1','0','1','0','','{}','{}','{}','1477729896')
+[ 2016-10-29T16:31:53+08:00 ] ERR: (ThinkException) Duplicata du champ '136' pour la clef 'PRIMARY'
+ [ SQL语句 ] : INSERT INTO `pigcms_product` (`token`,`id`,`storeid`,`name`,`catid`,`type`,`wmprice`,`price`,`oprice`,`fakemembercount`,`isopen`,`keyword`,`sort`,`des`,`colorinfo`,`artinfo`,`artex`,`time`) VALUES ('mhfcjx1421158741','136','1','2222','12','0','0','1','1','1','0','1','0','','{}','{}','{}','1477729913')
+[ 2016-10-29T16:33:13+08:00 ] ERR: (ThinkException) Duplicata du champ '136' pour la clef 'PRIMARY'
+ [ SQL语句 ] : INSERT INTO `pigcms_product` (`token`,`id`,`storeid`,`name`,`catid`,`type`,`wmprice`,`price`,`oprice`,`fakemembercount`,`isopen`,`keyword`,`sort`,`des`,`colorinfo`,`artinfo`,`artex`,`time`) VALUES ('mhfcjx1421158741','136','1','222','12','0','0','2','1','1','0','1','0','','{}','{}','{}','1477729993')
+[ 2016-10-29T16:37:08+08:00 ] ERR: (ThinkException) Duplicata du champ '135' pour la clef 'PRIMARY'
+ [ SQL语句 ] : INSERT INTO `pigcms_product` (`token`,`id`,`storeid`,`name`,`catid`,`type`,`wmprice`,`price`,`oprice`,`fakemembercount`,`isopen`,`keyword`,`sort`,`des`,`colorinfo`,`artinfo`,`artex`,`time`) VALUES ('mhfcjx1421158741','135','1','1','12','1','0','2','0','0','0','','0','','{}','{}','{}','1477730228')
+[ 2016-10-29T16:45:26+08:00 ] ERR: (ThinkException) Duplicata du champ '139' pour la clef 'PRIMARY'
+ [ SQL语句 ] : INSERT INTO `pigcms_product` (`token`,`id`,`storeid`,`name`,`catid`,`type`,`wmprice`,`price`,`oprice`,`fakemembercount`,`isopen`,`keyword`,`sort`,`des`,`colorinfo`,`artinfo`,`artex`,`time`) VALUES ('mhfcjx1421158741','139','1','123441','12','0','0','1','0','0','0','','0','','{}','{}','{}','1477730726')
+[ 2016-10-29T16:46:15+08:00 ] ERR: (ThinkException) Duplicata du champ '139' pour la clef 'PRIMARY'
+ [ SQL语句 ] : INSERT INTO `pigcms_product` (`token`,`id`,`storeid`,`name`,`catid`,`type`,`wmprice`,`price`,`oprice`,`fakemembercount`,`isopen`,`keyword`,`sort`,`des`,`colorinfo`,`artinfo`,`artex`,`time`) VALUES ('mhfcjx1421158741','139','1','123441','12','0','0','1','0','0','0','','0','','{}','{}','{}','1477730775')

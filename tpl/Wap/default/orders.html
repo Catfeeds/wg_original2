@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>支付下单</title>
+    <title>预约拍照</title>
     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
     <link rel="shortcut icon" href="/favicon.ico">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -47,7 +47,7 @@
             }
              </style>
             <div class="content">
-                <div class="bc-w" style="text-align: center;line-height: 1.6rem;">订单支付</div>
+            <div class="bc-w" style="text-align: center;line-height: 1.6rem;">支付剩余时间<item class="pay-last-time"></item></div>
                 <div class="list-block">
                     <ul>
                         <!-- <a href="Appointment.html"> -->
@@ -82,6 +82,18 @@
                                 </div>
                             </a>
                         </li>
+                        <li>
+                            <div class="item-title-row border-bottom1" style="padding: 0.4rem 2%;">
+                                <div class="item-title color-grey1">组合优惠</div>
+                                <div class="item-after wg_order_pay_money">￥<item id="show-pref-item"></item></div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-title-row" style="padding: 0.4rem 2%;" id="my-coupons">
+                                <div class="item-title color-grey1">抵价卷</div>
+                                <div class="item-after wg_order_pay_money"><item data-coupons-price="0" id="coupons-item"></item></div>
+                            </div>
+                        </li>
                     </ul>
                 </div>
                 <!-- <div class="list-block media-list">
@@ -106,18 +118,18 @@
                                 <div class="item-inner">
                                     <div class="item-title label">姓名：</div>
                                     <div class="item-input">
-                                        <span id="order-name"></span>
-                                        <!-- <input id="order-name" type="text" placeholder=""> -->
+                                        <!-- <span id="order-name"></span> -->
+                                        <input id="order-name" type="text" placeholder="">
                                     </div>
                                 </div>
                             </div>
                         </li>
-                        <li>
+                        <li id="order-sex">
                             <div class="item-content">
                                 <div class="item-inner">
                                     <div class="item-title label">性别：</div>
                                     <div class="item-input">
-                                        <span id="order-sex"></span>
+                                        <span style="padding-left: 0.25rem;" class="order-sex-item"></span>
                                         <!-- <input id="order-sex" type="text" placeholder=""> -->
                                     </div>
                                     <!-- <div class="item-title label iconfont" style="text-align: right;">&#xe613;</div> -->
@@ -130,8 +142,19 @@
                                 <div class="item-inner">
                                     <div class="item-title label">生日：</div>
                                     <div class="item-input">
-                                        <span id="order-birth"></span>
-                                        <!-- <input id="order-birth" type="text" placeholder=""> -->
+                                        <!-- <span id="order-birth"></span> -->
+                                        <input id="order-birth" type="text" placeholder="" data-toggle='date'>
+                                    </div>
+                                    <!-- <div class="item-title label iconfont" style="text-align: right;">&#xe613;</div> -->
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title label">邮箱：</div>
+                                    <div class="item-input">
+                                        <input id="order-email" type="text" placeholder="请输入邮箱地址">
                                     </div>
                                     <!-- <div class="item-title label iconfont" style="text-align: right;">&#xe613;</div> -->
                                 </div>
@@ -159,7 +182,7 @@
                 </div>
             </div>
                  <div class="wg_order_pay">
-                   <div class="wg_order_pay_all">总计：￥<span id="total-price" class="total-color"></span></div>
+                   <div class="wg_order_pay_all">总计：￥<span id="total-price" class="total-color"></span> <span id="total-pref" class="f6"></span></div>
                    <div class="wg_order_pay_again" id="pay-btn">去支付</div>
                  </div>
             <div id="footer"></div>
@@ -172,8 +195,8 @@
     <script src="common/original/js/public_parameters.js" type="text/javascript" charset="utf-8"></script>
     <script src="common/original/js/citylist.js" type="text/javascript" charset="utf-8"></script>
     <script src="common/original/js/choosedate.js" type="text/javascript" charset="utf-8"></script>
-    <script src="common/original/js/store.js" type="text/javascript" charset="utf-8"></script>
     <script src="common/original/js/common.js" type="text/javascript" charset="utf-8"></script>
+    <script src="common/original/js/store.js" type="text/javascript" charset="utf-8"></script>
 </body>
 
 </html>

@@ -95,7 +95,6 @@
   background: #fff;
   border-top: 1px solid #e7e7e7;
   height: 50px;
-  max-width: 640px;
   .wg_item_pro_bottom_knowledge{
     float: right;
     padding: 7px 12px;
@@ -129,8 +128,8 @@
 }
 .hintl3{width:38px;height:37px;background:url(../images/icon/hint3.png) no-repeat;-webkit-background-size:38px 37px;background-size:38px 37px; position:absolute;top:7px;right:7px;}
 .hintl-in2{line-height:1rem; text-align:center;color:#000; width: 90%;  height: 7.5rem; margin: 0 auto;}
-.hintl-in3{font-size:0.5rem ;padding: 0px .5rem; height:35px;background:$total-color;color:#f4e8df;position:absolute;bottom:25px;left:10%;text-align:center;line-height:35px;border-radius:4px;}
-.hintl-in4{font-size:0.5rem ;padding: 0px .5rem;height:35px;border: 1px solid $total-color; color:$total-color;position:absolute;bottom:25px;right:10%;text-align:center;line-height:35px;border-radius:4px;}
+.hintl-in3{padding: 0px .5rem; height:35px;background:$total-color;color:#f4e8df;position:absolute;bottom:25px;left:10%;text-align:center;line-height:35px;border-radius:4px;}
+.hintl-in4{padding: 0px .5rem;height:35px;border: 1px solid $total-color; color:$total-color;position:absolute;bottom:25px;right:10%;text-align:center;line-height:35px;border-radius:4px;}
 .wg_item_pro_bottom_all{
   position: fixed;
     width: 100%;
@@ -143,7 +142,6 @@
   .wg_item_pro_bottom_bg{position: absolute;background: rgba(0,0,0,0.5); width: 100%;height:100%; top:0; left: 0; }
   
 }
-.box{position:fixed;display:block;  max-width: 640px; z-index: 1}
 
 .hintl-in5{
  font-size: 1rem;
@@ -191,7 +189,6 @@
   width: 100%;
   height: 30px;
    margin-top: -15px;
-   max-width: 640px;
   .wg_item_order_icon{
   position: absolute;
   background: $total-color;
@@ -201,7 +198,6 @@
   text-align: center;
   line-height: 30px;
   color: #fff; 
-  max-width: 640px;
   width: 60px;
   }
 }
@@ -231,16 +227,16 @@
     }
   }
   .reservation-serviceList{
-    font-size: 1rem;
+    font-size: 1.2rem;
   }
   .on{
     color: $total-color;
   }
   .wg_service_icon_title{
-    font-size: .5rem;
+    font-size: .6rem;
   }
    .wg_service_icon_title1{
-    font-size: .5rem;
+    font-size: .6rem;
     color: #666;
   }
 }
@@ -327,7 +323,6 @@
   height: 40px;
   line-height: 40px;
   border-top: 1px solid #e7e7e7;
-  max-width: 640px;
   height: 50px;
   line-height: 50px;
   z-index: 11;
@@ -364,7 +359,6 @@
   width: 100%;
   height: 30px;
    margin-top: -15px;
-   max-width: 640px;
   .wg_item_order_icon{
   position: absolute;
   background: $total-color;
@@ -374,7 +368,6 @@
   text-align: center;
   line-height: 30px;
   color: #fff; 
-  max-width: 640px;
   width: 60px;
 }
 }

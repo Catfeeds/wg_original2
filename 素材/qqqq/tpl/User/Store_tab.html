@@ -1,0 +1,77 @@
+<!--tab start-->
+<div class="tab" id="store_tab">
+<ul>
+<!-- <li class="tabli spfl"     id="tab2"><a href="{wghd::U('Store/index',array('token'=>$token,'dining'=>$isDining))}">
+<if condition="$isDining neq 1">商品分类<else/>菜品分类</if>管理</a></li>
+
+
+<if condition="empty($catid) neq true">
+<li class="tabli pro"      id="tab0"><a href="{wghd::U('Store/product',array('token'=>$token))}">商品管理</a></li>
+
+
+
+</if> -->
+
+
+<li class="tabli ord"      id="tab2"><a href="{wghd::U('Store/orders',array('token'=>$token,'dining'=>$isDining))}">订单管理</a></li>
+
+<li class="tabli sclass"      id="tab2"><a href="{wghd::U('Store/showClass',array('token'=>$token,'dining'=>$isDining))}">展示分类</a></li>
+
+<li class="tabli coupon"      id="tab2"><a href="{wghd::U('Store/coupon',array('token'=>$token,'dining'=>$isDining))}">优惠券管理</a></li>
+
+<li class="tabli msg"      id="tab2"><a href="{wghd::U('Store/message',array('token'=>$token,'dining'=>$isDining))}">反馈列表</a></li>
+
+
+<!-- <if condition="$isDining neq 1">
+<li class="tabli" id="tab5"><a href="{wghd::U('Reply_info/set',array('token'=>$token,'infotype'=>'Shop'))}">商城回复配置</a></li>
+<else/>
+<li class="tabli" id="tab5"><a href="{wghd::U('Reply_info/set',array('token'=>$token,'infotype'=>'Dining'))}">订餐回复配置</a></li>
+</if> -->
+</ul>
+</div>
+<!--tab end-->
+<script type="text/javascript">
+	(function($){
+		var module_name="{wghd::MODULE_NAME}";
+		var action_name="{wghd::ACTION_NAME}";
+		var tab=$("#store_tab");
+		if(module_name=="Store"){
+			if(action_name=="index"){
+				tab.find('.spfl').addClass('current');
+			}
+			if(action_name=="search"){
+				tab.find('.sssp').addClass('current');
+			}
+			if(action_name=="banner"){
+				tab.find('.ban').addClass('current');
+			}
+			if(action_name=="guanggao"){
+				tab.find('.ad').addClass('current');
+			}
+			if(action_name=="product"){
+				tab.find('.pro').addClass('current');
+			}
+			if(action_name=="orders"){
+				tab.find('.ord').addClass('current');
+			}
+			if(action_name=='discount'){
+				tab.find('.discount').addClass('current');
+			}
+			if(action_name=='picDisplay'){
+				tab.find('.dis').addClass('current');
+			}	
+
+			if(action_name=='showClass'){
+				tab.find('.sclass').addClass('current');
+			}	
+
+			if(action_name=='coupon'){
+				tab.find('.coupon').addClass('current');
+			}	
+
+			if(action_name=='message'){
+				tab.find('.msg').addClass('current');
+			}	
+		}
+	})(jQuery)
+</script>

@@ -39,6 +39,11 @@ li {
 .clear{
 	clear: both;
 }
+.content-img-100{
+	img{
+		width: 100%;
+	}
+}
 a{
 	color:#000;
 }
@@ -52,6 +57,9 @@ img{
 .f7{
   font-size: 0.7rem !important;
 }
+.f6{
+  font-size: 0.6rem !important;
+}
 
 .d-index-list{
   border-bottom: 1px solid #ececec;
@@ -63,6 +71,9 @@ $total-color:#f0870c;
 
 .total-color{
   color: $total-color !important;
+}
+.border-bottom1{
+	border-bottom: 1px solid #ececec;
 }
 .color-grey1{
   color: #858585;
@@ -261,6 +272,7 @@ $total-color:#f0870c;
       float: right; width: 28%; font-size: 12px; font-weight: 700;
       background-color: $total-color;
       height: 2rem;
+      line-height: 2rem;
     }
     .finish-btn{
       background-color: $total-color;
@@ -328,6 +340,10 @@ $total-color:#f0870c;
 				content:'\e615';
 			}
 		}
+	}
+
+	.total-price{
+		color: $total-color;
 	}
 
 	.list-block {
@@ -426,6 +442,6 @@ $total-color:#f0870c;
 	}
 	.item-after1{
 		float: none;
-    margin: 5px 0.75rem 0 0;
+    	margin: 5px 0.75rem 5px 0;
 	}
 }

@@ -54,82 +54,52 @@ class StoreAction extends WapAction{
 	//展示产品详情
 	public function getProductDetail(){
 		$pid = $this->_get('pid');
+		$page = $this->_get('page');
 		$pro = M('Product_show')->where(array('id'=>$pid))->find();
-
-		$str .='<div class="list-block media-list" style="margin:0;">';
-		$str .='    <ul>';
-		$str .='        <li>';
-		$str .='            <a href="#" class="item-content">';
-		$str .='                <div class="item-inner">';
-		$str .='                    <div class="item-title-row">';
-		$str .='                        <div class="item-title">'.$pro['name'].'</div>';
-		$str .='                        <div class="item-after total-color">'.$pro['price1'].'元/套</div>';
-		$str .='                    </div>';
-		$str .='                    <div class="item-text">'.$pro['desc1'].'</div>';
-		$str .='                </div>';
-		$str .='            </a>';
-		$str .='        </li>';
-		$str .='    </ul>';
-		$str .='</div>';
-
-		$str .='<div class="list-block media-list" style="margin:0;">';
-		$str .='    <ul>';
-		$str .='        <li>';
-		$str .='            <a href="#" class="item-content">';
-		$str .='                <div class="item-inner">';
-		$str .='                    <div class="item-title-row">';
-		$str .='                        <div class="item-title">加修加印</div>';
-		$str .='                        <div class="item-after total-color">'.$pro['price2'].'元/套</div>';
-		$str .='                    </div>';
-		$str .='                    <div class="item-text">'.$pro['desc2'].'</div>';
-		$str .='                </div>';
-		$str .='            </a>';
-		$str .='        </li>';
-		$str .='    </ul>';
-		$str .='</div>';
-
-		$str .='<div class="list-block media-list" style="margin:0;">';
-		$str .='    <ul>';
-		$str .='        <li>';
-		$str .='            <a href="#" class="item-content">';
-		$str .='                <div class="item-inner">';
-		$str .='                    <div class="item-title-row">';
-		$str .='                        <div class="item-title">加印</div>';
-		$str .='                        <div class="item-after total-color">'.$pro['price3'].'元/套</div>';
-		$str .='                    </div>';
-		$str .='                    <div class="item-text">'.$pro['desc3'].'</div>';
-		$str .='                </div>';
-		$str .='            </a>';
-		$str .='        </li>';
-		$str .='    </ul>';
-		$str .='</div>';
-
-		$str .='<div class="wg_item_order_show">';
-		$str .='    <div class="wg_item_order_show_content">';
-		$str .='        <div class="wg_item_order_show_title f7">客片展示</div>';
-		$str .='        <div><img class="w100" src="'.$pro['pic'].'"></div>';
-		$str .='        <div class="clear"></div>';
-		$str .='    </div>';
-		$str .='</div>';
-
-		$this->ajaxReturn($str,'',1);
+		//展示图片
+		$pro_pic = M('Products_show_pic')->where('pid='.$pid)->limit(0,$page*9)->select();
+		$P_Photo = array();
+		foreach ($pro_pic as $k => $v) {
+			$P_Photo[$k] = $v['pic'];
+		}
+		//展示信息
+		$msg = array(
+			'PD_Desc' => $pro['desc1'],
+			'PD_DoubleDesc' => $pro['desc2'],
+			'PD_DoublePrice' => $pro['price2'],
+			'PD_DoublePrice_Ext1' => $pro['price2'],
+			'PD_DoublePrintDesc' => $pro['desc3'],
+			'PD_DoublePrintPrice' => $pro['price3'],
+			'PD_DoublePrintPrice_Ext1' => $pro['price3'],
+			'PD_Note' => "",
+			'P_Id' => $pro['id'],
+			'P_Name' => $pro['name'],
+			'P_OriPrice' => "0.00",
+			'P_OriPrice_Ext1' => "0.00",
+			'P_Photo' => $P_Photo,
+			'P_P' => $pro['price1'],
+			'P_Price' => $pro['price1'],
+			'P_Price_Ext1' => $pro['price1'],
+		);
+		exit($this->returnData($msg));
 	}
 
 	//获取产品信息
 	public function getCatsProducts(){
 		//城市CODEID
 		$storeId = $this->_get('storeId');
-		$cats = M('Product_cat')->where(array('sid'=>$storeId))->select();
+		$cats = M('Product_cat')->where(array('sid'=>$storeId))->order('sort desc')->select();
 		$cats_str = '';
 		foreach ($cats as $k => $v) {
 			$cats_str .= $v['id'].',';
 		}
-		$products = M('Product')->where(array('isopen'=>1,'catid'=>array('in',$cats_str)))->select();
+		$products = M('Product')->where(array('isopen'=>1,'catid'=>array('in',$cats_str)))->order('sort desc')->select();
 		foreach ($cats as $k => $v) {
 			$parr = array();
 			foreach ($products as $k2 => $v2) {
 				$cats[$k]['products'] = array();
 				if($v2['catid'] == $v['id']){
+					$products[$k2]['intro'] = isset($products[$k2]['intro']) ? htmlspecialchars_decode($products[$k2]['intro']) : '';
 					array_push($parr, $products[$k2]);
 				}
 				array_push($cats[$k]['products'], $parr);
@@ -166,8 +136,8 @@ class StoreAction extends WapAction{
 		//当天时间预约
 		$starttime = $str_time + 36000;
 
-		for ($i=0; $i < 40; $i++) {
-			$t = $starttime + 900 * $i;
+		for ($i=0; $i < 20; $i++) {
+			$t = $starttime + 1800 * $i;
 			$del = 0;
 			//减去已预约的时间段
 			foreach ($carts as $k => $v) {
@@ -228,6 +198,7 @@ class StoreAction extends WapAction{
 	//获取日期
 	function getWorkDate(){
 		$storeId = $this->_get('storeId');
+		// $storeId = 2;
 		//查询店铺每个时间段限制预约人数
 		$timeNums = M('Store_list')->where(array('id'=>$storeId))->getField('defaultWorkTime');
 		$timeNums = unserialize($timeNums);
@@ -262,8 +233,9 @@ class StoreAction extends WapAction{
 				}
 			}
 			$del = 0;
+			//判断当天有没预约订单
 			foreach ($carts as $k => $v) {
-				if($v['rtime'] == $t){
+				if($v['rtime'] >= $t && $v['rtime']<($t+86400)){
 					$del += 1;
 				}
 			}
@@ -340,7 +312,7 @@ class StoreAction extends WapAction{
 			$storeinfo[$v['id']] = array(
 				'S_Address'   => $v['address'],
 				'S_Id'        => $v['id'],
-				'S_MapUrl'    => 'http://api.map.baidu.com/marker?location='.$v['longitude'].','.$v['dimension'].'&title=台州时创数码&content=地址：台州市路桥区会展西路2-6号&output=html',
+				'S_MapUrl'    => 'http://api.map.baidu.com/marker?location='.$v['dimension'].','.$v['longitude'].'&title='.$v['name'].'&content=地址：'.$v['address'].'&output=html',
 				'S_Name'      => $v['name'],
 				'S_TELE'      => $v['tele'],
 				'S_Photo'     => $v['pic'],
@@ -366,9 +338,12 @@ class StoreAction extends WapAction{
 	//生成订单
 	function payOrder(){
 		$data = htmlspecialchars_decode($this->_post('data'));
+		if(!$data){
+			$this->ajaxReturn('','系统出错',-1);
+		}
 		$data = htmlspecialchars_decode($data);
 		// Log::write($data,'DEBUG');
-		// $data = '{"sid":"2","ordertime":1477965600,"con":{"80":{"pid":80,"name":"证件照","price":"60","type":"1","colorinfo":"{\"blue\":{\"price\":\"1\"},\"white\":{\"price\":\"2\"},\"red\":{\"price\":\"3\"},\"yellow\":{\"price\":\"4\"},\"grey\":{\"price\":\"5\"}}","artinfo":"","artex":"","wmprice":"1","choose":"{\"blue\":{\"price\":1}}"},"90":{"pid":90,"name":"结婚照","price":"75","type":"3","colorinfo":"","artinfo":"","artex":"","wmprice":"1"},"91":{"pid":91,"name":"文艺照","price":"75","type":"2","colorinfo":"","artinfo":"{\"personal\":{\"price\":\"1\"},\"friends\":{\"price\":\"2\"},\"childrens\":{\"price\":\"3\"},\"lovers\":{\"price\":\"4\"}}","artex":"{\"four\":{\"price\":\"1\"},\"nine\":{\"price\":\"2\"}}","wmprice":"0","choose":"{\"personal\":{\"price\":1}}"},"132":{"pid":132,"name":"一般照","price":"10","type":"0","colorinfo":"","artinfo":"","artex":"","wmprice":"0"}},"myinfo":{"id":"1","areaid":"0","areaname":"","headimgurl":"http://qchpt.b0.upaiyun.com/mhfcjx1421158741/2016/07/28/1469701369_ltmojad1p43nanvx.jpg","truename":"12311","sex":"0","birth":"2016-10-19","editname":"0","tele":"","username":"1","password":"c81e728d9d4c2f636f067f89cc14862c","wecha_id":"","mid":"","ip":"","status":"0","addtime":"0","year":"0","month":"0","day":"0","delete":"0"},"totalPrice":73,"city":"上海市"}';
+		// $data = '{"sid":"2","ordertime":1478578500,"con":{"80":{"pid":80,"catid":"3","name":"证件照1","price":"60","type":"1","colorinfo":"{\"blue\":{\"price\":\"1\"},\"white\":{\"price\":\"2\"},\"red\":{\"price\":\"3\"},\"yellow\":{\"price\":\"4\"},\"grey\":{\"price\":\"5\"}}","artinfo":"","artex":"","wmprice":"1","choose":"{\"blue\":{\"price\":1}}","total_price":1,"attribute":"(蓝色,)"},"90":{"pid":90,"catid":"3","name":"结婚照","price":"75","type":"3","colorinfo":"","artinfo":"","artex":"","wmprice":"1","total_price":75,"attribute":""},"91":{"pid":91,"catid":"3","name":"文艺照","price":"75","type":"2","colorinfo":"","artinfo":"{\"personal\":{\"price\":\"1\"},\"friends\":{\"price\":\"2\"},\"childrens\":{\"price\":\"3\"},\"lovers\":{\"price\":\"4\"}}","artex":"{\"four\":{\"price\":\"1\"},\"nine\":{\"price\":\"2\"}}","wmprice":"0","choose":"{\"personal\":{\"price\":1}}","total_price":1,"attribute":"(个人,)"},"132":{"pid":132,"catid":"3","name":"一般照","price":"10","type":"0","colorinfo":"","artinfo":"","artex":"","wmprice":"0","total_price":10,"attribute":""}},"pref":"30","coupons":{"id":"1","name":"1元","sid":"0","aid":"1","price":"1","code":"1234","endtime":"1480262400","limitprice":"5","status":"0","gettime":"0","usedtime":"0","addtime":"0","year":"0","month":"0","day":"0"},"myinfo":{"id":"1","areaid":"0","areaname":"","headimgurl":"http://qchpt.b0.upaiyun.com/mhfcjx1421158741/2016/07/28/1469701369_ltmojad1p43nanvx.jpg","truename":"12311","sex":"0","birth":"2016-10-19","editname":"0","tele":"","username":"1","password":"202cb962ac59075b964b07152d234b70","wecha_id":"","mid":"","ip":"","status":"0","addtime":"0","year":"0","month":"0","day":"0","delete":"0","cnums":"2"},"totalPrice":87,"city":"上海市"}';
 		$data = json_decode($data,true);
 		$rightprice = 0;
 		//校验摄影数据信息
@@ -377,7 +352,10 @@ class StoreAction extends WapAction{
 		$price3 = 0;//文艺照
 		$price4 = 0;//结婚照
 		$info = '';
+		//分组数据
+		$cat_data = array();
 		foreach ($data['con'] as $k => $v) {
+			$cat_data[$v['catid']]++;
 			$product = M('Product')->where(array('id'=>$k))->find();
 			switch ($v['type']) {
 				//一般照
@@ -465,6 +443,40 @@ class StoreAction extends WapAction{
 		if($rightprice != $data['totalPrice']){
 			$info .= '总价有误';
 		}
+		//校验优惠
+		$right_pref = 0;
+		foreach ($cat_data as $k => $v) {
+			$pref = M('Product_cat')->where(array('id'=>$k))->getField('pref');
+			$right_pref += $pref * ($v - 1);
+		}
+		if($right_pref != $data['pref']){
+			$info = '优惠有误';
+		}
+		//校验抵价卷
+		$coupon_price = 0;
+		if($data['coupons']){
+			$coupon_data = $data['coupons'];
+			$coupon = M('Coupons')->where('id='.$coupon_data['id'])->find();
+			if($coupon){
+				if($coupon['status'] != 3){
+					$info = '该抵价卷已不能使用';
+				}
+				if($coupon['price'] != $coupon_data['price']){
+					$info = '抵价卷价格不匹配';
+				}
+				if($coupon['endtime'] < time()){
+					$info = '该抵价卷已过期';
+				}
+				if($coupon['limitprice'] > $rightprice){
+					$info = '该抵价卷不符要求';
+				}
+			}else{
+				$info = '该抵价卷不存在';
+			}
+			if(!$info){
+				$coupon_price = $coupon_data['price'];
+			}
+		}
 		if($info){
 			$this->ajaxReturn('',$info,-1);
 		}
@@ -534,12 +546,16 @@ class StoreAction extends WapAction{
 			'tel' => $data['myinfo']['username'],
 			'wecha_id' => $data['myinfo']['wecha_id'],
 			'birth' => $data['myinfo']['birth'],
+			'email' => $data['myinfo']['email'],
 			'stel' => $store['tele'],
 			'sex' => $data['myinfo']['sex'],
 			'info' => serialize($reservation),
 			'total' => $total,
-			'price' => $rightprice,
+			'price' => $rightprice - $right_pref - $coupon_price,
+			'pref' => $right_pref,
+			'couponPrice' => $coupon_price,
 			'city' => $data['city'],
+			'lasttime' => 1200,
 			'time' => time(),
 			'year' => date('Y',time()),
 			'month' => date('m',time()),
@@ -548,7 +564,13 @@ class StoreAction extends WapAction{
 			'orderid' => $orderid,
 			'token' => $this->token,
 		);
+		//记录抵价卷使用情况
+		if($data['coupons']){
+			M('Coupons')->where('id='.$data['coupons']['id'])->save(array('status'=>1,'usedtime'=>time()));
+			$order_data['couponId'] = $data['coupons']['id'];
+		}
 		$re = M('Product_cart')->add($order_data);
+
 		if($re){
 			$return_data = array(
 				'token' => $this->token,
@@ -564,6 +586,41 @@ class StoreAction extends WapAction{
 	//立即支付
 	function payNow(){
 		$id = $this->_get('id');
+		$cart = M('Product_cart')->where(array('id'=>$id))->find();
+		//判断订单是否过期
+		// if(($cart['time'] + $cart['lasttime']) < time()){
+		// 	$this->error('订单已过期',C('site_url').'/tpl/Wap/default/Store_index.html');
+		// }
+		/*
+		 *判断预约时间是否还在
+		 *store_deftime:剩余的预约数（先计算附加时间没有就用店铺默认设置时间并减去已预约时间）
+		 *has_re_time:已预约时间
+		*/
+		$hour = date('H',$cart['rtime']);
+		$min = date('i',$cart['rtime']);
+		$key = ($hour-10)*2 + $min/30;
+		//判断是否是附加时间段
+		$addtime = M('Store_addtime')->where('sid='.$cart['storeid'])->select();
+		foreach ($addtime as $k => $v) {
+			if($cart['rtime'] > $v['time'] && $cart['rtime'] <= $v['time']+86400){
+				$dftime = unserialize($v['defaultWorkTime']);
+			}
+		}
+		if(!$dftime){
+			$dftime = unserialize(M('store_list')->where('id='.$cart['storeid'])->getField('defaultWorkTime'));
+		}
+		$store_deftime = $dftime[$key];
+		if(!$store_deftime || $store_deftime < 1){
+			$this->error('该时间段已被预约',C('site_url').'/tpl/Wap/default/Store_index.html');
+		}else{
+			//如果没有超出默认设置的预约数就查找订单的预约数
+			$has_re_time = M('Product_cart')->where(array('paid'=>1,'returnMoney'=>0,'storeid'=>$cart['storeid'],'rtime'=>$cart['rtime']))->count();
+			if(($store_deftime - $has_re_time) < 1){
+				$this->error('该时间段已被预约',C('site_url').'/tpl/Wap/default/Store_index.html');
+			}
+		}
+
+		//刷新订单编号
 		$orderid = substr(time(), -1, 4) . date("YmdHis");
 		M('Product_cart')->where(array('id'=>$id))->setField('orderid',$orderid);
 		$cart = M('Product_cart')->where(array('id'=>$id))->find();

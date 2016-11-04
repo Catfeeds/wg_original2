@@ -1,0 +1,8 @@
+[ 2016-11-02T10:18:15+08:00 ] ERR: (ThinkException) Erreur de syntaxe près de 'LIMIT 1' à la ligne 1
+ [ SQL语句 ] : SELECT * FROM `pigcms_store_list` WHERE id= LIMIT 1  
+[ 2016-11-02T11:40:00+08:00 ] ERR: (ThinkException) La table 'original2_data.pigcms_product__cart' n'existe pas
+ [ SQL语句 ] : SHOW COLUMNS FROM `pigcms_product__cart`
+[ 2016-11-02T14:18:14+08:00 ] ERR: (ThinkException) Champ 'email' inconnu dans field list
+ [ SQL语句 ] : UPDATE `pigcms_distribution_account` SET `truename`='啊',`birth`='2016-10-19',`sex`='0',`email`='123' WHERE ( `username` = '1' )
+[ 2016-11-02T16:30:40+08:00 ] ERR: (ThinkException) Erreur de syntaxe près de '' à la ligne 1
+ [ SQL语句 ] : SELECT * FROM `pigcms_store_addtime` WHERE sid= 

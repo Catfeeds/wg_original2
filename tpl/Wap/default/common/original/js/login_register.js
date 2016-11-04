@@ -7,7 +7,7 @@ $(function($){
 	$(document).on('pageInit','#login',function(){
 		var wrap = $('#login');
 		//登陆
-		$(document).on('click','#login-submit',function(){
+		wrap.find('#login-submit').off('click').on('click',function(){
 			var validation = $('.validation');
 			var val = 1;
 			validation.each(function(index, el) {
@@ -20,15 +20,14 @@ $(function($){
 			});
 			if(val == 1){
 				var data = $('#login_form').serialize();
-				console.log(data);
 				$.ajax({
 					url:total_url+'index.php?g=Wap&m=Distribution&a=login',
 					data:{data:data},
 					dataType:'json',
 					type:'post',
 					success:function(data){
-						console.log(data);
 						if(data.status == 1){
+							cookie.set('loginout',2);
 							location.href="Distribution_index.html";
 						}else{
 							$.alert(data.info);
@@ -36,6 +35,10 @@ $(function($){
 					}
 				})
 			}
+		})
+		//注册跳转
+		$('#register-btn').click(function(){
+			$.router.load('register.html')
 		})
 		//首页点击忘记密码
 		wrap.find('#forgetPasswordBtn').off('click').on('click',function(){
@@ -65,10 +68,79 @@ $(function($){
 	      $.actions(groups);
 		})
 	})
+	$(document).on('pageAnimationEnd','#register',function(e, id, page){
+		console.log('aa');
+		$('#login').html('');
+	})
 	//注册页面
 	$(document).on('pageInit','#register',function(){
+		var wrap = $('#register');
+		var send = wrap.find('#send-sms');
+		var control = 1;
+		//发送短信验证码
+		send.on('click', function() {
+			var tele = $("#username").val();
+			if (tele == '') {
+				alert("请输入手机号码");
+				return false;
+			}
+			var num = cookie.get('count_nums') ? cookie.get('count_nums') : 60;
+			if (control) {
+				coutdown = setInterval(function() {
+					num--;
+					cookie.set('count_nums', num);
+					if (num == 0) {
+						control = 1;
+						send.text('发送验证码');
+						cookie.set('count_nums', '');
+						clearInterval(coutdown);
+						return false;
+					} else {
+						control = 0;
+						send.text('(' + num + ')秒后再发送');
+					}
+				}, 1000);
+			}
+			if (control) {
+				$.ajax({
+					url: total_url+'index.php?g=Wap&m=Distribution&a=sendSms',
+					data: {
+						mobile: tele
+					},
+					type: "post",
+					dataType: "json",
+					success: function(data) {
+						console.log(data);
+					}
+				});
+			}
+		})
+		if (cookie.get('count_nums')) {
+			num = cookie.get('count_nums');
+			send.text('(' + num + ')秒后再发送');
+			coutdown = setInterval(function() {
+				num--;
+				cookie.set('count_nums', num);
+				if (num <= 0) {
+					control = 1;
+					send.text('发送验证码');
+					cookie.set('count_nums', '');
+					clearInterval(coutdown);
+					return false;
+				} else {
+					control = 0;
+					send.text('(' + num + ')秒后再发送');
+				}
+			}, 1000);
+		}
+
+		wrap.find('#username').on('blur',function(){
+			var check_username = $(this).val();
+			
+		})
+
 		//提交注册
-		$(document).on('click','#register-submit',function(){
+		wrap.find('#register-submit').off('click').on('click',function(){
 			var validation = $('.validation');
 			var val = 1;
 			validation.each(function(index, el) {
@@ -101,6 +173,64 @@ $(function($){
 	})
 	//忘记密码页面
 	$(document).on('pageInit','#findPassword',function(){
+		//发送短信验证码
+		var send = $('#send-sms');
+		var control = 1;
+		send.on('click', function() {
+			var tele = $("#username").val();
+			if (tele == '') {
+				alert("请输入手机号码");
+				return false;
+			}
+			var num = cookie.get('count_nums') ? cookie.get('count_nums') : 60;
+			if (control) {
+				coutdown = setInterval(function() {
+					num--;
+					cookie.set('count_nums', num);
+					if (num == 0) {
+						control = 1;
+						send.text('发送验证码');
+						cookie.set('count_nums', '');
+						clearInterval(coutdown);
+						return false;
+					} else {
+						control = 0;
+						send.text('(' + num + ')秒后再发送');
+					}
+				}, 1000);
+			}
+			if (control) {
+				$.ajax({
+					url: total_url+'index.php?g=Wap&m=Distribution&a=sendSms',
+					data: {
+						mobile: tele
+					},
+					type: "post",
+					dataType: "json",
+					success: function(data) {
+						console.log(data);
+					}
+				});
+			}
+		})
+		if (cookie.get('count_nums')) {
+			num = cookie.get('count_nums');
+			send.text('(' + num + ')秒后再发送');
+			coutdown = setInterval(function() {
+				num--;
+				cookie.set('count_nums', num);
+				if (num <= 0) {
+					control = 1;
+					send.text('发送验证码');
+					cookie.set('count_nums', '');
+					clearInterval(coutdown);
+					return false;
+				} else {
+					control = 0;
+					send.text('(' + num + ')秒后再发送');
+				}
+			}, 1000);
+		}
 		//提交重置
 		$(document).on('click','#findPassword-submit',function(){
 			console.log('aa');

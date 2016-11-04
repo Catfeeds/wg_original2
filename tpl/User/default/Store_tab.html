@@ -15,7 +15,11 @@
 
 <li class="tabli ord"      id="tab2"><a href="{wghd::U('Store/orders',array('token'=>$token,'dining'=>$isDining))}">订单管理</a></li>
 
-<li class="tabli dis"      id="tab2"><a href="{wghd::U('Store/picDisplay',array('token'=>$token,'dining'=>$isDining))}">展示管理</a></li>
+<li class="tabli sclass"      id="tab2"><a href="{wghd::U('Store/showClass',array('token'=>$token,'dining'=>$isDining))}">展示分类</a></li>
+
+<li class="tabli coupon"      id="tab2"><a href="{wghd::U('Store/coupon',array('token'=>$token,'dining'=>$isDining))}">优惠券管理</a></li>
+
+<li class="tabli msg"      id="tab2"><a href="{wghd::U('Store/message',array('token'=>$token,'dining'=>$isDining))}">反馈列表</a></li>
 
 
 <!-- <if condition="$isDining neq 1">
@@ -57,6 +61,17 @@
 				tab.find('.dis').addClass('current');
 			}	
 
+			if(action_name=='showClass'){
+				tab.find('.sclass').addClass('current');
+			}	
+
+			if(action_name=='coupon'){
+				tab.find('.coupon').addClass('current');
+			}	
+
+			if(action_name=='message'){
+				tab.find('.msg').addClass('current');
+			}	
 		}
 	})(jQuery)
 </script>

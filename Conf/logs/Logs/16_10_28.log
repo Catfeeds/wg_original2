@@ -1,0 +1,45 @@
+[ 2016-10-28T09:56:39+08:00 ] 127.0.0.1 /wg_original2/index.php?g=Wap&m=Alipay&a=pay&token=mhfcjx1421158741&wecha_id=undefined&success=1&from=Store&orderName=920161028095639&single_orderid=920161028095639&price90
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+NOTIC: [8192] mysql_connect(): The mysql extension is deprecated and will be removed in the future: use mysqli or PDO instead D:\wamp\www\wg_original2\Lib\Driver\Db\DbMysql.class.php 第 55 行.
+NOTIC: [8192] preg_replace(): The /e modifier is deprecated, use preg_replace_callback instead D:\wamp\www\wg_original2\Lib\Core\Db.class.php 第 572 行.
+NOTIC: [8] Undefined index: orderid D:\wamp\www\wg_original2\WgCms\Lib\Action\Wap\AlipayAction.class.php 第 26 行.
+NOTIC: [8192] preg_replace(): The /e modifier is deprecated, use preg_replace_callback instead D:\wamp\www\wg_original2\Lib\Core\Db.class.php 第 572 行.
+
+[ 2016-10-28T14:43:12+08:00 ] 127.0.0.1 /wg_original2/index.php?g=Wap&m=Alipay&a=pay&token=mhfcjx1421158741&wecha_id=undefined&success=1&from=Store&orderName=220161028144312&single_orderid=220161028144312&price87
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000000s ]
+NOTIC: [8192] mysql_connect(): The mysql extension is deprecated and will be removed in the future: use mysqli or PDO instead D:\wamp\www\wg_original2\Lib\Driver\Db\DbMysql.class.php 第 55 行.
+NOTIC: [8192] preg_replace(): The /e modifier is deprecated, use preg_replace_callback instead D:\wamp\www\wg_original2\Lib\Core\Db.class.php 第 572 行.
+NOTIC: [8] Undefined index: orderid D:\wamp\www\wg_original2\WgCms\Lib\Action\Wap\AlipayAction.class.php 第 26 行.
+NOTIC: [8192] preg_replace(): The /e modifier is deprecated, use preg_replace_callback instead D:\wamp\www\wg_original2\Lib\Core\Db.class.php 第 572 行.
+
+[ 2016-10-28T14:46:19+08:00 ] 127.0.0.1 /wg_original2/index.php?g=Wap&m=Alipay&a=pay&token=mhfcjx1421158741&wecha_id=undefined&success=1&from=Store&orderName=920161028144619&single_orderid=920161028144619&price87
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+NOTIC: [8192] mysql_connect(): The mysql extension is deprecated and will be removed in the future: use mysqli or PDO instead D:\wamp\www\wg_original2\Lib\Driver\Db\DbMysql.class.php 第 55 行.
+NOTIC: [8192] preg_replace(): The /e modifier is deprecated, use preg_replace_callback instead D:\wamp\www\wg_original2\Lib\Core\Db.class.php 第 572 行.
+NOTIC: [8] Undefined index: orderid D:\wamp\www\wg_original2\WgCms\Lib\Action\Wap\AlipayAction.class.php 第 26 行.
+NOTIC: [8192] preg_replace(): The /e modifier is deprecated, use preg_replace_callback instead D:\wamp\www\wg_original2\Lib\Core\Db.class.php 第 572 行.
+
+[ 2016-10-28T14:47:15+08:00 ] 127.0.0.1 /wg_original2/index.php?g=Wap&m=Alipay&a=pay&token=mhfcjx1421158741&wecha_id=undefined&success=1&from=Store&orderName=520161028144715&single_orderid=520161028144715&price87
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000000s ]
+NOTIC: [8192] mysql_connect(): The mysql extension is deprecated and will be removed in the future: use mysqli or PDO instead D:\wamp\www\wg_original2\Lib\Driver\Db\DbMysql.class.php 第 55 行.
+NOTIC: [8192] preg_replace(): The /e modifier is deprecated, use preg_replace_callback instead D:\wamp\www\wg_original2\Lib\Core\Db.class.php 第 572 行.
+NOTIC: [8] Undefined index: orderid D:\wamp\www\wg_original2\WgCms\Lib\Action\Wap\AlipayAction.class.php 第 26 行.
+NOTIC: [8192] preg_replace(): The /e modifier is deprecated, use preg_replace_callback instead D:\wamp\www\wg_original2\Lib\Core\Db.class.php 第 572 行.
+
+[ 2016-10-28T16:47:50+08:00 ] 127.0.0.1 /wg_original2/index.php?g=Wap&m=Alipay&a=pay&token=mhfcjx1421158741&wecha_id=undefined&success=1&from=Store&orderName=020161028164750&single_orderid=020161028164750&price87
+INFO: [ app_begin ] --START--
+INFO: Run ReadHtmlCache Behavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000000s ]
+NOTIC: [8192] mysql_connect(): The mysql extension is deprecated and will be removed in the future: use mysqli or PDO instead D:\wamp\www\wg_original2\Lib\Driver\Db\DbMysql.class.php 第 55 行.
+NOTIC: [8192] preg_replace(): The /e modifier is deprecated, use preg_replace_callback instead D:\wamp\www\wg_original2\Lib\Core\Db.class.php 第 572 行.
+NOTIC: [8] Undefined index: orderid D:\wamp\www\wg_original2\WgCms\Lib\Action\Wap\AlipayAction.class.php 第 26 行.
+NOTIC: [8192] preg_replace(): The /e modifier is deprecated, use preg_replace_callback instead D:\wamp\www\wg_original2\Lib\Core\Db.class.php 第 572 行.
+

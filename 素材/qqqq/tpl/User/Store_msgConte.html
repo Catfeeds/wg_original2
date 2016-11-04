@@ -1,0 +1,56 @@
+<include file="Public:head" />
+<script language="javascript" type="text/javascript" src="{wghd::RES}/My97DatePicker/WdatePicker.js"></script>
+<script language="javascript" type="text/javascript" src="{wghd::RES}/js/jquery-1.11.1.min.js"></script>
+<div class="content">
+  <div class="cLineB">
+    <h4>反馈信息</h4>
+  </div>
+  <form class="form" method="post" action="" enctype="multipart/form-data" id="store-form">
+
+    <div class="msgWrap bgfc">
+      <table class="userinfoArea" style=" margin:0;" border="0" cellspacing="0" cellpadding="0" width="100%">
+        <tbody>
+
+
+          <tr>
+            
+            <th>添加时间:</th>
+            <td>
+  <!--             <input name="endtime" value="{wghd:$list.addtime|date='Y-m-d',###}" type="text" style="width:190px"/> -->
+
+              <p>{wghd:$list.addtime|date='Y-m-d',###}</p>
+            </td>
+          </tr>
+
+
+          <tr>
+            <th>用户：</th>
+            <td>
+  <!--             <input name="price" class="px" id="default_time" value ="{wghd:$list.aid}"style="width:120px;"/> -->
+              <p>{wghd:$list.aid}</p>
+            </td>
+          </tr>
+
+          <tr>
+             
+            <th>内容：</th>
+            <td>
+                {wghd:$list.content}
+            </td>
+          </tr>
+
+          <th>&nbsp;</th>
+          <td>
+<!--             <button type="submit" name="button" class="btnGreen" id="save-btn">生成</button>
+&nbsp; -->
+            <a href="{wghd::U('Store/message',array('token'=>$token,'sid'=>$_SESSION['sid']))}" class="btnGray vm">确认</a>
+          </td>
+        </tbody>
+      </table>
+    </div>
+  </form>
+</div>
+
+
+
+<include file="Public:footer" />

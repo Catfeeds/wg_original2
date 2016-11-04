@@ -1,7 +1,20 @@
-$(function($){
+$(function(){
 	var certification = 1;
-
 	$(document).ready(function($) {
+		function onBridgeReady(){
+		 WeixinJSBridge.call('hideOptionMenu');
+		}
+
+		if (typeof WeixinJSBridge == "undefined"){
+		    if( document.addEventListener ){
+		        document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+		    }else if (document.attachEvent){
+		        document.attachEvent('WeixinJSBridgeReady', onBridgeReady); 
+		        document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+		    }
+		}else{
+		    onBridgeReady();
+		}
 		//判断授权
 		$.ajax({
 			url: total_url + 'index.php?g=Wap&m=Distribution&a=checkAuth',
@@ -28,6 +41,9 @@ $(function($){
 				}
 			}
 		});
+		if(cookie.get('loginout') != 2){
+			location.href = "login.html";
+		}
 	});
 	if(certification == 0){
 		return false;
@@ -56,6 +72,7 @@ $(function($){
 		            		console.log(data);
 		            		console.log(data.status);
 		            		if(data.status == 1){
+		            			cookie.set('loginout',1);
 		            			location.href = "login.html";
 		            		}else{
 		            			$.alert('退出失败');
@@ -83,6 +100,7 @@ $(function($){
 			var unuselessHtml = '';
 			var uselessHtml = '';
 			$.each(json.data,function(index,el){
+				console.log(el);
 				if(el.status == 0){
 					unuselessHtml += '<div class=\"content-block\"><div class=\"myCoupons-listWrap\"><span class=\"myCoupons-price\">￥<b>' +
 					el.price + '</b></span><div class=\"myCoupons-couponInfo\"><h3>抵价券</h3><p class=\"myCoupons-couponDate\"><span></span>全国门店通用</p><p class=\"myCoupons-couponStore\"><span></span>截止日期: ' +
@@ -90,7 +108,7 @@ $(function($){
 				}else{
 					uselessHtml += '<div class=\"content-block\"><div class=\"myCoupons-listWrap off\"><span class=\"myCoupons-price\">￥<b>' +
 					el.price + '</b></span><div class=\"myCoupons-couponInfo\"><h3>抵价券</h3><p class=\"myCoupons-couponDate\"><span></span>全国门店通用</p><p class=\"myCoupons-couponStore\"><span></span>截止日期: ' +
-					el.endtime + '</p><span class=\"myCoupons-expiredIcon\"></span>' + '</div></div></div>';
+					el.endtime + '</p><span class=\"myCoupons-usedIcon\"></span>' + '</div></div></div>';
 				}
 			})
 			//未使用
@@ -107,7 +125,6 @@ $(function($){
 		        	dataType:'json',
 		        	type:'post',
 		        	success:function(data){
-		        		console.log(data);
 		        		$.alert(data.info);
 		        		if(data.data.status == 0 && data.status == 1){
 		        			var unuselessHtml = '';
@@ -138,6 +155,7 @@ $(function($){
 				str += '<option class="girl" value="0" selected>女</option>';
 			}
 			$('#myInfo_mySex').html(str);
+			$('#myInfo_myEmail').val(json.data.email);
 			// if (json.data.sex == 1) {
 			// 	$('#myInfo_mySex').find('.man').attr("selected", true);
 			// } else {
@@ -149,6 +167,7 @@ $(function($){
 		$(document).on('click', '#save_my_info', function() {
 			if (validation()) {
 				var data = $('#myInfo_form').serialize();
+				data = decodeURIComponent(data,true); 
 				$.ajax({
 					url:total_url+'index.php?g=Wap&m=Distribution&a=saveMyInfo',
 					data:{data:data},
@@ -180,6 +199,7 @@ $(function($){
 					type:'post',
 					success:function(data){
 						console.log(data);
+						console.log(data);
 						$.alert(data.info);
 						if(data.status == 1){
 							$.router.load('Distribution_index.html');
@@ -194,10 +214,12 @@ $(function($){
 		var wrap = $('#feedBack');
 		wrap.find('#feedBack-sendBtn').off('click').on('click',function(){
 			var con = wrap.find('#feedBack-sendCon').val();
+			console.log(con);
 			$.ajax({
 				url:total_url+'index.php?g=Wap&m=Distribution&a=feedBack',
 				data:{con:con},
 				dataType:'json',
+				type:'post',
 				success:function(data){
 					console.log(data);
 					$.alert(data.info,function(){

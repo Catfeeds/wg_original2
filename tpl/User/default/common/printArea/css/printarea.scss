@@ -1,0 +1,26 @@
+.clear{
+	clear: both;
+}
+#myPrintArea{
+	.header{
+		.logo{
+			float: left;
+		}
+		.orderid{
+			float: right;
+		}
+		.header-text{
+			text-align: center;
+			position: relative;
+			&:after{
+				content:'';
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				height: 1px;
+				width: 100%;
+				background-color: #000;
+			}
+		}
+	}
+}

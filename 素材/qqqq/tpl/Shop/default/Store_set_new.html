@@ -1,0 +1,415 @@
+<if condition="$ischild neq 1">
+  <include file="Public:head" />
+  <else />
+  <include file="Repast:head" />
+</if>
+<link rel="stylesheet" href="{wghd::STATICS}/kindeditor/themes/default/default.css" />
+<link rel="stylesheet" href="{wghd::STATICS}/kindeditor/plugins/code/prettify.css" />
+<script src="{wghd::STATICS}/kindeditor/kindeditor.js" type="text/javascript"></script>
+<script src="{wghd::STATICS}/kindeditor/lang/zh_CN.js" type="text/javascript"></script>
+<script src="{wghd::STATICS}/kindeditor/plugins/code/prettify.js" type="text/javascript"></script>
+<script src="{wghd::STATICS}/artDialog/jquery.artDialog.js?skin=default"></script>
+<script src="{wghd::STATICS}/artDialog/plugins/iframeTools.js"></script>
+<script src="{wghd::RES}/js/users/jquery-1.11.1.min.js"></script>
+<script src="{wghd::RES}/js/users/specifications.js" defer></script>
+<script>
+var editor;
+KindEditor.ready(function(K) {
+editor = K.create('#intro', {
+resizeType : 1,
+allowPreviewEmoticons : false,
+allowImageUpload : true,
+uploadJson : '/index.php?g=User&m=Upyun&a=kindedtiropic',
+items : [
+'source','undo','clearhtml','hr',
+'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+'insertunorderedlist', '|', 'emoticons', 'image', 'multiimage', 'link', 'unlink','baidumap','lineheight','table','anchor','preview','print','template','code','cut', 'music', 'video','|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline','hr', 'fontname', 'fontsize'],
+afterBlur: function(){this.sync();}
+});
+});
+</script>
+<div class="content">
+  <div class="cLineB">
+    <h4>商品设置</h4>
+    <a href="{wghd::U('Store/product',array('token'=>
+      $token,'catid'=>$catid,'parentid'=>$_GET['parentid']))}" class="right  btnGreen" style="margin-top:-27px">返回
+    </a>
+  </div>
+  <form method="post" action="" id="formID">
+    <input type="hidden" name="token" value="{wghd:$token}">
+    <input type="hidden" name="id" id="id" value="{wghd:$set.id}"/>
+    <input type="hidden" name="storeid" value="{wghd:$Think.session.sid}">
+    <div class="msgWrap bgfc">
+      <table class="userinfoArea" style=" margin:0;" border="0" cellspacing="0" cellpadding="0" width="100%">
+        <tbody>
+          <tr>
+            <th>
+              <span class="red">*</span>
+              名称：
+            </th>
+            <td>
+              <input type="text" name="name" id="name" value="{wghd:$set.name}" class="px validate" data-warn="名称不能为空" style="width:400px;" />
+            </td>
+          </tr>
+          <input type="hidden" name="oldcatid" value="{wghd:$set.catid}">
+          <tr>
+            <th>类别：</th>
+            <td>
+              <select name="catid" id="catid">
+                <volist name="CatList" id="vo">
+                  <eq name="vo.parentid" value="0">
+                    <option  value="{wghd:$vo.id}" <eq name="vo.id" value="$catid">selected</eq>
+                    >{wghd:$vo.name}
+                  </option>
+                  <volist name="CatList" id="co">
+                    <eq name="co.parentid" value="$vo.id">
+                      <option  value="{wghd:$co.id}" <eq name="co.id" value="$catid">selected</eq>
+                      >&nbsp;&nbsp;{wghd:$co.name}
+                    </option>
+                  </eq>
+                </volist>
+              </eq>
+            </volist>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <th>类型：</th>
+        <td>
+          <select name="type" id="type">
+            <option value="0">--请选择照片类型--</option>
+            <option value="1" <eq name='set.type' value='1'>selected</eq>>证件照</option>
+            <option value="2" <eq name='set.type' value='2'>selected</eq>>文艺照</option>
+            <option value="3" <eq name='set.type' value='3'>selected</eq>>结婚照</option>
+          </select>
+        </td>
+      </tr>
+      <style>
+      .color-item-wrap{
+        margin-right: 10px;
+      }
+        .color-item{
+          display: inline-block;
+          width: 23px;
+          height: 23px;
+          vertical-align: middle;
+        }
+        .color-price,.art-price,.art-experience-price{
+          width: 25px;
+        }
+      </style>
+      <tr class="color-wrap extend-wrap" <neq name='set.type' value='1'>style="display: none;"</neq>>
+          <th>背景颜色：</th>
+          <td id="color-info">
+            <span class="color-item-wrap">
+              <span class="color-item" style="background-color: #52a5eb;"></span>
+              &nbsp;:&nbsp;
+              <input class="color-price px" type="text" name='blue' value="{wghd:$set.colorinfo.blue.price|default=0}">元</span>
+            <span class="color-item-wrap">
+              <span class="color-item" style="background-color: #fff; border: 1px solid #ccc;"></span>
+              &nbsp;:&nbsp;
+              <input class="color-price px" type="text" name='white' value="{wghd:$set.colorinfo.white.price|default=0}">元</span>
+            <span class="color-item-wrap">
+              <span class="color-item" style="background-color: #bc0d14;"></span>
+              &nbsp;:&nbsp;
+              <input class="color-price px" type="text" name='red' value="{wghd:$set.colorinfo.red.price|default=0}">元</span>
+            <span class="color-item-wrap">
+              <span class="color-item" style="background-color: #c9b2a0;"></span>
+              &nbsp;:&nbsp;
+              <input class="color-price px" type="text" name='yellow' value="{wghd:$set.colorinfo.yellow.price|default=0}">元</span>
+            <span class="color-item-wrap">
+              <span class="color-item" style="background-color: #737689;"></span>
+              &nbsp;:&nbsp;
+              <input class="color-price px" type="text" name='grey' value="{wghd:$set.colorinfo.grey.price|default=0}">元</span>
+          </td>
+        </tr>
+        <tr class="art-wrap extend-wrap" <neq name='set.type' value='2'>style="display: none;"</neq>>
+          <th>文艺照类型：</th>
+          <td id="art-info">
+            <span class="color-item-wrap">
+              <span class="art-type-item">单人</span>
+              &nbsp;:&nbsp;
+              <input class="art-price px" type="text" name='personal' value="{wghd:$set.artinfo.personal.price|default=0}">元</span>
+            <span class="color-item-wrap">
+              <span class="art-type-item">闺蜜</span>
+              &nbsp;:&nbsp;
+              <input class="art-price px" type="text" name='friends' value="{wghd:$set.artinfo.friends.price|default=0}">元</span>
+            <span class="color-item-wrap">
+              <span class="art-type-item">亲子</span>
+              &nbsp;:&nbsp;
+              <input class="art-price px" type="text" name='childrens' value="{wghd:$set.artinfo.childrens.price|default=0}">元</span>
+            <span class="color-item-wrap">
+              <span class="art-type-item">情侣</span>
+              &nbsp;:&nbsp;
+              <input class="art-price px" type="text" name='lovers' value="{wghd:$set.artinfo.lovers.price|default=0}">元</span>
+          </td>
+        </tr>
+        <tr class="art-wrap extend-wrap"  <neq name='set.type' value='2'>style="display: none;"</neq>>
+          <th>升级体验：</th>
+          <td id="art-experience">
+            <span class="color-item-wrap">
+              <span class="art-type-item">四宫格</span>
+              &nbsp;:&nbsp;
+              <input class="art-experience-price px" type="text" name='four' value="{wghd:$set.artex.four.price|default=0}">元</span>
+            <span class="color-item-wrap">
+              <span class="art-type-item">九宫格</span>
+              &nbsp;:&nbsp;
+              <input class="art-experience-price px" type="text" name='nine' value="{wghd:$set.artex.nine.price|default=0}">元</span>
+          </td>
+        </tr>
+        <tr class="whimsy-merry-wrap extend-wrap" <neq name='set.type' value='3'>style="display: none;"</neq>>
+          <th>搞怪结婚照:</th>
+          <td>
+            <input type="text" class="px" name="wmprice" id="whimsy-merry-price" value="{wghd:$set.wmprice|default=0}">元
+          </td>
+        </tr>
+      </div>
+      <script>
+        $('#type').on('change',function(){
+         var type = $(this).val();
+         if(type == 1){
+          $('.color-wrap').show().siblings('.extend-wrap').hide();
+         }
+         if(type == 2){
+          $('.art-wrap').show().siblings('.extend-wrap').not('.art-wrap').hide();
+         }
+         if(type == 3){
+          $('.whimsy-merry-wrap').show().siblings('.extend-wrap').hide();
+         }
+        })
+      </script>
+      <!-- 外观 -->
+      <if condition="empty($colorData) neq true">
+        <tr class="norms_tr norms_color" data-index="0">
+          <th>{wghd:$productCatData.color}：</th>
+          <td class="norms_td" style="line-height: 27px;">
+            <volist name="colorData" id="list">
+              <input type="checkbox" value="" data-catid="{wghd:$list.catid}" data-id="{wghd:$list.id}" id="norms_{wghd:$list.id}" <if condition="(in_array($list['id'], $colorList))" >checked</if>
+            >
+            <label for="norms_{wghd:$list.id}">{wghd:$list.value}</label>
+            &nbsp;&nbsp;&nbsp;
+          </volist>
+        </td>
+      </tr>
+    </if>
+    <!-- 规格 -->
+    <if condition="empty($formatData) neq true">
+      <tr class="norms_tr norms_format" data-index="1">
+        <th>{wghd:$productCatData.norms}：</th>
+        <td class="norms_td" style="line-height: 27px;">
+          <volist name="formatData" id="list">
+            <input type="checkbox" value="" data-catid="{wghd:$list.catid}" data-id="{wghd:$list.id}" id="norms_{wghd:$list.id}" <if condition="(in_array($list['id'], $formatList))" >checked</if>
+          >
+          <label for="norms_{wghd:$list.id}">{wghd:$list.value}</label>
+          &nbsp;&nbsp;&nbsp;
+        </volist>
+      </td>
+    </tr>
+  </if>
+  <style>
+          #norms_wrap table td{
+            width: 130px;
+          }
+          #norms_wrap table td input{
+            width: 60px;
+          }
+       </style>
+  <tr id="norms_wrap"></tr>
+  <tr></tr>
+  <tr>
+    <th>
+      <span class="red">*</span>
+      预约价：
+    </th>
+    <td>
+      <input type="text" id="price" name="price" value="{wghd:$set.price|default=0}" class="validate norms_control px" data-warn="预约价不能为空"/>
+      元
+    </td>
+  </tr>
+  <tr>
+    <th>
+      <span class="red">*</span>
+      市场价：
+    </th>
+    <td>
+      <input type="text" id="oprice" name="oprice" value="{wghd:$set.oprice|default=0}" class="px"/>
+      元
+    </td>
+  </tr>
+
+
+
+  <if condition="$isgroup eq 1">
+    <tr>
+      <th>
+        <span class="red">*</span>
+        所属组别：
+      </th>
+      <td>
+        <select name="gid" id="gid">
+          <volist name="groups" id="g">
+            <option value="{wghd:$g['id']}" <if condition="$set['gid'] eq $g['id']" >selected</if>
+            >{wghd:$g['name']}
+          </option>
+        </volist>
+      </select>
+    </td>
+  </tr>
+</if>
+<!-- <tr>
+  <th>库存：</th>
+  <td>
+    <input type="text" id="num" name="num" value="{wghd:$set.num|default=0}" class="norms_control px" data-warn="库存不能为空"/>
+  </td>
+</tr> -->
+<!-- <tr>
+  <th>限购：</th>
+  <td>
+    <input type="text" id="limitnum" name="limitnum" value="{wghd:$set.limitnum|default=0}" class="px"/>
+    (0为不限购)
+  </td>
+</tr> -->
+<tr>
+  <th>预约基数：</th>
+  <td>
+    <input type="text" id="fakemembercount" name="fakemembercount" value="{wghd:$set.fakemembercount}" class="px"/>
+    (如果您不做假数据就设置为0)
+  </td>
+</tr>
+<tr>
+  <th>是否下架：</th>
+  <td>
+    <input type="radio" name="isopen" class="isopen" value="1" id="isopen_0" <if condition="$set['isopen'] eq 1">checked</if>
+  />
+  <label for="isopen_0">正常</label>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <input type="radio" name="isopen" class="isopen" value="0" id="isopen_1" <if condition="$set['isopen'] eq 0">checked</if>
+/>
+<label for="isopen_1">下架</label>
+</td>
+</tr>
+<!-- <tr>
+<th>邮费：</th>
+<td>
+<input type="text" id="mailprice" name="mailprice" value="{wghd:$set.mailprice}" class="px"/>
+元
+</td>
+</tr> -->
+<tr>
+<th>
+<span class="red">*</span>
+关键词：
+</th>
+<td>
+<input type="text" name="keyword" id="keyword" value="{wghd:$set.keyword}" class="px" style="width:400px;" />
+</td>
+</tr>
+<!-- <tr>
+<th>Logo地址：</th>
+<td>
+<input type="text" name="logourl" value="{wghd:$set.logourl}" class="px" id="pic" style="width:400px;" />
+<script src="{wghd::STATICS}/upyun.js"></script>
+<a href="###" onclick="upyunPicUpload('pic',700,700,'{wghd:$token}')" class="a_upload">上传</a>
+<a href="###" onclick="viewImg('pic')">预览</a>
+</td>
+</tr> -->
+<!-- <tr>
+<th>展示图片一：</th>
+<td>
+<input type="text" value="{wghd:$imageList[0].image}" class="px" id="image1" imageid="{wghd:$imageList[0].id}" style="width:400px;" />
+<script src="{wghd::STATICS}/upyun.js"></script>
+<a href="###" onclick="upyunPicUpload('image1',700,700,'{wghd:$token}')" class="a_upload">上传</a>
+<a href="###" onclick="viewImg('image1')">预览</a>
+</td>
+</tr>
+<tr>
+<th>展示图片二：</th>
+<td>
+<input type="text" value="{wghd:$imageList[1].image}" class="px" id="image2" imageid="{wghd:$imageList[1].id}" style="width:400px;" />
+<script src="{wghd::STATICS}/upyun.js"></script>
+<a href="###" onclick="upyunPicUpload('image2',700,700,'{wghd:$token}')" class="a_upload">上传</a>
+<a href="###" onclick="viewImg('image2')">预览</a>
+</td>
+</tr>
+<tr>
+<th>展示图片三：</th>
+<td>
+<input type="text" value="{wghd:$imageList[2].image}" class="px" id="image3" imageid="{wghd:$imageList[2].id}" style="width:400px;" />
+<script src="{wghd::STATICS}/upyun.js"></script>
+<a href="###" onclick="upyunPicUpload('image3',700,700,'{wghd:$token}')" class="a_upload">上传</a>
+<a href="###" onclick="viewImg('image3')">预览</a>
+</td>
+</tr>
+<tr>
+<th>展示图片四：</th>
+<td>
+<input type="text" value="{wghd:$imageList[3].image}" class="px" id="image4" imageid="{wghd:$imageList[3].id}" style="width:400px;" />
+<script src="{wghd::STATICS}/upyun.js"></script>
+<a href="###" onclick="upyunPicUpload('image4',700,700,'{wghd:$token}')" class="a_upload">上传</a>
+<a href="###" onclick="viewImg('image4')">预览</a>
+</td>
+</tr>
+<tr>
+<th>展示图片五：</th>
+<td>
+<input type="text" value="{wghd:$imageList[4].image}" class="px" id="image5" imageid="{wghd:$imageList[4].id}" style="width:400px;" />
+<script src="{wghd::STATICS}/upyun.js"></script>
+<a href="###" onclick="upyunPicUpload('image5',700,700,'{wghd:$token}')" class="a_upload">上传</a>
+<a href="###" onclick="viewImg('image5')">预览</a>
+</td>
+</tr>
+<tr>
+<th>展示图片六：</th>
+<td>
+<input type="text" value="{wghd:$imageList[5].image}" class="px" id="image6" imageid="{wghd:$imageList[5].id}" style="width:400px;" />
+<script src="{wghd::STATICS}/upyun.js"></script>
+<a href="###" onclick="upyunPicUpload('image6',700,700,'{wghd:$token}')" class="a_upload">上传</a>
+<a href="###" onclick="viewImg('image6')">预览</a>
+</td>
+</tr>
+<input type="hidden" name="images" id="images">
+<input type="hidden" name="imagesid" id="imagesid">
+<tr> -->
+<th>排序：</th>
+<td>
+<input type="text" id="sort" name="sort" value="{wghd:$set.sort}" class="px" style="width:50px;" />
+数字越大排在越前（大于等于0的整数）
+</td>
+</tr>
+<tr>
+<th>简介：</th>
+<td>
+<input type="text" id="des" name="des" value="{wghd:$set.des}" class="px" style="width:640px;" />
+</td>
+</tr>
+<!-- <TR>
+<TH valign="top">
+<label for="info">图文详细页内容：</label>
+</TH>
+<TD>
+<textarea name="intro" id="intro"  rows="5" style="width:590px;height:360px">{wghd:$set.intro}</textarea>
+</TD>
+</TR> -->
+<tr>
+<th>&nbsp;</th>
+<td>
+<button type="button" name="button" class="btnGreen" id="save">保存</button>
+&nbsp;
+<a href="{wghd::U('Store/index',array('token'=>$token, 'catid' => $catid))}" class="btnGray vm">取消</a>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</form>
+</div>
+<script type="text/javascript">
+
+var href = "{wghd::U('Store/product',array('token'=>$token,'catid'=>$catid,'parentid'=>$_GET['parentid'],'p'=>$_GET['p']))}";
+var pid = "{wghd:$set.id}";
+var pdataJson = {wghd:$pdataJson};
+var color_name = "{wghd:$productCatData.color}";
+var format_name = "{wghd:$productCatData.norms}";
+
+</script>
+<include file="Public:footer" />

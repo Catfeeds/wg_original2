@@ -7,11 +7,11 @@ class WxuserModel extends Model{
 		array('headerpic','require','头像地址不能为空',1),
 		array('token','require','TOKEN不能为空',1),
 		array('token','','token已经存在！',1,'unique',1),
-		array('province','require','省份不能为空',1),
-		array('city','require','市级不能为空',1),
-		array('qq','email','公众号邮箱格式不正确'),
-		array('wxfans','number','微信粉丝格式不正确'),
-		array('typename','require','分类必须选择！',0,'',3),
+		// array('province','require','省份不能为空',1),
+		// array('city','require','市级不能为空',1),
+		// array('qq','email','公众号邮箱格式不正确'),
+		// array('wxfans','number','微信粉丝格式不正确'),
+		// array('typename','require','分类必须选择！',0,'',3),
 		
 	);
 	

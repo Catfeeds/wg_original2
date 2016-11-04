@@ -1,0 +1,26 @@
+[ 2016-11-03T10:51:57+08:00 ] ERR: (ThinkException) Model:relation_METHOD_NOT_EXIST_
+[ 2016-11-03T10:58:15+08:00 ] ERR: (ThinkException) Model:relation_METHOD_NOT_EXIST_
+[ 2016-11-03T10:59:00+08:00 ] ERR: (ThinkException) Champ 'cid' inconnu dans field list
+ [ SQL语句 ] : UPDATE `pigcms_product_cat` SET `id`='3',`cid`='',`parentid`='0',`name`='测试分类1',`logourl`='',`sort`='0',`button`='',`__hash__`='0caa3ab6aceb1b3d3bbe053909a89888_195f961e0ad116c37957b80a17a40f71' WHERE ( `id` = 3 ) AND ( `token` = 'mhfcjx1421158741' )
+[ 2016-11-03T10:59:44+08:00 ] ERR: (ThinkException) Champ 'button' inconnu dans field list
+ [ SQL语句 ] : UPDATE `pigcms_product_cat` SET `id`='3',`parentid`='0',`name`='测试分类1',`logourl`='',`sort`='0',`button`='',`__hash__`='0caa3ab6aceb1b3d3bbe053909a89888_03c4389e7aeb9f6ecf618d38776220e2' WHERE ( `id` = 3 ) AND ( `token` = 'mhfcjx1421158741' )
+[ 2016-11-03T11:00:05+08:00 ] ERR: (ThinkException) Champ '__hash__' inconnu dans field list
+ [ SQL语句 ] : UPDATE `pigcms_product_cat` SET `id`='3',`parentid`='0',`name`='测试分类1',`logourl`='',`sort`='0',`__hash__`='0caa3ab6aceb1b3d3bbe053909a89888_989a61cf6eefce114508149383a26444' WHERE ( `id` = 3 ) AND ( `token` = 'mhfcjx1421158741' )
+[ 2016-11-03T11:00:33+08:00 ] ERR: (ThinkException) Champ '__hash__' inconnu dans field list
+ [ SQL语句 ] : UPDATE `pigcms_product_cat` SET `id`='3',`parentid`='0',`name`='测试分类1',`logourl`='',`sort`='0',`__hash__`='0caa3ab6aceb1b3d3bbe053909a89888_eb34f5c7cb7379c7af97e35a39914c14' WHERE ( `id` = 3 ) AND ( `token` = 'mhfcjx1421158741' )
+[ 2016-11-03T11:01:00+08:00 ] ERR: (ThinkException) Champ '__hash__' inconnu dans field list
+ [ SQL语句 ] : UPDATE `pigcms_product_cat` SET `id`='3',`parentid`='0',`name`='测试分类1',`logourl`='',`sort`='0',`__hash__`='0caa3ab6aceb1b3d3bbe053909a89888_06e8366f90ec98ff72ca99951d98edb8' WHERE ( `id` = 3 ) AND ( `token` = 'mhfcjx1421158741' )
+[ 2016-11-03T11:01:49+08:00 ] ERR: (ThinkException) Champ '__hash__' inconnu dans field list
+ [ SQL语句 ] : UPDATE `pigcms_product_cat` SET `id`='3',`name`='测试分类1',`logourl`='',`sort`='0',`__hash__`='0caa3ab6aceb1b3d3bbe053909a89888_88f789648796a46e469cdbb2dc74aebe' WHERE ( `id` = 3 ) AND ( `token` = 'mhfcjx1421158741' )
+[ 2016-11-03T11:02:53+08:00 ] ERR: (ThinkException) Champ '__hash__' inconnu dans field list
+ [ SQL语句 ] : UPDATE `pigcms_product_cat` SET `id`='3',`name`='测试分类1',`logourl`='',`sort`='0',`__hash__`='0caa3ab6aceb1b3d3bbe053909a89888_2941ec51d46c49ec584cffa7dfdea3bf' WHERE ( `id` = 3 ) AND ( `token` = 'mhfcjx1421158741' )
+[ 2016-11-03T11:05:06+08:00 ] ERR: (ThinkException) Champ 'cid' inconnu dans field list
+ [ SQL语句 ] : UPDATE `pigcms_product_cat` SET `id`='3',`cid`='',`parentid`='0',`name`='测试分类1',`logourl`='',`sort`='0',`button`='',`__hash__`='0caa3ab6aceb1b3d3bbe053909a89888_dfe30ef67407a5f7ad82649a2446c73c' WHERE ( `id` = 3 ) AND ( `token` = 'mhfcjx1421158741' )
+[ 2016-11-03T11:06:27+08:00 ] ERR: (ThinkException) Champ 'cid' inconnu dans field list
+ [ SQL语句 ] : UPDATE `pigcms_product_cat` SET `id`='3',`cid`='',`parentid`='0',`name`='测试分类1',`logourl`='',`sort`='0',`button`='',`__hash__`='0caa3ab6aceb1b3d3bbe053909a89888_86573214db3de8d5a4b38d9207a9b35e' WHERE ( `id` = 3 ) AND ( `token` = 'mhfcjx1421158741' )
+[ 2016-11-03T11:07:08+08:00 ] ERR: (ThinkException) Champ '__hash__' inconnu dans field list
+ [ SQL语句 ] : UPDATE `pigcms_product_cat` SET `id`='3',`name`='测试分类1',`logourl`='',`sort`='0',`__hash__`='0caa3ab6aceb1b3d3bbe053909a89888_a4737c368e23c21d7e06e589ce89daf8' WHERE ( `id` = 3 ) AND ( `token` = 'mhfcjx1421158741' )
+[ 2016-11-03T11:13:16+08:00 ] ERR: (ThinkException) Model:relation_METHOD_NOT_EXIST_
+[ 2016-11-03T11:18:11+08:00 ] ERR: (ThinkException) Model:resltion_METHOD_NOT_EXIST_
+[ 2016-11-03T11:38:50+08:00 ] ERR: (ThinkException) Champ '__hash__' inconnu dans field list
+ [ SQL语句 ] : INSERT INTO `pigcms_product_cat` (`id`,`sid`,`name`,`sort`,`__hash__`,`isfinal`,`time`,`token`) VALUES ('','2','1','2','0c1e7f3fb1df12b69b6732e15b43cbdd_7f5d607687517cf05fb3e276f2d408bc','0','1478144330','mhfcjx1421158741')

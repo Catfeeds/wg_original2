@@ -3,7 +3,7 @@ $(function($){
 	$(document).on('click','.mask-wrap .close-mask',function(){
 		$('.mask-wrap').remove();
 	})
-	//底部加载
+	//底部加载HTML
 	
 	// $("#footer").load("footer.html");
 	$(document).on('pageInit','#reservation',function(){
@@ -18,9 +18,22 @@ $(function($){
 	$(document).on('pageInit','#my-orders',function(){
 		$('#my-orders').append(addFooter(3));
 	});
+	$(document).on('pageInit','#product-details',function(){
+		$('#product-details').append(addFooter(1));
+	});
+	/*
+		*底部授权和登陆判断
+		*check_auth表示需要授权
+		*loginout为2是表示已经登陆
+		*赋值data_href为了授权之后跳转回原先需要跳转到的页面
+	*/
 	$(document).on('click','.foot-jump',function(event){
-		console.log('aa');
-		var data_href = $(this).attr('data-href');
+		var data_href
+		if(cookie.get('loginout') == 2){
+			data_href = $(this).attr('data-href');
+		}else{
+			data_href = "login.html";
+		}
 		if($(this).hasClass('check_auth')){
 			$.ajax({
 				url: total_url + 'index.php?g=Wap&m=Distribution&a=checkAuth',
@@ -32,15 +45,23 @@ $(function($){
 						var href = 'http://bmy.tzwg.net/index.php?g=Wap&m=Distribution&a=authorization&bmyquth=1&href='+total_url+'tpl/Wap/default/'+data_href;
 						location.href = href;
 					}else{
-						location.href=data_href;
+						if(cookie.get('loginout') == 2){
+							location.href = data_href;
+						}else{
+							location.href = "login.html";
+						}
 					}
 				}
 			});
 		}else{
-			location.href = data_href;
+			if(cookie.get('loginout') == 2){
+				location.href = data_href;
+			}else{
+				location.href = "login.html";
+			}
 		}
 	})
-	$.init();
+	// $.init();
 })
 function addFooter(num){
 	var foot = '';
@@ -60,10 +81,10 @@ function addFooter(num){
 			break;
 	}
 	foot += '<nav class="bar bar-tab">';
-	foot += '  <span class="tab-item external foot-jump '+type1+'" href="javascript:;"  data-href="Store_index.html" id="store_index_tab">';
+	foot += '  <a class="tab-item external '+type1+'" href="Store_index.html"  data-href="Store_index.html" id="store_index_tab">';
 	foot += '    <span class="icon icon-home"></span>';
 	foot += '    <span class="tab-label">展示</span>';
-	foot += '  </span>';
+	foot += '  </a>';
 	foot += '  <span class="tab-item external foot-jump check_auth '+type2+'" href="javascript:;" data-href="Appointment.html" id="footer_appointment_tab">';
 	foot += '    <span class="icon icon-star"></span>';
 	foot += '    <span class="tab-label">预约</span>';

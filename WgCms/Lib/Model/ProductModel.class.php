@@ -1,11 +1,19 @@
 <?php
-    class ProductModel extends Model{
+    class ProductModel extends RelationModel{
     protected $_validate = array(
             array('name','require','名称不能为空',1),
             array('keyword','require','关键词不能为空',1),
             array('price','require','价格不能为空',1),
             array('storeid','require','请选择店铺',1)
      );
+    protected $_link = array(
+        'store' => array(
+            'mapping_type' => BELONGS_TO,
+            'class_name' => 'Store_list',
+            'foreign_key' => 'storeid',
+            'mapping_fields' => 'name',
+        ),
+    );
     protected $_auto = array (
     array('token','gettoken',1,'callback'),
     //array('endtime','getTime',1,'callback'),
