@@ -38,7 +38,11 @@ afterBlur: function(){this.sync();}
   <form method="post" action="" id="formID">
     <input type="hidden" name="token" value="{wghd:$token}">
     <input type="hidden" name="id" id="id" value="{wghd:$set.id}"/>
-    <input type="hidden" name="storeid" value="{wghd:$set.storeid}">
+    <notempty name="set">
+      <input type="hidden" name="storeid" value="{wghd:$set.storeid}">
+      <else/>
+      <input type="hidden" name="storeid" value="{wghd:$store_info.id}">
+    </notempty>
     <div class="msgWrap bgfc">
       <table class="userinfoArea" style=" margin:0;" border="0" cellspacing="0" cellpadding="0" width="100%">
         <tbody>
@@ -50,7 +54,7 @@ afterBlur: function(){this.sync();}
               <notempty name="set">
                 <input type="text" value="{wghd:$set.store.name}" readonly="true"  style="width:400px;" />
                 <else/>
-                <input type="text" value="{wghd:$storename}" readonly="true"  style="width:400px;" />
+                <input type="text" value="{wghd:$store_info.name}" readonly="true"  style="width:400px;" />
                 <!-- <select name="storeid">
                               <volist id="list" name="store_list">
                                 <option value="{wghd:$list.id}">{wghd:$list.name}</option>
@@ -331,7 +335,7 @@ afterBlur: function(){this.sync();}
 <input type="text" name="keyword" id="keyword" value="{wghd:$set.keyword}" class="px" style="width:400px;" />
 </td>
 </tr> -->
-<!-- <tr>
+<tr>
 <th>Logo地址：</th>
 <td>
 <input type="text" name="logourl" value="{wghd:$set.logourl}" class="px" id="pic" style="width:400px;" />
@@ -339,7 +343,7 @@ afterBlur: function(){this.sync();}
 <a href="###" onclick="upyunPicUpload('pic',700,700,'{wghd:$token}')" class="a_upload">上传</a>
 <a href="###" onclick="viewImg('pic')">预览</a>
 </td>
-</tr> -->
+</tr>
 <!-- <tr>
 <th>展示图片一：</th>
 <td>

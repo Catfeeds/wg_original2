@@ -4,13 +4,12 @@
 			parent::_initialize();
 		}
 		function test2(){
-			dump(session('bmywecha_id'));
-			dump(session('jump_href'));
+			//dump(session('bmywecha_id'));
+			setcookie('zxg_login_user',null);
+			dump(cookie('zxg_login_user'));
 		}
 		function test(){
-			session('bmywecha_id',null);
-			session('bmywecha_id','');
-			dump(session('bmywecha_id'));
+			session('bmywecha_id','oV52LvzzFN0rrhyNUBTpeDB-eVX0');
 		}
 		//授权页面
 		public function authorization(){
@@ -44,7 +43,8 @@
 			$return = Sms::sendSms($content,$mobile);
 			Log::write('phone:'.$mobile,'DEBUG');
 			Log::write('sms:'.$return,'DEBUG');
-			$this->ajaxReturn($key,S('register_key'),1);
+			$smsreturn = explode(',', $return);
+			$this->ajaxReturn($key,$smsreturn[0],1);
 		}
 		//验证账号唯一性
 		
@@ -217,7 +217,7 @@
 		function myInfo(){
 			$account = $this->checkLogin('account');
 			$account['cnums'] = 0;
-			$account['cnums'] = M('Coupons')->where(array('aid'=>$account['id'],'status'=>0))->count();
+			$account['cnums'] = M('Coupons')->where(array('aid'=>$account['id'],'status'=>3))->count();
 			$this->ajaxReturn($account,'',1);
 		}
 		//保存个人信息
@@ -265,6 +265,8 @@
 				$my_orders[$v['id']]['datetime'] = date('Y-m-d H:i',$v['time']);
 				$orders[$k]['datertime'] = date('Y-m-d H:i',$v['rtime']);
 				$orders[$k]['datetime'] = date('Y-m-d H:i',$v['time']);
+				$store = M('Store_list')->where('id='.$v['storeid'])->find();
+				$orders[$k]['storeurl'] = 'http://api.map.baidu.com/marker?location='.$store['dimension'].','.$store['longitude'].'&title='.$store['name'].'&content=地址：'.$store['address'].'&output=html';
 			}
 			// dump($my_orders);
 			$this->ajaxReturn($orders,$my_orders,1);
@@ -272,7 +274,17 @@
 		//判断登陆
 		function checkLogin($get = ''){
 			$username = $_COOKIE['zxg_login_user'];
-			$account = D('Account')->where(array('username'=>$username))->find();
+			if($username){
+				$account = D('Account')->where(array('username'=>$username))->find();
+			}else{
+				//已注册免登陆
+				$account = D('Account')->where(array('wecha_id'=>session('bmywecha_id')))->find();
+				if($account){
+					setcookie("zxg_login_user", $data['username'], time()+3600*24*3);
+				}else{
+
+				}
+			}
 
 			if($account){
 				switch ($get) {

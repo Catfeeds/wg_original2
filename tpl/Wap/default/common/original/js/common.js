@@ -29,10 +29,10 @@ $(function($){
 	*/
 	$(document).on('click','.foot-jump',function(event){
 		var data_href
-		if(cookie.get('loginout') == 2){
-			data_href = $(this).attr('data-href');
-		}else{
+		if(cookie.get('loginout') == 1){
 			data_href = "login.html";
+		}else{
+			data_href = $(this).attr('data-href');
 		}
 		if($(this).hasClass('check_auth')){
 			$.ajax({
@@ -45,19 +45,19 @@ $(function($){
 						var href = 'http://bmy.tzwg.net/index.php?g=Wap&m=Distribution&a=authorization&bmyquth=1&href='+total_url+'tpl/Wap/default/'+data_href;
 						location.href = href;
 					}else{
-						if(cookie.get('loginout') == 2){
-							location.href = data_href;
-						}else{
+						if(cookie.get('loginout') == 1){
 							location.href = "login.html";
+						}else{
+							location.href = data_href;
 						}
 					}
 				}
 			});
 		}else{
-			if(cookie.get('loginout') == 2){
-				location.href = data_href;
-			}else{
+			if(cookie.get('loginout') == 1){
 				location.href = "login.html";
+			}else{
+				location.href = data_href;
 			}
 		}
 	})

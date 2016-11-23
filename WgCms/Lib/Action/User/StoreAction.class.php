@@ -13,7 +13,7 @@ class StoreAction extends UserAction{
 		$this->assign('level_cat_id',$this->level_cat_id);
 	}
 	function test(){
-		$this->display()
+		$this->display();
 	}
 	
 	/**
@@ -630,8 +630,8 @@ class StoreAction extends UserAction{
         	$this->assign('colorList', $colorList);
         	$this->assign('imageList', $productimage);
         }else{
-        	$storename = M('Store_list')->where('id='.$productCatData['sid'])->getField('name');
-        	$this->assign('storename',$storename);
+        	$store_info = M('Store_list')->where('id='.$productCatData['sid'])->find();
+        	$this->assign('store_info',$store_info);
         	// $store_list = M('Store_list')->select();
         	// $this->assign('store_list',$store_list);
         }
@@ -915,7 +915,13 @@ class StoreAction extends UserAction{
 		$this->assign('page', $show);
 		$this->display();
 	}
-	
+	public function printorder(){
+		$thisOrder = M('product_cart')->where(array('id'=>intval($_GET['id'])))->find();
+		$this->assign('thisOrder',$thisOrder);
+		$list = unserialize($thisOrder['info']);
+		$this->assign('products', $list);
+		$this->display();
+	}
 	public function orderInfo() {
 		$this->product_model = M('Product');
 		$this->product_cat_model = M('Product_cat');
@@ -940,70 +946,23 @@ class StoreAction extends UserAction{
 			}
 			$product_cart_model->where(array('orderid'=>$thisOrder['orderid']))->save(array('sent'=>intval($_POST['sent']),'paid'=>intval($_POST['paid']),'receive'=>intval($_POST['receive']),'handled'=>intval($_POST['handled']),'returnMoney'=>intval($_POST['returnMoney']),'logistics'=>$_POST['logistics'],'logisticsid'=>$_POST['logisticsid']));
 			//TODO 发货的短信提醒
-			if ($_POST['sent']) {
-				$company = D('Company')->where(array('token' => $thisOrder['token'], 'isbranch' => 0))->find();
-				$userInfo = M('Distribution_member')->where(array('token' => $thisOrder['token'], 'wecha_id' => $thisOrder['wecha_id']))->find();
-				Sms::sendSms($this->token, "您在{$company['name']}商城购买的商品，商家已经给您发货了，请您注意查收", $thisOrder['tel']);
-			}
+			// if ($_POST['sent']) {
+			// 	$company = D('Company')->where(array('token' => $thisOrder['token'], 'isbranch' => 0))->find();
+			// 	$userInfo = M('Distribution_member')->where(array('token' => $thisOrder['token'], 'wecha_id' => $thisOrder['wecha_id']))->find();
+			// 	Sms::sendSms($this->token, "您在{$company['name']}商城购买的商品，商家已经给您发货了，请您注意查收", $thisOrder['tel']);
+			// }
 			
-			//
-			/************************************************/
-			/*if (intval($_POST['paid'])&&intval($thisOrder['price'])){
-				$member_card_create_db=M('Member_card_create');
-				$wecha_id=$thisOrder['wecha_id'];
-				$userCard=$member_card_create_db->where(array('token'=>$this->token,'wecha_id'=>$wecha_id))->find();
-				$member_card_set_db=M('Member_card_set');
-				$thisCard=$member_card_set_db->where(array('id'=>intval($userCard['cardid'])))->find();
-				$set_exchange = M('Member_card_exchange')->where(array('cardid'=>intval($thisCard['id'])))->find();
-				//
-				$arr['token']=$this->token;
-				$arr['wecha_id']=$wecha_id;
-				$arr['expense']=$thisOrder['price'];
-				$arr['time']=time();
-				$arr['cat']=99;
-				$arr['staffid']=0;
-				$arr['score']=intval($set_exchange['reward'])*$order['price'];
-				M('Member_card_use_record')->add($arr);
-				$userinfo_db=M('Userinfo');
-				$thisUser = $userinfo_db->where(array('token'=>$thisCard['token'],'wecha_id'=>$arr['wecha_id']))->find();
-				$userArr=array();
-				$userArr['total_score']=$thisUser['total_score']+$arr['score'];
-				$userArr['expensetotal']=$thisUser['expensetotal']+$arr['expense'];
-				$userinfo_db->where(array('token'=>$thisCard['token'],'wecha_id'=>$arr['wecha_id']))->save($userArr);
-			}*/
-			/************************************************/
-			//
 			$this->distriOrderStatus($thisOrder['token'],$thisOrder['id'],$status);
 			$this->success('修改成功',U('Store/orderInfo',array('token'=>session('token'),'id'=>$thisOrder['id'])));
 		}else {
-			//订餐信息
-			// $product_diningtable_model = M('product_diningtable');
-			// if ($thisOrder['tableid']) {
-			// 	$thisTable=$product_diningtable_model->where(array('id'=>$thisOrder['tableid']))->find();
-			// 	$thisOrder['tableName']=$thisTable['name'];
-			// }
-			//判断有没操作权限
-			if($thisOrder['bindaid'] == 0){
-				$this->assign('cancontro',1);
-			}
 			//订单照片
 			$cart_pics = M('Cart_pics')->where('oid='.$thisOrder['id'])->select();
 			$this->assign('cart_pics',$cart_pics);
 			$this->assign('thisOrder',$thisOrder);
-			// $carts=unserialize($thisOrder['info']);
-			if($thisOrder['classid']){
-				import ( "@.Org.TypeFile" );
-				$tid = $thisOrder['classid'];
-				$TypeFile = new TypeFile ( 'ClassCity' ); //实例化分类类
-				$result = $TypeFile->getPathName ( $tid ); //获取分类路径
-				$this->assign ( 'typeNumArr', $result );
-			}
 
 			$list = unserialize($thisOrder['info']);
-//			print_r($list);die;
 			$this->assign('products', $list);
-			//
-			//
+
 			$this->display();
 		}
 	}
@@ -1905,7 +1864,7 @@ class StoreAction extends UserAction{
 		$count  = M('Feedback_list')->count();
 		$page   = new Page($count,20);
 		$show   = $page->show();
-		$list   = D('Feedback_list')->limit($page->firstRow.','.$page->listRows)->select();
+		$list   = D('FeedBack')->limit($page->firstRow.','.$page->listRows)->relation(true)->select();
 		$this->assign('page',$show);
 		$this->assign('list',$list);
 		$this->display();

@@ -35,7 +35,7 @@
 <volist name="list" id="hostlist"> 
 <tr>
 <td>{wghd:$hostlist.id}</td>
-<td>{wghd:$hostlist.id}</td>
+<td>{wghd:$hostlist.account.username}</td>
 <td>{wghd:$hostlist.addtime|date="Y-m-d ",###}</td>
 <td class="norightborder">
 	<a href="{wghd::U('Store/msgConte',array('token'=>$token,'id'=>$hostlist['id']))}">详情</a>

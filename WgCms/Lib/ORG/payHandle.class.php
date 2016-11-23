@@ -55,6 +55,13 @@ final class payHandle
         $wecha_id = $thisOrder['wecha_id'];
         $order_model = $this->db;
         $order_model->where(array('orderid' => $id))->setField('paid', 1);
+        //记录优惠券使用情况
+        if (strtolower($this->getFrom()) == 'store') {
+            $thisOrder = $this->db->where(array('token' => $this->token, 'orderid' => $id))->find();
+            if($thisOrder['couponId']){
+                M('Coupons')->where('id='.$thisOrder['couponId'])->save(array('status'=>1,'usedtime'=>time()));
+            }
+        }
         if (strtolower($this->getFrom()) == 'groupon') {
             $order_model->where(array('orderid' => $thisOrder['orderid']))->save(array('transactionid' => $transaction_id, 'paytype' => $this->payType));
         }

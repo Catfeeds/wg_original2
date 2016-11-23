@@ -22,7 +22,7 @@ class ShopAction extends UserAction{
         }else{
 
 		  	  $count  = $cityModel->count();
-        	$Page   = new Page($count,10);
+        	$Page   = new Page($count,20);
         	$show   = $Page->show();
         	//按照char 字典序排序
 			$str    = "SELECT * FROM `pigcms_city_list` ORDER BY binary CONVERT(`char` USING GBK) ASC LIMIT ".$Page->firstRow.','.$Page->listRows;

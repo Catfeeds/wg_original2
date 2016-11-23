@@ -49,6 +49,7 @@
 <th width="100">城市</th>
 <th width="100">首字母</th>
 <th width="100">分店数</th>
+<th width="100">热度</th>
 <th width="100" class="norightborder">操作</th>
 </tr>
 </thead>
@@ -60,6 +61,7 @@
 <td>{wghd:$hostlist.name}</td>
 <td>{wghd:$hostlist.char}</td>
 <td>{wghd:$hostlist.snums}</td>
+<td>{wghd:$hostlist.hot}</td>
 <td class="norightborder">
   <a href="{wghd::U('Shop/departList',array('token'=>$token,'id'=>$hostlist['id']))}">分店列表</a>
 	<a href="{wghd::U('Shop/citySet',array('token'=>$token,'id'=>$hostlist['id']))}">修改</a>

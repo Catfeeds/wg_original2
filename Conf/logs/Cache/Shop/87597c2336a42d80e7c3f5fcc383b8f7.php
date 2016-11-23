@@ -422,10 +422,16 @@ afterBlur: function(){this.sync();}
       <script>
         $('#type').on('change',function(){
          var type = $(this).val();
-         if(type == 1 || type == 2){
-          $('#re-price-item').hide();
-         }else{
-          $('#re-price-item').show();
+         console.log(type);
+         // if(type == 1 || type == 2){
+         //  $('#re-price-item').hide();
+         // }else{
+         //  $('#re-price-item').show();
+         // }
+         if(type == 0){
+          $('.color-wrap').hide();
+          $('.art-wrap').hide();
+          $('.whimsy-merry-wrap').hide();
          }
          if(type == 1){
           $('.color-wrap').show().siblings('.extend-wrap').hide();
@@ -468,7 +474,7 @@ afterBlur: function(){this.sync();}
        </style>
   <tr id="norms_wrap"></tr>
   <tr></tr>
-  <tr id="re-price-item" <?php if(($set['type'] == 1) or ($set['type'] == 2)): ?>style="display:none;"<?php endif; ?>>
+  <tr id="re-price-item">
     <th>
       <span class="red">*</span>
       预约价：

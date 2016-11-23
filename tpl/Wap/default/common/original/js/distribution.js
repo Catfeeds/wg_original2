@@ -41,7 +41,7 @@ $(function(){
 				}
 			}
 		});
-		if(cookie.get('loginout') != 2){
+		if(cookie.get('loginout') == 1){
 			location.href = "login.html";
 		}
 	});
@@ -101,7 +101,7 @@ $(function(){
 			var uselessHtml = '';
 			$.each(json.data,function(index,el){
 				console.log(el);
-				if(el.status == 0){
+				if(el.status == 3){
 					unuselessHtml += '<div class=\"content-block\"><div class=\"myCoupons-listWrap\"><span class=\"myCoupons-price\">￥<b>' +
 					el.price + '</b></span><div class=\"myCoupons-couponInfo\"><h3>抵价券</h3><p class=\"myCoupons-couponDate\"><span></span>全国门店通用</p><p class=\"myCoupons-couponStore\"><span></span>截止日期: ' +
 					el.endtime + '</p><span class=\"myCoupons-expiredIcon\"></span>' + '</div></div></div>';

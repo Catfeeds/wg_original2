@@ -3,6 +3,15 @@ class StoreAction extends WapAction{
 	public function __construct(){
 		parent::_initialize();
 	}
+	function test(){
+		// ini_set('session.gc_maxlifetime', 1);
+		$test = ini_get('session.gc_maxlifetime');
+		dump($test);
+		dump(session('test'));
+	}
+	function test2(){
+		session('test',1);
+	}
 	function returnData($data){
 		$data = array(
 			'biz' => 'SAPI_GETINDEXDATA',
@@ -31,7 +40,7 @@ class StoreAction extends WapAction{
 			$PT_Product = array();
 			foreach ($pro as $k2 => $v2) {
 				$PT_Product[$k2]['P_Id'] = $v2['id'];
-				$PT_Product[$k2]['P_ImgPath'] = $v2['pic'];
+				$PT_Product[$k2]['P_ImgPath'] = $v2['logo'];
 				$PT_Product[$k2]['P_Name'] = $v2['name'];
 				$PT_Product[$k2]['P_Parent'] = '0';
 				$PT_Product[$k2]['P_Price'] = $v2['price'];
@@ -566,7 +575,7 @@ class StoreAction extends WapAction{
 		);
 		//记录抵价卷使用情况
 		if($data['coupons']){
-			M('Coupons')->where('id='.$data['coupons']['id'])->save(array('status'=>1,'usedtime'=>time()));
+			// M('Coupons')->where('id='.$data['coupons']['id'])->save(array('status'=>1,'usedtime'=>time()));
 			$order_data['couponId'] = $data['coupons']['id'];
 		}
 		$re = M('Product_cart')->add($order_data);
@@ -588,9 +597,9 @@ class StoreAction extends WapAction{
 		$id = $this->_get('id');
 		$cart = M('Product_cart')->where(array('id'=>$id))->find();
 		//判断订单是否过期
-		// if(($cart['time'] + $cart['lasttime']) < time()){
-		// 	$this->error('订单已过期',C('site_url').'/tpl/Wap/default/Store_index.html');
-		// }
+		if(($cart['time'] + $cart['lasttime']) < time()){
+			$this->error('订单已过期',C('site_url').'/tpl/Wap/default/Store_index.html');
+		}
 		/*
 		 *判断预约时间是否还在
 		 *store_deftime:剩余的预约数（先计算附加时间没有就用店铺默认设置时间并减去已预约时间）
@@ -625,6 +634,13 @@ class StoreAction extends WapAction{
 		M('Product_cart')->where(array('id'=>$id))->setField('orderid',$orderid);
 		$cart = M('Product_cart')->where(array('id'=>$id))->find();
 		$this->success('正在提交中...', U('Alipay/pay',array('token' => $this->token, 'wecha_id' => $this->wecha_id, 'success' => 1, 'from'=> 'Store', 'orderName' => $orderid, 'single_orderid' => $orderid, 'price' => $cart['price'])));
+	}
+	//支付回调
+	function payReturn(){
+		$url="http://bmy.tzwg.net/tpl/Wap/default/myorders.html";
+		Header("HTTP/1.1 303 See Other"); 
+		Header("Location: $url"); 
+		exit;
 	}
 }
 

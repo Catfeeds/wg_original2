@@ -21,10 +21,13 @@
 支付状态：<?php if($thisOrder["paid"] == 1): ?>已付款<?php else: ?>未付款<?php endif; ?><br>
 <?php if($thisOrder["paid"] == 1): ?>购买状态：<?php if($thisOrder["beDistri"] == 1): ?><span style="color:green">首次购买</span><?php else: ?><span style="color:red">非首次购买</span><?php endif; ?><br><?php endif; ?>
 预约人：<?php echo ($thisOrder["truename"]); ?><br>
+预约时间：<?php echo (date("Y-m-d H:i:s",$thisOrder["rtime"])); ?><br>
 电话：<?php echo ($thisOrder["tel"]); ?><br>
 地址：<?php echo ($thisOrder["province"]); echo ($thisOrder["city"]); echo ($thisOrder["county"]); echo ($thisOrder["address"]); ?><br>
-备注信息：<?php echo ($thisOrder["remark"]); ?><br>
+<!-- 备注信息：<?php echo ($thisOrder["remark"]); ?><br> -->
 总数：<?php echo ($thisOrder["total"]); ?><br>
+<?php if(($thisOrder["pref"]) != "0"): ?>组合优惠：<span style="color:#f30;font-size:16px;font-weight:bold"><?php echo ($thisOrder["pref"]); ?></span>元<br><?php endif; ?>
+<?php if(($thisOrder["couponPrice"]) != "0"): ?>抵扣：<span style="color:#f30;font-size:16px;font-weight:bold"><?php echo ($thisOrder["couponPrice"]); ?></span>元<br><?php endif; ?>
 总价：<span style="color:#f30;font-size:16px;font-weight:bold"><?php echo ($thisOrder["price"]); ?></span>元
 </div>
 
@@ -114,7 +117,6 @@
    * 服务器地址,成功返回,失败返回参数格式依照jquery.ajax习惯;
    * 其他参数同WebUploader
    */
-
    $('#test').diyUpload({
      url:'<?php echo U("Store/fileUpload",array("oid"=>$thisOrder["id"]));?>',
      success:function( data ) {

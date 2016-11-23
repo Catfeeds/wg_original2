@@ -383,7 +383,7 @@ function selectall(name) {
 <!-- <th class="60">退款原因</th> -->
 <th class="60">处理状态</th>
 <!-- <th class="60">付款方式</th> -->
-<th >创建时间</th>
+<th >预约时间</th>
 <th width="70" class="norightborder">操作</th>
 </tr>
 </thead>
@@ -405,8 +405,17 @@ function selectall(name) {
 	<?php elseif($o['paymode'] == 1): ?><span style="color:green">在线支付</span>
 	<?php else: ?><span style="color:green">货到付款</span><?php endif; ?>
 </td> -->
-<td><?php echo (date("Y-m-d H:i:s",$o["time"])); ?></td> 
-<td class="norightborder"><?php if(($o["returnMoney"]) == "1"): ?><a href="<?php echo U('Store/returnMoney',array('token'=>$token,'id'=>$o['id']));?>" onclick="return confirm('确定已完成退款了么');">退款完成</a>&nbsp;&nbsp;<?php endif; ?><a href="###" onclick="showIntroDetail(<?php echo ($o["id"]); ?>)">详细</a>&nbsp;&nbsp;<a href="javascript:drop_confirm('您确定要删除吗?', '<?php echo U('Store/deleteOrder',array('token'=>$token,'id'=>$o['id'],'dining'=>$isDining));?>');">删除</a></td>
+<td><?php echo (date("Y-m-d H:i:s",$o["rtime"])); ?></td> 
+<td class="norightborder">
+	<?php if(($o["returnMoney"]) == "1"): ?><a href="<?php echo U('Store/returnMoney',array('token'=> $token,'id'=>$o['id']));?>" onclick="return confirm('确定已完成退款了么');">退款完成
+		</a>
+		&nbsp;&nbsp;<?php endif; ?>
+	<a href="###" onclick="showIntroDetail(<?php echo ($o["id"]); ?>)">详细</a>
+	&nbsp;&nbsp;
+	<a href="###" onclick="showIntroDetail2(<?php echo ($o["id"]); ?>)">打印订单</a>
+	&nbsp;&nbsp;
+	<a href="javascript:drop_confirm('您确定要删除吗?', '<?php echo U('Store/deleteOrder',array('token'=>$token,'id'=>$o['id'],'dining'=>$isDining));?>');">删除</a>
+</td>
 </tr><?php endforeach; endif; else: echo "" ;endif; ?>
 </tbody>
 </table>
@@ -416,6 +425,9 @@ function selectall(name) {
    <script>
 function showIntroDetail(id){
 	art.dialog.open('<?php echo U('Store/orderInfo',array('token'=>$token,'dining'=>$isDining));?>&id='+id,{lock:false,title:'订单详情',width:1000,height:620,yesText:'关闭',background: '#000',opacity: 0.87,close: function(){location.reload();}});
+}
+function showIntroDetail2(id){
+	art.dialog.open('<?php echo U('Store/printorder',array('token'=>$token,'dining'=>$isDining));?>&id='+id,{lock:false,title:'订单详情',width:150,height:50,yesText:'关闭',background: '#000',opacity: 0.87,close: function(){location.reload();}});
 }
 </script>
 </div>

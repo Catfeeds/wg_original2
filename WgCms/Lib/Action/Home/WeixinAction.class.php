@@ -50,10 +50,104 @@ class WeixinAction extends Action
     }
     private function reply($data)
     {
-		$this->newstoreRecord($data);//记录最新操作
+        $this->newstoreRecord($data);//记录最新操作
         if ($this->user['viptime'] < time()) {
             return array('您的账号已经过期，请联系' . $this->siteUrl . '开通', 'text');
         }
+        if('subscribe' == $data['Event']||$data['Event'] == 'SCAN'){
+            $db = M('Distribution_member');
+            $my = $db->where(array('token'=>$this->token,'wecha_id'=>$this->data['FromUserName']))->find();
+            if (!(strpos($data['EventKey'], 'qrscene_') === FALSE)) {
+                $sceneid = str_replace('qrscene_', '', $data['EventKey']);
+            }
+            if($data['Event'] == 'SCAN'){
+                $sceneid = $data['EventKey'];
+            }
+            if(!$my){
+                $user_info = $this->get_user_info();
+                $mydata['nickname'] = $user_info['nickname'];
+                $mydata['headimgurl'] = $user_info['headimgurl'];
+                $mydata['wecha_id'] = $this->data['FromUserName'];
+                $mydata['token'] = $this->token;
+                $mydata['createtime'] = time();
+                $mydata['status'] = 1;
+                if($myid = $db->add($mydata)){
+                    $set = M('Distribution_set')->where(array('token'=>$this->token))->find();
+                    Log::write("sceneid=".$sceneid,"DEBUG");
+                    if($sceneid){
+                        $from_member = $db->where('id='.$sceneid)->find();
+                    }
+                    if($from_member){
+                        $memberData['bindmid'] = $from_member['id'];
+                        $db->where('id='.$myid)->save($memberData);//绑定所属会员id
+                        if($db->where(array('token'=>$this->token,'wecha_id'=>$this->data['FromUserName'],'id'=>array('neq',$myid)))->find()){
+                            $db->where('id='.$myid)->delete();
+                        }else{
+                            $db->where('id='.$from_member['id'])->setInc('followNums');//关注累加
+                            $db->where('id='.$from_member['id'])->setInc('firstNums');//一级会员累加
+                            $leveData['fid'] = $from_member['id'];
+                            if($from_member['fid']!=0){
+                             $db->where('id='.$from_member['fid'])->setInc('secondNums');//二级会员累加
+                             $leveData['sid'] = $from_member['fid'];
+                            }
+                            if($from_member['sid']!=0){
+                             $db->where('id='.$from_member['sid'])->setInc('thirdNums');//三级会员累加
+                             $leveData['tid'] = $from_member['sid'];
+                            }
+                            $leveData['handle'] = 1;//处理结束
+                            $db->where('id='.$myid)->save($leveData);//会员所属绑定
+
+                            //上级消息推送
+                            $access_token_p = $this->get_access_token();
+                            $data_p = '{"touser":"'.$from_member['wecha_id'].'","msgtype":"news","news":{"articles":[{"title":"您有新朋友加入，赶紧看看吧","description":"亲：新朋友的消费您都将有提成哦","url":"'.C('site_url').U('Wap/Distribution/memberList',array('token'=>$this->token,'wecha_id'=>$from_member['wecha_id'],'type'=>'first')).'","picurl":""}]}}';
+                            $result_p = $this->api_notice_increment('https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token='.$access_token_p,$data_p);
+                        }
+                    }else{
+                        if($db->where(array('token'=>$this->token,'wecha_id'=>$this->data['FromUserName'],'id'=>array('neq',$myid)))->find()){
+                            $db->where('id='.$myid)->delete();
+                        }
+                    }
+                }
+            }else{
+                if($sceneid){
+                    if($my['id']!=$sceneid){
+                        $from_member = $db->where('id='.$sceneid)->find();
+                    }
+                    //判断是否是扫码
+                    if($from_member){
+                        //扫码记录表
+                        if($my['bind']==0 && $my['distritime']==0){
+                             $db->where('id='.$from_member['id'])->setInc('followNums');//关注累加
+                             $db->where('id='.$from_member['id'])->setInc('firstNums');//一级会员累加
+                             $mydata['fid'] = $from_member['id'];
+                             if($from_member['fid']!=0){
+                              $db->where('id='.$from_member['fid'])->setInc('secondNums');//二级会员累加
+                              $mydata['sid'] = $from_member['fid'];
+                             }
+                             if($from_member['sid']!=0){
+                              $db->where('id='.$from_member['sid'])->setInc('thirdNums');//三级会员累加
+                              $mydata['tid'] = $from_member['sid'];
+                             }
+                             $mydata['handle'] = 1;//处理结束
+                             $mydata['bindmid'] = $from_member['id'];
+                        }
+                        //上级消息推送
+                        $access_token_p = $this->get_access_token();
+                        $data_p = '{"touser":"'.$from_member['wecha_id'].'","msgtype":"news","news":{"articles":[{"title":"您有新朋友加入，赶紧看看吧","description":"亲：新朋友的消费您都将有提成哦","url":"'.C('site_url').U('Wap/Distribution/memberList',array('token'=>$this->token,'wecha_id'=>$from_member['wecha_id'],'type'=>'first')).'","picurl":""}]}}';
+                        $result_p = $this->api_notice_increment('https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token='.$access_token_p,$data_p);
+                    }
+                }
+                if($my['nickname']==''&&$my['headimgurl']==''){
+                    $user_info = $this->get_user_info();
+                    $mydata['nickname'] = $user_info['nickname'];
+                    $mydata['headimgurl'] = $user_info['headimgurl'];
+                }
+                if($mydata){
+                    $db->where('id='.$my['id'])->save($mydata);
+                }
+            }
+        }
+
         if ('CLICK' == $data['Event']) {
             $data['Content'] = $data['EventKey'];
             $this->data['Content'] = $data['EventKey'];
@@ -61,108 +155,39 @@ class WeixinAction extends Action
             $this->data['Content'] = $data['Content'];
         } elseif ($data['Event'] == 'MASSSENDJOBFINISH') {
         } elseif ('subscribe' == $data['Event']) {
-			//$this->newstoreStatus(1);
-			$follow_data = M('Areply')->field('home,keyword,content')->where(array('token' => $this->token))->find();
-			$db = M('Distribution_member');
-			$my = $db->where(array('token'=>$this->token,'wecha_id'=>$this->data['FromUserName']))->find();
-			if (!(strpos($data['EventKey'], 'qrscene_') === FALSE)) {
-				$sceneid = str_replace('qrscene_', '', $data['EventKey']);
-            }
-			if(!$my){
-				$user_info = $this->get_user_info();
-				$mydata['nickname'] = $user_info['nickname'];
-				$mydata['headimgurl'] = $user_info['headimgurl'];
-				$mydata['province'] = $user_info['province'];
-				$mydata['city'] = $user_info['city'];
-				$mydata['country'] = $user_info['country'];
-				$mydata['sex'] = $user_info['sex'];
-				$mydata['wecha_id'] = $this->data['FromUserName'];
-				$mydata['token'] = $this->token;
-				$mydata['createtime'] = time();
-				$mydata['status'] = 1;
-				$mydata['follow'] = 1;//关注
-				if($myid = $db->add($mydata)){
-					$set = M('Distribution_set')->where(array('token'=>$this->token))->find();
-					if($sceneid){//通过二维码
-						$from_member = $db->where('id='.$sceneid)->find();
-					}else{//通过点击
-						$click = M('Distribution_click')->where(array('token'=>$this->token,'wecha_id'=>$this->data['FromUserName']))->order('updatetime desc')->find();
-						if($click){
-							$from_member = $db->where('id='.$click['mid'])->find();
-						}
-					}
-					if($from_member){
-						$memberData['bindmid'] = $from_member['id'];
-						$db->where('id='.$myid)->save($memberData);//绑定所属会员id
-						if($db->where(array('token'=>$this->token,'wecha_id'=>$this->data['FromUserName'],'id'=>array('neq',$myid)))->find()){
-							$db->where('id='.$myid)->delete();
-						}else{
-							$db->where('id='.$from_member['id'])->setInc('followNums');//关注累加
-							$db->where('id='.$from_member['id'])->setInc('firstNums');//一级会员累加
-							$leveData['fid'] = $from_member['id'];
-							if($from_member['fid']!=0){
-								$db->where('id='.$from_member['fid'])->setInc('secondNums');//二级会员累加
-								$leveData['sid'] = $from_member['fid'];
-							}
-							if($from_member['sid']!=0){
-								$db->where('id='.$from_member['sid'])->setInc('thirdNums');//三级会员累加
-								$leveData['tid'] = $from_member['sid'];
-							}
-							$leveData['handle'] = 1;//处理结束
-							$db->where('id='.$myid)->save($leveData);//会员所属绑定
-							//上级消息推送
-							$access_token_p = $this->get_access_token();
-							$data_p = '{"touser":"'.$from_member['wecha_id'].'","msgtype":"news","news":{"articles":[{"title":"您有新朋友加入，赶紧看看吧","description":"亲：新朋友的消费您都将有提成哦","url":"'.C('site_url').U('Wap/Distribution/followList',array('token'=>$this->token,'wecha_id'=>$from_member['wecha_id'])).'","picurl":""}]}}';
-							$result_p = $this->api_notice_increment('https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token='.$access_token_p,$data_p);
-						}
-					}else{
-						if($db->where(array('token'=>$this->token,'wecha_id'=>$this->data['FromUserName'],'id'=>array('neq',$myid)))->find()){
-							$db->where('id='.$myid)->delete();
-						}
-					}
-				}
-			}else{
-				if($my['follow']==0){
-					$mydata['follow'] = 1;//关注
-					$db->where('id='.$my['id'])->save($mydata);
-				}
-			}
+            $this->newstoreStatus(1);
+            $follow_data = M('Areply')->field('home,keyword,content')->where(array('token' => $this->token))->find();
+            
             if ($follow_data['home'] == 1) {
                 return $this->keyword($follow_data['keyword']);
             } else {
-				if(strstr($follow_data['content'],'{memberid}')){
-					$set = M('Distribution_set')->where(array('token'=>$this->token))->find();
-					$my = $db->where(array('token'=>$this->token,'wecha_id'=>$this->data['FromUserName']))->find();
-					$follow_data['content'] = str_replace('{memberid}', $set['startNums']+$my['id'], $follow_data['content']);
-				}
+                if(strstr($follow_data['content'],'{memberid}')){
+                    $set = M('Distribution_set')->where(array('token'=>$this->token))->find();
+                    $my = $db->where(array('token'=>$this->token,'wecha_id'=>$this->data['FromUserName']))->find();
+                    $follow_data['content'] = str_replace('{memberid}', $set['startNums']+$my['id'], $follow_data['content']);
+                }
                 return array(html_entity_decode($follow_data['content']), 'text');
             }
         } elseif ('unsubscribe' == $data['Event']) {
-			$db = M('Distribution_member');
-			$my = $db->where(array('token'=>$this->token,'wecha_id'=>$this->data['FromUserName']))->find();
-			if($my['follow']==1){
-				$mydata['follow'] = 0;//取消关注
-				$db->where('id='.$my['id'])->save($mydata);
-			}
-			//$this->newstoreStatus(0);
+            $this->newstoreStatus(0);
         } elseif ($data['Event'] == 'LOCATION') {
-			$datas['Latitude'] = $this->data['Latitude'];
-			$datas['Longitude'] = $this->data['Longitude'];
-			$datas['Precision'] = $this->data['Precision'];
-			$datas['Label'] = '';
-			$datas['newtime'] = time();
-			$conditions['token'] = $this->token;
-			$conditions['wecha_id'] = $this->data['FromUserName'];
-			$Lid = M('Location')->where($conditions)->getField('id');
-			if($Lid){
-				M('Location')->where('id='.$Lid)->save($datas);
-			}else{
-				$datas['token'] = $this->token;
-				$datas['wecha_id'] = $this->data['FromUserName'];
-				M('Location')->add($datas);
-			}
+            $datas['Latitude'] = $this->data['Latitude'];
+            $datas['Longitude'] = $this->data['Longitude'];
+            $datas['Precision'] = $this->data['Precision'];
+            $datas['Label'] = '';
+            $datas['newtime'] = time();
+            $conditions['token'] = $this->token;
+            $conditions['wecha_id'] = $this->data['FromUserName'];
+            $Lid = M('Location')->where($conditions)->getField('id');
+            if($Lid){
+                M('Location')->where('id='.$Lid)->save($datas);
+            }else{
+                $datas['token'] = $this->token;
+                $datas['wecha_id'] = $this->data['FromUserName'];
+                M('Location')->add($datas);
+            }
         } elseif ($data['Event'] == 'scancode_waitmsg') {
-        	return array('扫二维码测试', 'text');
+            return array('扫二维码测试', 'text');
         }
         if ('voice' == $data['MsgType']) {
             $data['Content'] = $data['Recognition'];
@@ -171,22 +196,22 @@ class WeixinAction extends Action
             } else {
             }
         }
-		$Pin = new GetPin();
-		$key = $data['Content'];
-		$datafun = explode(',', $this->fun);
-		$tags = $this->get_tags($key);
-		$back = explode(',', $tags);
-		foreach ($back as $keydata => $data) {
-			$string = $Pin->Pinyin($data);
-			if (in_array($string, $datafun) && $string) {
-				unset($back[$keydata]);
-				if (method_exists('WeixinAction', $string)) {
-					eval('$return= $this->' . $string . '($back);');
-				} else {
-				}
-				break;
-			}
-		}
+        $Pin = new GetPin();
+        $key = $data['Content'];
+        $datafun = explode(',', $this->fun);
+        $tags = $this->get_tags($key);
+        $back = explode(',', $tags);
+        foreach ($back as $keydata => $data) {
+            $string = $Pin->Pinyin($data);
+            if (in_array($string, $datafun) && $string) {
+                unset($back[$keydata]);
+                if (method_exists('WeixinAction', $string)) {
+                    eval('$return= $this->' . $string . '($back);');
+                } else {
+                }
+                break;
+            }
+        }
         if (!empty($return)) {
             if (is_array($return)) {
                 return $return;
@@ -194,15 +219,15 @@ class WeixinAction extends Action
                 return array($return, 'text');
             }
         } else {
-			if($key==''){
-				$follow_data = M('Areply')->field('home,keyword,content')->where(array('token' => $this->token))->find();
-				if(strstr($follow_data['content'],'{memberid}')){
-					$set = M('Distribution_set')->where(array('token'=>$this->token))->find();
-					$my = M('Distribution_member')->where(array('token'=>$this->token,'wecha_id'=>$this->data['FromUserName']))->find();
-					$follow_data['content'] = str_replace('{memberid}', $set['startNums']+$my['id'], $follow_data['content']);
-				}
+            if($key==''){
+                $follow_data = M('Areply')->field('home,keyword,content')->where(array('token' => $this->token))->find();
+                if(strstr($follow_data['content'],'{memberid}')){
+                    $set = M('Distribution_set')->where(array('token'=>$this->token))->find();
+                    $my = M('Distribution_member')->where(array('token'=>$this->token,'wecha_id'=>$this->data['FromUserName']))->find();
+                    $follow_data['content'] = str_replace('{memberid}', $set['startNums']+$my['id'], $follow_data['content']);
+                }
                 return array(html_entity_decode($follow_data['content']), 'text');
-			}
+            }
             return $this->keyword($key);
         }
     }
@@ -247,38 +272,53 @@ class WeixinAction extends Action
                     return array(array($info['title'], $info['keyword'], $info['musicurl'], $info['hqmusicurl']), 'music');
             }
         } else {
-			$other = M('Other')->where(array('token' => $this->token))->find();
-			if ($other == false) {
-				return array('', 'text');
-			} else {
-				if (empty($other['keyword'])) {
-					return array($other['info'], 'text');
-				} else {
-					$img = M('Img')->field('id,text,pic,url,title')->limit(10)->order('usort desc')->where(array('token' => $this->token, 'keyword' => array('like', '%' . $other['keyword'] . '%')))->select();
-					if ($img == false) {
-						$multiImgs = M('Img_multi')->where(array('token' => $this->token, 'keywords' => array('like', '%' . $other['keyword'] . '%')))->find();
-						if (!$multiImgs) {
-							return array('无此图文信息,请提醒商家，重新设定关键词', 'text');
-						} else {
-							$multiImgClass = new multiImgNews($this->token, $this->data['FromUserName'], $this->siteUrl);
-							return $multiImgClass->news($multiImgs['id']);
-						}
-					}
-					foreach ($img as $keya => $infot) {
-						if ($infot['url'] != false) {
-							if (!(strpos($infot['url'], 'http') === FALSE)) {
-								$url = $this->getFuncLink(html_entity_decode($infot['url']));
-							} else {
-								$url = $this->getFuncLink($infot['url']);
-							}
-						} else {
-							$url = rtrim($this->siteUrl, '/') . U('Wap/Index/content', array('token' => $this->token, 'id' => $infot['id'], 'wecha_id' => $this->data['FromUserName']));
-						}
-						$return[] = array($infot['title'], $infot['text'], $infot['pic'], $url);
-					}
-					return array($return, 'news');
-				}
-			}
+            if($key == '推荐二维码ytsc123'){
+                $token = $this->token;
+                $wecha_id = $this->data['FromUserName'];
+                $access_token_p = $this->get_access_token();
+                $member = M('Distribution_member')->where(array('wecha_id'=>$wecha_id))->find();
+                if($member['distritime']){
+                    $content = "<a href='".rtrim($this->siteUrl, '/').U('Wap/Distribution/generateQrcode',array('token'=>$token,'wecha_id'=>$wecha_id))."'>二维码已生成，点击获取</a>";
+                }else{
+                    $content = "您还不是店主，无法获取推荐二维码！";
+                }
+
+                $data = '{"touser":"'.$wecha_id.'","msgtype":"text","text":{"content":"'.$content.'"}}';
+                $this->api_notice_increment('https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token='.$access_token_p,$data);
+                exit();
+            }
+            $other = M('Other')->where(array('token' => $this->token))->find();
+            if ($other == false) {
+                return array('', 'text');
+            } else {
+                if (empty($other['keyword'])) {
+                    return array($other['info'], 'text');
+                } else {
+                    $img = M('Img')->field('id,text,pic,url,title')->limit(10)->order('usort desc')->where(array('token' => $this->token, 'keyword' => array('like', '%' . $other['keyword'] . '%')))->select();
+                    if ($img == false) {
+                        $multiImgs = M('Img_multi')->where(array('token' => $this->token, 'keywords' => array('like', '%' . $other['keyword'] . '%')))->find();
+                        if (!$multiImgs) {
+                            return array('无此图文信息,请提醒商家，重新设定关键词', 'text');
+                        } else {
+                            $multiImgClass = new multiImgNews($this->token, $this->data['FromUserName'], $this->siteUrl);
+                            return $multiImgClass->news($multiImgs['id']);
+                        }
+                    }
+                    foreach ($img as $keya => $infot) {
+                        if ($infot['url'] != false) {
+                            if (!(strpos($infot['url'], 'http') === FALSE)) {
+                                $url = $this->getFuncLink(html_entity_decode($infot['url']));
+                            } else {
+                                $url = $this->getFuncLink($infot['url']);
+                            }
+                        } else {
+                            $url = rtrim($this->siteUrl, '/') . U('Wap/Index/content', array('token' => $this->token, 'id' => $infot['id'], 'wecha_id' => $this->data['FromUserName']));
+                        }
+                        $return[] = array($infot['title'], $infot['text'], $infot['pic'], $url);
+                    }
+                    return array($return, 'news');
+                }
+            }
         }
     }
     private function getFuncLink($u)
@@ -350,56 +390,56 @@ class WeixinAction extends Action
     {
         return '没有找到' . $data . '相关的数据';
     }
-	private function newstoreRecord($data)
+    private function newstoreRecord($data)
     {
-		$dataScore['token'] = $this->token;
-		$dataScore['wecha_id'] = $this->data['FromUserName'];
-		$newscoreId = M('Newstore')->where($dataScore)->getField('id');
-		if($newscoreId){
-			$dataScore['lasttime'] = time();
-			$dataScore['Event'] = $data['Event'];
-			$dataScore['Content'] = $data['Content'];
-			M('Newstore')->where('id='.$newscoreId)->save($dataScore);
-		}else{
-			$dataScore['lasttime'] = time();
-			$dataScore['Event'] = $data['Event'];
-			$dataScore['Content'] = $data['Content'];
-			M('Newstore')->add($dataScore);
-		}
+        $dataScore['token'] = $this->token;
+        $dataScore['wecha_id'] = $this->data['FromUserName'];
+        $newscoreId = M('Newstore')->where($dataScore)->getField('id');
+        if($newscoreId){
+            $dataScore['lasttime'] = time();
+            $dataScore['Event'] = $data['Event'];
+            $dataScore['Content'] = $data['Content'];
+            M('Newstore')->where('id='.$newscoreId)->save($dataScore);
+        }else{
+            $dataScore['lasttime'] = time();
+            $dataScore['Event'] = $data['Event'];
+            $dataScore['Content'] = $data['Content'];
+            M('Newstore')->add($dataScore);
+        }
     }
-	private function newstoreStatus($status)
+    private function newstoreStatus($status)
     {
-		$dataScore['token'] = $this->token;
-		$dataScore['wecha_id'] = $this->data['FromUserName'];
-		$data['status'] = $status;
-		M('Newstore')->where($dataScore)->save($data);
+        $dataScore['token'] = $this->token;
+        $dataScore['wecha_id'] = $this->data['FromUserName'];
+        $data['status'] = $status;
+        M('Newstore')->where($dataScore)->save($data);
     }
-	private function get_user_info(){
-		if($this->token!=''&&preg_match('/^[0-9a-zA-Z]{3,42}$/', $this->token)){
-			$access_token = M('access_token')->where(array('token'=>$this->token))->find();
-			if($access_token){
-				$access_str = $this->get_access_token();
-				$data['access_token'] = $access_str;
-				$data['updatetime'] = time();
-				M('access_token')->where(array('token'=>$this->token))->save($data);
-			}else{
-				$access_str = $this->get_access_token();
-				$data['token'] = $this->token;
-				$data['access_token'] = $access_str;
-				$data['updatetime'] = time();
-				M('access_token')->add($data);
-			}
-			$info = $this->curlGet('https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$access_str.'&openid='.$this->data['FromUserName'].'&lang=zh_CN');
-			Log::write('API_userinfo='.$info,'DEBUG');
-			$infoarr = json_decode($info, 1);
-			return $infoarr;
-		}
-	}
-	private function get_access_token(){
-		$rt = $this->curlGet('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' . $this->wxuser['appid'] . '&secret=' . $this->wxuser['appsecret']);
+    private function get_user_info(){
+        if($this->token!=''&&preg_match('/^[0-9a-zA-Z]{3,42}$/', $this->token)){
+            $access_token = M('access_token')->where(array('token'=>$this->token))->find();
+            if($access_token){
+                $access_str = $this->get_access_token();
+                $data['access_token'] = $access_str;
+                $data['updatetime'] = time();
+                M('access_token')->where(array('token'=>$this->token))->save($data);
+            }else{
+                $access_str = $this->get_access_token();
+                $data['token'] = $this->token;
+                $data['access_token'] = $access_str;
+                $data['updatetime'] = time();
+                M('access_token')->add($data);
+            }
+            $info = $this->curlGet('https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$access_str.'&openid='.$this->data['FromUserName'].'&lang=zh_CN');
+            // Log::write('API_userinfo='.$info,'DEBUG');
+            $infoarr = json_decode($info, 1);
+            return $infoarr;
+        }
+    }
+    private function get_access_token(){
+        $rt = $this->curlGet('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' . $this->wxuser['appid'] . '&secret=' . $this->wxuser['appsecret']);
         $jsonrt = json_decode($rt, 1);
-		return $jsonrt['access_token'];
-	}
+        return $jsonrt['access_token'];
+    }
     private function api_notice_increment($url, $data, $converturl = 1)
     {
         $ch = curl_init();
@@ -445,7 +485,7 @@ class WeixinAction extends Action
         $temp = curl_exec($ch);
         return $temp;
     }
-	private function get_tags($title, $num = 10)
+    private function get_tags($title, $num = 10)
     {
         vendor('Pscws.Pscws4', '', '.class.php');
         $pscws = new PSCWS4();
@@ -461,7 +501,7 @@ class WeixinAction extends Action
         }
         return implode(',', $tags);
     }
-	public function handleIntro($str)
+    public function handleIntro($str)
     {
         $search = array('&quot;', '&nbsp;');
         $replace = array('"', '');

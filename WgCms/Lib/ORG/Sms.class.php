@@ -44,8 +44,8 @@ final class Sms {
 		$data = array(
 			'sms' => iconv('UTF-8','GB2312',$content),
 			'mobile'=>$mobile,
-			'usr' => "991145",
-			'pwd' => "bmy@145",
+			'usr' => "7421",
+			'pwd' => "bmy7421@tz",
 		);
 		$post = '';
 		foreach($data as $k=>$v) {

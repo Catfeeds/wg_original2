@@ -64,7 +64,7 @@ function selectall(name) {
 <!-- <th class="60">退款原因</th> -->
 <th class="60">处理状态</th>
 <!-- <th class="60">付款方式</th> -->
-<th >创建时间</th>
+<th >预约时间</th>
 <th width="70" class="norightborder">操作</th>
 </tr>
 </thead>
@@ -87,8 +87,20 @@ function selectall(name) {
 	<elseif condition="$o['paymode'] eq 1" /><span style="color:green">在线支付</span>
 	<else /><span style="color:green">货到付款</span></if>
 </td> -->
-<td>{wghd:$o.time|date="Y-m-d H:i:s",###}</td> 
-<td class="norightborder"><eq name="o.returnMoney" value="1"><a href="{wghd::U('Store/returnMoney',array('token'=>$token,'id'=>$o['id']))}" onclick="return confirm('确定已完成退款了么');">退款完成</a>&nbsp;&nbsp;</eq><a href="###" onclick="showIntroDetail({wghd:$o.id})">详细</a>&nbsp;&nbsp;<a href="javascript:drop_confirm('您确定要删除吗?', '{wghd::U('Store/deleteOrder',array('token'=>$token,'id'=>$o['id'],'dining'=>$isDining))}');">删除</a></td>
+<td>{wghd:$o.rtime|date="Y-m-d H:i:s",###}</td> 
+<td class="norightborder">
+	<eq name="o.returnMoney" value="1">
+		<a href="{wghd::U('Store/returnMoney',array('token'=>
+			$token,'id'=>$o['id']))}" onclick="return confirm('确定已完成退款了么');">退款完成
+		</a>
+		&nbsp;&nbsp;
+	</eq>
+	<a href="###" onclick="showIntroDetail({wghd:$o.id})">详细</a>
+	&nbsp;&nbsp;
+	<a href="###" onclick="showIntroDetail2({wghd:$o.id})">打印订单</a>
+	&nbsp;&nbsp;
+	<a href="javascript:drop_confirm('您确定要删除吗?', '{wghd::U('Store/deleteOrder',array('token'=>$token,'id'=>$o['id'],'dining'=>$isDining))}');">删除</a>
+</td>
 </tr>
 </volist>
 </tbody>
@@ -99,6 +111,9 @@ function selectall(name) {
    <script>
 function showIntroDetail(id){
 	art.dialog.open('{wghd::U('Store/orderInfo',array('token'=>$token,'dining'=>$isDining))}&id='+id,{lock:false,title:'订单详情',width:1000,height:620,yesText:'关闭',background: '#000',opacity: 0.87,close: function(){location.reload();}});
+}
+function showIntroDetail2(id){
+	art.dialog.open('{wghd::U('Store/printorder',array('token'=>$token,'dining'=>$isDining))}&id='+id,{lock:false,title:'订单详情',width:150,height:50,yesText:'关闭',background: '#000',opacity: 0.87,close: function(){location.reload();}});
 }
 </script>
 </div>

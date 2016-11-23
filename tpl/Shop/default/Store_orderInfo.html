@@ -19,12 +19,19 @@
 <body id="nv_member">
 <div style="line-height:200%;padding:10px 20px;">
 支付状态：<if condition="$thisOrder.paid eq 1">已付款<else/>未付款</if><br>
-<if condition="$thisOrder.paid eq 1">购买状态：<if condition="$thisOrder.beDistri eq 1"><span style="color:green">首次购买</span><else/><span style="color:red">非首次购买</span></if><br></if>
 预约人：{wghd:$thisOrder.truename}<br>
+预约时间：{wghd:$thisOrder.rtime|date="Y-m-d H:i:s",###}<br>
+下单时间：{wghd:$thisOrder.time|date="Y-m-d H:i:s",###}<br>
 电话：{wghd:$thisOrder.tel}<br>
-地址：{wghd:$thisOrder.province}{wghd:$thisOrder.city}{wghd:$thisOrder.county}{wghd:$thisOrder.address}<br>
-备注信息：{wghd:$thisOrder.remark}<br>
+<!-- 地址：{wghd:$thisOrder.province}{wghd:$thisOrder.city}{wghd:$thisOrder.county}{wghd:$thisOrder.address}<br> -->
+<!-- 备注信息：{wghd:$thisOrder.remark}<br> -->
 总数：{wghd:$thisOrder.total}<br>
+<neq name="thisOrder.pref" value="0">
+组合优惠：<span style="color:#f30;font-size:16px;font-weight:bold">{wghd:$thisOrder.pref}</span>元<br>
+</neq>
+<neq name="thisOrder.couponPrice" value="0">
+抵扣：<span style="color:#f30;font-size:16px;font-weight:bold">{wghd:$thisOrder.couponPrice}</span>元<br>
+  </neq>
 总价：<span style="color:#f30;font-size:16px;font-weight:bold">{wghd:$thisOrder.price}</span>元
 </div>
 

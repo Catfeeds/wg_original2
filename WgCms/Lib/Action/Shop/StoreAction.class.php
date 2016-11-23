@@ -736,7 +736,13 @@ class StoreAction extends ShopAction{
 		$this->assign('page', $show);
 		$this->display();
 	}
-	
+	public function printorder(){
+		$thisOrder = M('product_cart')->where(array('id'=>intval($_GET['id'])))->find();
+		$this->assign('thisOrder',$thisOrder);
+		$list = unserialize($thisOrder['info']);
+		$this->assign('products', $list);
+		$this->display();
+	}
 	public function orderInfo() {
 		$this->product_model = M('Product');
 		$this->product_cat_model = M('Product_cat');

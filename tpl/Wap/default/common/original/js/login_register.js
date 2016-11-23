@@ -110,6 +110,11 @@ $(function($){
 					type: "post",
 					dataType: "json",
 					success: function(data) {
+						if(data.info != 0){
+							$.alert('发送失败');
+						}else{
+							$.alert('发送成功');
+						}
 						console.log(data);
 					}
 				});

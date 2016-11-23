@@ -26,10 +26,13 @@
         <th>首字母：</th> 
         <td><input type="text" name="char" value="{wghd:$set.char}" class="px" style="width:120px;" /></td> 
        </tr>
+       <tr> 
+        <th>热度：</th> 
+        <td><input type="text" name="hot" value="{wghd:$set.hot}" class="px" style="width:120px;" /><label tyle="color:red;" for="">（设为1即显示在热门城市）</label></td> 
+       </tr>
        <th>&nbsp;</th>
        <td>
        <button type="submit"  class="btnGreen">保存</button> &nbsp; <a href="{wghd::U('Shop/index',array('token'=>$token))}" class="btnGray vm">取消</a></td> 
-       </tr> 
       </tbody> 
      </table> 
      </div>

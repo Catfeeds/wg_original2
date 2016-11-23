@@ -244,11 +244,15 @@ $(function() {
 					$($service[i]).addClass('on');
 				}
 			}
-			$service.on('click', function() {
+			//门店服务选择
+			$service.on('click', function(index) {
+				var icon_index = $(this).parents('.wg_service_icon').index();
 				var picIndex = $(this).index() + 1;
 				if (!$(this).hasClass('on')) {
 					return false;
 				}
+				//选择显示本地服务图片
+				$('#service-warn .service-img img').attr('src','common/original/img/service'+icon_index+'.png')
 				$('#service-warn').show();
 				$('#service-warn .close-warn').click(function(){
 					$('#service-warn').hide();
@@ -264,7 +268,7 @@ $(function() {
 			$('#tele-wrap').attr('href', 'tel:' + storeInfo[storeId].S_TELE); // 电话
 			$('#tele-wrap .tele').html(storeInfo[storeId].S_TELE); // 电话
 			$('#reservation-store .reservation-storeNum').text(storeArr.length); // 门店数量
-			$('.reservation-top img').attr('src', storeInfo[storeId].S_Photo);
+			$('.store_logo').attr('src', storeInfo[storeId].S_Photo);
 			$('#reservation-storeInfo').show(); // 门店详情展示出现
 			$('.reservation-checkBtn').html(btnHtml); // 门店开放预约时间
 			$('.reservation-checkBtn').css('display', 'block'); // 按钮展示出现

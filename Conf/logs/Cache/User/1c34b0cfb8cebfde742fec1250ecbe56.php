@@ -6,10 +6,10 @@
 <meta http-equiv="MSThemeCompatible" content="Yes" />
 <link rel="stylesheet" type="text/css" href="<?php echo RES;?>/css/style_2_common.css?BPm" />
 <script src="<?php echo RES;?>/js/common.js" type="text/javascript"></script>
-<link href="<?php echo RES;?>/css/style.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo RES;?>/css/style.css?test=2" rel="stylesheet" type="text/css" />
 
 <link rel="stylesheet" type="text/css" href="<?php echo RES;?>/diyUpload/css/webuploader.css">
-<link rel="stylesheet" type="text/css" href="<?php echo RES;?>/diyUpload/css/diyUpload.css">
+<link rel="stylesheet" type="text/css" href="<?php echo RES;?>/diyUpload/css/diyUpload.css?test=1">
 
 <script type="text/javascript" src="<?php echo RES;?>/diyUpload/js/jquery.js"></script>
 <script type="text/javascript" src="<?php echo RES;?>/diyUpload/js/webuploader.html5only.min.js"></script>
@@ -19,12 +19,15 @@
 <body id="nv_member">
 <div style="line-height:200%;padding:10px 20px;">
 支付状态：<?php if($thisOrder["paid"] == 1): ?>已付款<?php else: ?>未付款<?php endif; ?><br>
-<?php if($thisOrder["paid"] == 1): ?>购买状态：<?php if($thisOrder["beDistri"] == 1): ?><span style="color:green">首次购买</span><?php else: ?><span style="color:red">非首次购买</span><?php endif; ?><br><?php endif; ?>
 预约人：<?php echo ($thisOrder["truename"]); ?><br>
+预约时间：<?php echo (date("Y-m-d H:i:s",$thisOrder["rtime"])); ?><br>
+下单时间：<?php echo (date("Y-m-d H:i:s",$thisOrder["time"])); ?><br>
 电话：<?php echo ($thisOrder["tel"]); ?><br>
-地址：<?php echo ($thisOrder["province"]); echo ($thisOrder["city"]); echo ($thisOrder["county"]); echo ($thisOrder["address"]); ?><br>
+<!-- 地址：<?php echo ($thisOrder["province"]); echo ($thisOrder["city"]); echo ($thisOrder["county"]); echo ($thisOrder["address"]); ?><br> -->
 备注信息：<?php echo ($thisOrder["remark"]); ?><br>
 总数：<?php echo ($thisOrder["total"]); ?><br>
+<?php if(($thisOrder["pref"]) != "0"): ?>组合优惠：<span style="color:#f30;font-size:16px;font-weight:bold"><?php echo ($thisOrder["pref"]); ?></span>元<br><?php endif; ?>
+<?php if(($thisOrder["couponPrice"]) != "0"): ?>抵扣：<span style="color:#f30;font-size:16px;font-weight:bold"><?php echo ($thisOrder["couponPrice"]); ?></span>元<br><?php endif; ?>
 总价：<span style="color:#f30;font-size:16px;font-weight:bold"><?php echo ($thisOrder["price"]); ?></span>元
 </div>
 
@@ -42,11 +45,11 @@
         <th><span class="red">*</span>发货状态：</th> 
         <td><select name="sent"><option value="0" <?php if($thisOrder["sent"] == 0): ?>selected<?php endif; ?>>未发货</option><option value="1" <?php if($thisOrder["sent"] == 1): ?>selected<?php endif; ?>>已发货</option></select></td> 
        </tr> -->
-	   <!-- <tr> 
+     <!-- <tr> 
         <th><span class="red">*</span>收货状态：</th> 
         <td><select name="receive"><option value="0" <?php if($thisOrder["receive"] == 0): ?>selected<?php endif; ?>>未收货</option><option value="1" <?php if($thisOrder["receive"] == 1): ?>selected<?php endif; ?>>已收货</option></select></td> 
        </tr> -->
-	   <tr> 
+     <tr> 
         <th><span class="red">*</span>退款状态：</th> 
         <td><select name="returnMoney"><option value="0" <?php if($thisOrder["returnMoney"] == 0): ?>selected<?php endif; ?>>未申请</option><option value="1" <?php if($thisOrder["returnMoney"] == 1): ?>selected<?php endif; ?>>未退款</option><option value="2" <?php if($thisOrder["returnMoney"] == 2): ?>selected<?php endif; ?>>已退款</option></select></td> 
       </tr>
@@ -86,7 +89,7 @@
           </li><?php endforeach; endif; else: echo "" ;endif; ?>
         </ul>
       </div><?php endif; ?>
-   <div id="as"></div>
+     <?php if(($thisOrder["paid"]) == "1"): ?><div id="as"></div><?php endif; ?>
      </div>
     
    </form> 

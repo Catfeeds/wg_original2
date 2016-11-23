@@ -1,6 +1,12 @@
 <include file="Public:head" /> 
+<link rel="stylesheet" type="text/css" href="{wghd::RES}/diyUpload/css/webuploader.css">
+<link rel="stylesheet" type="text/css" href="{wghd::RES}/diyUpload/css/diyUpload.css">
+
 <script src="{wghd::STATICS}/artDialog/jquery.artDialog.js?skin=default"></script>
 <script src="{wghd::STATICS}/artDialog/plugins/iframeTools.js"></script>
+<script type="text/javascript" src="{wghd::RES}/diyUpload/js/jquery.js"></script>
+<script type="text/javascript" src="{wghd::RES}/diyUpload/js/webuploader.html5only.min.js"></script>
+<script type="text/javascript" src="{wghd::RES}/diyUpload/js/diyUpload.js"></script>
   <div class="content"> 
    <div class="cLineB"> 
     <h4>展示页设置</h4> 
@@ -63,7 +69,28 @@
 
        <tr> 
         <th>案例图片：</th> 
-        <td><input type="text" name="pic" value="{wghd:$set.pic}" id="pic" class="px" style="width:360px;" />  <script src="{wghd::STATICS}/upyun.js"></script><a href="###" onclick="upyunPicUpload('pic',700,420,'{wghd:$token}')" class="a_upload">上传</a> <a href="###" onclick="viewImg('pic')">预览</a></td> 
+       <td>
+         <notempty name="store_pros">
+          <div class="parentFileBox">
+            <ul class="fileBoxUl">
+              <volist id="list" name="store_pros">
+              <li class="diyUploadHover">
+                <div class="viewThumb">
+                  <img src="{wghd:$list.pic}"></div>
+                <div class="diyCancel"  onclick="deletePic(this)" data-id="{wghd:$list.id}"></div>
+                <div class="diySuccess"></div>
+                <!-- <div class="diyFileName">test - 副本 (2).jpg</div> -->
+                <div class="diyBar">
+                  <div class="diyProgress"></div>
+                  <div class="diyProgressText">0%</div>
+                </div>
+              </li>
+             </volist>
+            </ul>
+          </div>
+         </notempty>
+         <div id="as"></div>
+       </td>
        </tr>
 
        <tr>         
@@ -79,3 +106,57 @@
    </form> 
   </div> 
   <include file="Public:footer" />
+  <script>
+    function deletePic(obj){
+      if(window.confirm('确认删除')){
+        var id = $(obj).data('id');
+        $.ajax({
+          url:"{wghd::U('Store/delShowPic')}",
+          data:{id:id},
+          dataType:'json',
+          async:false,
+          success:function(data){
+            if(data.status==1){
+              $(obj).parents('.diyUploadHover').remove();
+            }
+          }
+        })
+      }
+    }
+  </script>
+  <script type="text/javascript">
+
+  /*
+  * 服务器地址,成功返回,失败返回参数格式依照jquery.ajax习惯;
+  * 其他参数同WebUploader
+  */
+
+  $('#test').diyUpload({
+    url:'{wghd::U("Store/fileUpload",array("pid"=>$set["id"]))}',
+    success:function( data ) {
+      console.info( data );
+    },
+    error:function( err ) {
+      console.info( err );  
+    }
+  });
+
+  $('#as').diyUpload({
+    url:'{wghd::U("Store/fileUpload",array("pid"=>$set["id"]))}',
+    success:function( data ) {
+      console.info( data );
+    },
+    error:function( err ) {
+      console.info( err );  
+    },
+    buttonText : '选择文件',
+    chunked:true,
+    // 分片大小
+    chunkSize:512 * 1024,
+    //最大上传的文件数量, 总文件大小,单个文件大小(单位字节);
+    fileNumLimit:50,
+    fileSizeLimit:500000 * 1024,
+    fileSingleSizeLimit:50000 * 1024,
+    accept: {}
+  });
+  </script>

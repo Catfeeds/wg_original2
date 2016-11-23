@@ -190,7 +190,7 @@ p {
 	margin: 1em 0
 }
 a {
-	color: #f0870c;
+	color: #41a5bd;
 	text-decoration: none;
 	-webkit-tap-highlight-color: transparent
 }
@@ -770,7 +770,7 @@ a:active {
 	color: #999
 }
 .color-primary {
-	color: #f0870c
+	color: #41a5bd
 }
 .color-success {
 	color: #4cd964
@@ -931,7 +931,7 @@ a:active {
 	vertical-align: middle
 }
 .bar-tab .tab-item.active, .bar-tab .tab-item:active {
-	color: #f0870c
+	color: #41a5bd
 }
 .bar-tab .tab-item .badge {
 	position: absolute;
@@ -982,7 +982,7 @@ a:active {
 	font-size: .8rem;
 	line-height: 2.2rem;
 	height: 2.2rem;
-	color: #f0870c;
+	color: #41a5bd;
 	border: 0
 }
 .bar .button-link.active, .bar .button-link:active {
@@ -1356,7 +1356,7 @@ a:active {
 .list-block .item-link.list-button {
 	padding: 0 .75rem;
 	text-align: center;
-	color: #f0870c;
+	color: #41a5bd;
 	display: block;
 	line-height: 2.15rem
 }
@@ -1730,7 +1730,7 @@ html.android .label-switch input[type=checkbox]+.checkbox:after, html.android .l
 	height: .1rem;
 	margin-top: -1px;
 	z-index: 1;
-	background: #f0870c;
+	background: #41a5bd;
 	content: ' '
 }
 label.label-checkbox {
@@ -1760,7 +1760,7 @@ label.label-checkbox input[type=checkbox], label.label-checkbox input[type=radio
 }
 label.label-checkbox input[type=checkbox]:checked+.item-media i.icon-form-checkbox, label.label-checkbox input[type=radio]:checked+.item-media i.icon-form-checkbox {
 	border: none;
-	background-color: #f0870c
+	background-color: #41a5bd
 }
 label.label-checkbox input[type=checkbox]:checked+.item-media i.icon-form-checkbox:after, label.label-checkbox input[type=radio]:checked+.item-media i.icon-form-checkbox:after {
 	background: no-repeat center;
@@ -1870,8 +1870,8 @@ html:not(.watch-active-state) label.label-checkbox:active .item-inner:after, lab
 	color: #5f646e
 }
 .button {
-	border: 1px solid #f0870c;
-	color: #f0870c;
+	border: 1px solid #41a5bd;
+	color: #41a5bd;
 	text-decoration: none;
 	text-align: center;
 	display: block;
@@ -1914,7 +1914,7 @@ input[type=button].button, input[type=submit].button {
 }
 .button.button-fill {
 	color: #fff;
-	background: #f0870c;
+	background: #41a5bd;
 	border: none;
 	line-height: 1.35rem
 }
@@ -1927,7 +1927,7 @@ input[type=button].button, input[type=submit].button {
 .button .button-link {
 	padding-top: .3rem;
 	padding-bottom: .3rem;
-	color: #f0870c;
+	color: #41a5bd;
 	background-color: transparent;
 	border: 0
 }
@@ -2051,11 +2051,11 @@ input[type=button].button, input[type=submit].button {
 	width: 100%;
 	-webkit-box-flex: 1;
 	-ms-flex: 1;
-	border-color: #f0870c;
-	color: #f0870c
+	border-color: #41a5bd;
+	color: #41a5bd
 }
 .buttons-row .button.active {
-	background-color: #f0870c;
+	background-color: #41a5bd;
 	color: #fff;
 	z-index: 90
 }
@@ -2118,8 +2118,8 @@ input[type=button].button, input[type=submit].button {
 	border-radius: 0
 }
 .buttons-tab .button.active {
-	color: #f0870c;
-	border-color: #f0870c;
+	color: #41a5bd;
+	border-color: #41a5bd;
 	z-index: 100
 }
 .buttons-fixed {
@@ -2504,7 +2504,7 @@ input[type=button].button, input[type=submit].button {
 	font-size: .85rem;
 	line-height: 2.2rem;
 	text-align: center;
-	color: #f0870c;
+	color: #41a5bd;
 	background: #e8e8e8;
 	display: block;
 	position: relative;
@@ -2716,7 +2716,7 @@ input[type=button].button, input[type=submit].button {
 .actions-modal-button {
 	cursor: pointer;
 	line-height: 2.15rem;
-	color: #f0870c
+	color: #41a5bd
 }
 .actions-modal-button.active-state, .actions-modal-button:active {
 	background: #dcdcdc
@@ -3463,7 +3463,7 @@ body.panel-closing .page {
 	background: #e3e3e3
 }
 .picker-calendar-day.picker-calendar-day-selected span {
-	background: #f0870c;
+	background: #41a5bd;
 	color: #fff
 }
 .picker-calendar-day span {
@@ -3587,7 +3587,7 @@ body.panel-closing .page {
 }
 .picker-calendar-years-picker .picker-calendar-year-unit.picker-calendar-year-unit-selected {
 	color: #fff;
-	background: #f0870c
+	background: #41a5bd
 }
 .picker-calendar-months-picker .picker-calendar-months-picker-wrapper {
 	position: relative;
@@ -3630,7 +3630,7 @@ body.panel-closing .page {
 }
 .picker-calendar-months-picker .picker-calendar-month-unit.picker-calendar-month-unit-selected {
 	color: #fff;
-	background: #f0870c
+	background: #41a5bd
 }
 @media only screen and (-webkit-min-device-pixel-ratio:2) {
 	.picker-calendar-months-picker:before, .picker-calendar-years-picker:before {
@@ -4055,7 +4055,7 @@ body.panel-closing .page {
 	color: #fff
 }
 .theme-dark .tab-item.active {
-	color: #f0870c
+	color: #41a5bd
 }
 .theme-dark .picker-calendar-week-days {
 	color: #fff;

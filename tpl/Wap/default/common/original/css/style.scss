@@ -67,7 +67,8 @@ img{
 }
 
 /*$total-color:#0894ec;*/
-$total-color:#f0870c;
+/* $total-color:#f0870c; */
+$total-color:#41a5bd;
 
 .total-color{
   color: $total-color !important;
@@ -153,7 +154,7 @@ $total-color:#f0870c;
             border-radius: 50%;
             padding-top: 5px;
             img{
-              width: 90%;
+              width: 60%;
                 margin: 0 auto;
                 display: block;
                 border-radius: 100px;

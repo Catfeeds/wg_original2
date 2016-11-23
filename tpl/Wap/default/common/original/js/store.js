@@ -43,6 +43,9 @@ $(function($) {
 				}
 			}
 		});
+		if(cookie.get('loginout') == 1){
+			location.href = "login.html";
+		}
 	});
 	if(certification == 0){
 		return false;
@@ -96,6 +99,7 @@ $(function($) {
 			str += '</ul>';
 			cat_data[item.id] = item.pref;
 		})
+		console.log(cat_data);
 		wrap.html(str);
 		//预约须知
 		$(document).find('#reservation-info-btn').off('click').on('click', function() {
@@ -165,6 +169,7 @@ $(function($) {
 			var colorname = '';
 			pinfo = eval('(' + pinfo + ')');
 			catinfo = eval('(' + catinfo + ')');
+			console.log(catinfo);
 			var total_pref = 0;
 			//优惠总价
 			$.each(catinfo,function(index,el){
@@ -328,10 +333,13 @@ $(function($) {
 			if(total_pref > 0){
 				var pref_str = '(优惠：￥'+total_pref+')';
 				$('#pref-price').html(pref_str);
+			}else{
+				total_pref = 0;
 			}
 			//赋值总价
 			$('#total_price').text(total_price - total_pref);
 			total_price -=total_pref;
+
 			wrap.html(str);
 			$(document).on('click','#select_products_info_wrap .choose-meal',function(){
 				var pid = $(this).parents('.item-inner').data('pid');
@@ -838,8 +846,17 @@ $(function($) {
 		})
 		//时间戳转日期格式
 		function getLocalTime(nS) {     
-		   return new Date(parseInt(nS) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ');     
+		   // return new Date(parseInt(nS) * 1000).toLocaleString().replace(/:\d{1,2}$/,' '); 
+		   var time = new Date(nS * 1000);
+		   var y = time.getFullYear();
+		   var m = time.getMonth()+1;
+		   var d = time.getDate();
+		   var h = time.getHours();
+		   var mm = time.getMinutes();
+		   var s = time.getSeconds();
+		   return y+'-'+add0(m)+'-'+add0(d)+' '+add0(h)+':'+add0(mm)+':'+add0(s);    
 		}
+		function add0(m){return m<10?'0'+m:m }
 	});
 	$(document).on('pageAnimationStart','#my-orders',function(){
 		var all_wrap = $('#all-orders');
@@ -910,6 +927,11 @@ $(function($) {
 						str += '<div class="item-after2 pay_unchoose change-retime" data-id="'+el.id+'">改约</div>';
 					}
 				}
+				if(el.paid == 1){
+					str += '<a href="'+el.storeurl+'" class="external">';
+					str += '<div class="item-after2 pay_unchoose" data-id="'+el.id+'">推荐路线</div>';
+					str += '</a>';
+				}
 				if(el.handled == 1){
 					str += '<div class="item-after2 pay_unchoose show-pics" data-id="'+el.id+'">下载图片</div>';
 				}
@@ -926,25 +948,27 @@ $(function($) {
 					if(el.paid == 1 && el.finish == 1){
 						finish_wrap.append(str);
 					}
-					wrap.find('.last-time-item').each(function(index, el) {
-						var obj = $(this);
-						var last_time = obj.data('lasttime');
-						if(last_time >0){
-							coutdown = setInterval(function() {
-								last_time--;
-								if (last_time == 0) {
-									obj.parents('.list-block').find('.pay-now').remove();
-									obj.parents('.item-after').text('订单过期');
-									// clearInterval(coutdown);
-									return false;
-								} else {
-									min = parseInt(last_time/60);
-									ms = last_time%60;
-									obj.text(min+'分'+ms+'秒');
-								}
-							}, 1000);
-						}	
-					});
+					if(el.paid == 0){
+						wrap.find('.last-time-item').each(function(index2, el2) {
+							var obj = $(this);
+							var last_time = obj.data('lasttime');
+							if(last_time >0){
+								coutdown = setInterval(function() {
+									last_time--;
+									if (last_time == 0) {
+										obj.parents('.list-block').find('.pay-now').remove();
+										obj.parents('.item-after').text('订单过期');
+										// clearInterval(coutdown);
+										return false;
+									} else {
+										min = parseInt(last_time/60);
+										ms = last_time%60;
+										obj.text(min+'分'+ms+'秒');
+									}
+								}, 1000);
+							}	
+						});
+					}
 				}
 			});
 			//立即支付
@@ -959,20 +983,22 @@ $(function($) {
 					$.alert('每人只能改约两次!');
 					return false;
 				}
-				var now_stamp = new Date();
-				var rtime_stamp = new Date(my_orders[id]['datertime']);
-				var rtime = parseInt(rtime_stamp.getTime()/1000);
-				var nowtime = parseInt(now_stamp.getTime()/1000);
-				var rday = rtime_stamp.getDate();
-				var nowday = now_stamp.getDate();
-				if((rtime - nowtime) < 86400 && rday == nowday){
-					$.alert('不能修改当天的预约时间!');
-					return false;
-				}else{
-					cookie.set('storeId',my_orders[id]['storeid']);
-					cookie.set('order_chang_rtime_id',id);
-					$.router.load('ChooseDate.html');
-				}
+				$.confirm('确定改约吗？',function(){
+					var now_stamp = new Date();
+					var rtime_stamp = new Date(my_orders[id]['datertime']);
+					var rtime = parseInt(rtime_stamp.getTime()/1000);
+					var nowtime = parseInt(now_stamp.getTime()/1000);
+					var rday = rtime_stamp.getDate();
+					var nowday = now_stamp.getDate();
+					if((rtime - nowtime) < 86400 && rday == nowday){
+						$.alert('不能修改当天的预约时间!');
+						return false;
+					}else{
+						cookie.set('storeId',my_orders[id]['storeid']);
+						cookie.set('order_chang_rtime_id',id);
+						$.router.load('ChooseDate.html');
+					}
+				})
 			})
 			//查看订单图片
 			$(document).on('click','#my-orders .show-pics',function(){
@@ -1018,9 +1044,6 @@ $(function($) {
 								}
 							}
 						});
-					},
-					function() {
-
 					}
 				);
 			})

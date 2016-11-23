@@ -71,6 +71,7 @@ $(function() {
 							}
 							// 获取首页产品列表
 							for (var z in products[j].PT_Product) {
+								console.log(products[j].PT_Product);
 								var _products = products[j].PT_Product[z];
 								proUnitHtml += '<div class=\"photo-list\" data-pid=\"' +
 									_products.P_Id + '\"><img class=\"w100\" src=\"' +
