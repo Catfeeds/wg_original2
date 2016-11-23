@@ -4,7 +4,11 @@
   <div class="content"> 
    <div class="cLineB"> 
     <h4>城市设置</h4> 
+<<<<<<< HEAD
     <a href="{wghd::U('Shop/index',array('token'=>$token))}" class="right  btnGreen" style="margin-top:-27px">返回</a> 
+=======
+    <a href="{wghd::U('Store/cityList',array('token'=>$token))}" class="right  btnGreen" style="margin-top:-27px">返回</a> 
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
    </div> 
    <form class="form" method="post" action="" enctype="multipart/form-data"> 
      
@@ -26,6 +30,7 @@
         <th>首字母：</th> 
         <td><input type="text" name="char" value="{wghd:$set.char}" class="px" style="width:120px;" /></td> 
        </tr>
+<<<<<<< HEAD
        <tr> 
         <th>热度：</th> 
         <td><input type="text" name="hot" value="{wghd:$set.hot}" class="px" style="width:120px;" /><label tyle="color:red;" for="">（设为1即显示在热门城市）</label></td> 
@@ -33,6 +38,12 @@
        <th>&nbsp;</th>
        <td>
        <button type="submit"  class="btnGreen">保存</button> &nbsp; <a href="{wghd::U('Shop/index',array('token'=>$token))}" class="btnGray vm">取消</a></td> 
+=======
+       <th>&nbsp;</th>
+       <td>
+       <button type="submit"  class="btnGreen">保存</button> &nbsp; <a href="{wghd::U('Shop/index',array('token'=>$token))}" class="btnGray vm">取消</a></td> 
+       </tr> 
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
       </tbody> 
      </table> 
      </div>

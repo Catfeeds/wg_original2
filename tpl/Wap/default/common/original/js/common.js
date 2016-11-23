@@ -16,6 +16,7 @@ $(function($){
 		$('#distribution_index_wrap').append(addFooter(4));
 	});
 	$(document).on('pageInit','#my-orders',function(){
+<<<<<<< HEAD
 		$('#my-orders').append(addFooter(3));
 	});
 	$(document).on('pageInit','#product-details',function(){
@@ -62,6 +63,13 @@ $(function($){
 		}
 	})
 	// $.init();
+=======
+		setTimeout(function(){
+			$('#footer_myorders_tab').addClass('active').siblings().removeClass('active');
+		},100)
+	});
+	$.init();
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
 })
 function addFooter(num){
 	var foot = '';

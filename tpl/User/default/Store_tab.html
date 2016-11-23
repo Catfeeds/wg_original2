@@ -15,12 +15,16 @@
 
 <li class="tabli ord"      id="tab2"><a href="{wghd::U('Store/orders',array('token'=>$token,'dining'=>$isDining))}">订单管理</a></li>
 
+<<<<<<< HEAD
 <li class="tabli sclass"      id="tab2"><a href="{wghd::U('Store/showClass',array('token'=>$token,'dining'=>$isDining))}">展示分类</a></li>
 
 <li class="tabli coupon"      id="tab2"><a href="{wghd::U('Store/coupon',array('token'=>$token,'dining'=>$isDining))}">优惠券管理</a></li>
 
 <li class="tabli msg"      id="tab2"><a href="{wghd::U('Store/message',array('token'=>$token,'dining'=>$isDining))}">反馈列表</a></li>
 <li class=" <eq name='ACTION_NAME' value='banner'>current</eq> tabli" id="tab2"><a href="{wghd::U('Store/banner',array('token'=>$token))}">轮播图</a></li>
+=======
+<li class="tabli dis"      id="tab2"><a href="{wghd::U('Store/picDisplay',array('token'=>$token,'dining'=>$isDining))}">展示管理</a></li>
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
 
 
 <!-- <if condition="$isDining neq 1">
@@ -62,6 +66,7 @@
 				tab.find('.dis').addClass('current');
 			}	
 
+<<<<<<< HEAD
 			if(action_name=='showClass'){
 				tab.find('.sclass').addClass('current');
 			}	
@@ -73,6 +78,8 @@
 			if(action_name=='message'){
 				tab.find('.msg').addClass('current');
 			}	
+=======
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
 		}
 	})(jQuery)
 </script>

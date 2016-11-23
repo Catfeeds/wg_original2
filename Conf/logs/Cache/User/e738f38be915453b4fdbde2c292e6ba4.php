@@ -259,7 +259,11 @@ if (!isset($_SESSION['isQcloud'])){ ?>
 <div class="catalogList">
 <ul id="menu">
 <?php
+<<<<<<< HEAD
 $menus=array( array( 'name'=>'基础设置', 'iconName'=>'base', 'display'=>0, 'subs'=>array( array('name'=>'关注时回复与帮助','link'=>U('Areply/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Areply')), array('name'=>'微信－文本回复','link'=>U('Text/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Text')), array('name'=>'微信－图文回复','link'=>U('Img/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Img','a'=>'index')), array('name'=>'自定义菜单','link'=>U('Diymen/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Diymen')), array('name'=>'回答不上来的配置','link'=>U('Other/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Other')), )), array( 'name'=>'会员管理', 'iconName'=>'card', 'display'=>0, 'subs'=>array( array('name'=>'账号列表','link'=>U('Distribution/account',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Distribution','a'=>'account')), )), array( 'name'=>'商城系统', 'iconName'=>'store', 'display'=>0, 'subs'=>array( array('name'=>'微信商城系统','link'=>U('Store/orders',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Store')), )), array( 'name'=>'分店系统', 'iconName'=>'site', 'display'=>0, 'subs'=>array( array('name'=>'分店管理','link'=>U('Shop/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Shop')), )), ); ?>
+=======
+$menus=array( array( 'name'=>'基础设置', 'iconName'=>'base', 'display'=>0, 'subs'=>array( array('name'=>'关注时回复与帮助','link'=>U('Areply/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Areply')), array('name'=>'微信－文本回复','link'=>U('Text/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Text')), array('name'=>'微信－图文回复','link'=>U('Img/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Img','a'=>'index')), array('name'=>'自定义LBS回复','link'=>U('Company/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Company')), array('name'=>'自定义菜单','link'=>U('Diymen/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Diymen')), array('name'=>'回答不上来的配置','link'=>U('Other/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Other')), )), array( 'name'=>'分销管理', 'iconName'=>'crm', 'display'=>0, 'subs'=>array( array('name'=>'分销设置','link'=>U('Distribution/set',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Distribution','a'=>'set')), array('name'=>'分销提醒页','link'=>U('Distribution/forwardSet',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Distribution','a'=>'forwardSet')), )), array( 'name'=>'会员管理', 'iconName'=>'card', 'display'=>0, 'subs'=>array( array('name'=>'账号列表','link'=>U('Distribution/account',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Distribution','a'=>'account')), array('name'=>'会员列表','link'=>U('Distribution/member',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Distribution','a'=>'member')), array('name'=>'会员收藏列表','link'=>U('Distribution/collection',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Distribution','a'=>'collection')), array('name'=>'提现记录列表','link'=>U('Distribution/moneylist',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Distribution','a'=>'moneylist')), array('name'=>'收货地址列表','link'=>U('Distribution/address',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Distribution','a'=>'address')), )), array( 'name'=>'分店管理', 'iconName'=>'store', 'display'=>0, 'subs'=>array( array('name'=>'附加时间限制','link'=>U('Branch/additionalTime',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Branch')), )), array( 'name'=>'商城系统', 'iconName'=>'store', 'display'=>0, 'subs'=>array( array('name'=>'微信商城系统','link'=>U('Store/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Store')), )), array( 'name'=>'分店系统', 'iconName'=>'shop', 'display'=>0, 'subs'=>array( array('name'=>'分店管理','link'=>U('Shop/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Shop')), )), ); ?>
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
 <?php
 $i=0; $parms=$_SERVER['QUERY_STRING']; $parms1=explode('&',$parms); $parmsArr=array(); if ($parms1){ foreach ($parms1 as $p){ $parms2=explode('=',$p); $parmsArr[$parms2[0]]=$parms2[1]; } } $subMenus=array(); $t=0; $currentMenuID=0; $currentParentMenuID=0; foreach ($menus as $m){ $loopContinue=1; if ($m['subs']){ $st=0; foreach ($m['subs'] as $s){ $includeArr=1; if ($s['selectedCondition']){ foreach ($s['selectedCondition'] as $condition){ if (!in_array($condition,$parmsArr)){ $includeArr=0; break; } } } if ($includeArr){ if ($s['exceptCondition']){ foreach ($s['exceptCondition'] as $epkey=>$eptCondition){ if ($epkey=='a'){ $parm_a_values=explode(',',$eptCondition); if ($parm_a_values){ if (in_array($parmsArr['a'],$parm_a_values)){ $includeArr=0; break; } } }else { if (in_array($eptCondition,$parmsArr)){ $includeArr=0; break; } } } } } if ($includeArr){ $currentMenuID=$st; $currentParentMenuID=$t; $loopContinue=0; break; } $st++; } if ($loopContinue==0){ break; } } $t++; } foreach ($menus as $m){ $displayStr=''; if ($currentParentMenuID!=0||0!=$currentMenuID){ $m['display']=0; } if (!$m['display']){ $displayStr=' style="display:none"'; } if ($currentParentMenuID==$i){ $displayStr=''; } $aClassStr=''; if ($displayStr){ $aClassStr=' nav-header-current'; } if($i == 0){ echo '<a class="nav-header'.$aClassStr.'" style="border-top:none !important;"><b class="'.$m['iconName'].'"></b>'.$m['name'].'</a><ul class="ckit"'.$displayStr.'>'; }else{ echo '<a class="nav-header'.$aClassStr.'"><b class="'.$m['iconName'].'"></b>'.$m['name'].'</a><ul class="ckit"'.$displayStr.'>'; } if ($m['subs']){ $j=0; foreach ($m['subs'] as $s){ $selectedClassStr='subCatalogList'; if ($currentParentMenuID==$i&&$j==$currentMenuID){ $selectedClassStr='selected'; } $newStr=''; if ($s['test']){ $newStr.='<span class="test"></span>'; }else { if ($s['new']){ $newStr.='<span class="new"></span>'; } } if ($s['name']!='微信墙'&&$s['name']!='摇一摇'){ echo '<li class="'.$selectedClassStr.'"> <a href="'.$s['link'].'">'.$s['name'].'</a>'.$newStr.'</li>'; }else { switch ($s['name']){ case '微信墙': case '摇一摇': if (file_exists($_SERVER['DOCUMENT_ROOT'].'/PigCms/Lib/Action/User/WallAction.class.php')&&file_exists($_SERVER['DOCUMENT_ROOT'].'/PigCms/Lib/Action/User/ShakeAction.class.php')){ echo '<li class="'.$selectedClassStr.'"> <a href="'.$s['link'].'">'.$s['name'].'</a>'.$newStr.'</li>'; } break; } } if ($s['name']=='模板管理'&&is_dir($_SERVER['DOCUMENT_ROOT'].'/cms')&&!strpos($_SERVER['HTTP_HOST'],'pigcms')){ echo '<li class="subCatalogList"> <a href="/cms/manage/index.php">高级模板</a><span class="new"></span></li>'; } $j++; } } echo '</ul>'; $i++; } ?>
 
@@ -298,7 +302,11 @@ $i=0; $parms=$_SERVER['QUERY_STRING']; $parms1=explode('&',$parms); $parmsArr=ar
 <div class="content">
   <div class="cLineB">
     <h4>分店设置</h4>
+<<<<<<< HEAD
     <a href="<?php echo U('Shop/departList',array('cid'=>$_GET['cid'],'token'=> $token));?>" class="right  btnGreen" style="margin-top:-27px">返回
+=======
+    <a href="<?php echo U('Store/departList',array('token'=> $token));?>" class="right  btnGreen" style="margin-top:-27px">返回
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
     </a>
   </div>
   <form class="form" method="post" action="" enctype="multipart/form-data" id="store-form">
@@ -341,6 +349,7 @@ $i=0; $parms=$_SERVER['QUERY_STRING']; $parms1=explode('&',$parms); $parmsArr=ar
             </td>
           </tr>
 
+<<<<<<< HEAD
 
 
           <?php if($set["name"] == null): ?><tr>
@@ -369,6 +378,14 @@ $i=0; $parms=$_SERVER['QUERY_STRING']; $parms1=explode('&',$parms); $parmsArr=ar
 
 
 
+=======
+          <tr>
+            <th>密码：</th>
+            <td>
+              <input type="text" name="password" value="" class="px" style="width:120px;" />
+            </td>
+          </tr>
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
           <input type="hidden" name="default_time" id="work_default_time">
           <tr>
             <th>默认平均预约个数：</th>
@@ -387,13 +404,18 @@ $i=0; $parms=$_SERVER['QUERY_STRING']; $parms1=explode('&',$parms); $parmsArr=ar
             <td>
               <form action="#" method="post" id="work-form">
                 <dl id="word-time">
+<<<<<<< HEAD
 
+=======
+                 
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
                 </dl>
               </form>
             </td>
           </tr>
           <script>
          var str='';
+<<<<<<< HEAD
          var h = 9.5;
          for (var i = 0; i < 5; i++) {
             str += '<dt>';
@@ -401,6 +423,14 @@ $i=0; $parms=$_SERVER['QUERY_STRING']; $parms1=explode('&',$parms); $parmsArr=ar
               h += 0.5;
               var mi = j%2 ==0?'00':00+30;
               str += '<span>'+parseInt(h)+':'+mi+'<input type="text" class="px w15 default-time-item"></span>';
+=======
+         for (var i = 0; i < 10; i++) {
+            str += '<dt>';
+            for (var j = 0; j < 4; j++) {
+              var h = 10+1*i;
+              var mi = 00+15*j ==0?'00':00+15*j;
+              str += '<span>'+h+':'+mi+'<input type="text" class="px w15 default-time-item"></span>';
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
             }
             str += '</dt>';
             $('#word-time').html(str);
@@ -412,7 +442,11 @@ $i=0; $parms=$_SERVER['QUERY_STRING']; $parms1=explode('&',$parms); $parmsArr=ar
            $('.default-time-item').each(function(index){
                 $(this).val(w[index]);
            })
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
           }
 
          $('#default_time').bind('keyup',function(){
@@ -474,7 +508,11 @@ $i=0; $parms=$_SERVER['QUERY_STRING']; $parms1=explode('&',$parms); $parmsArr=ar
           <td>
             <button type="submit" name="button" class="btnGreen" id="save-btn">保存</button>
             &nbsp;
+<<<<<<< HEAD
             <a href="<?php echo U('Shop/departList',array('token'=>$token,'cid'=>$_GET['cid']));?>" class="btnGray vm">取消</a>
+=======
+            <a href="<?php echo U('Store/departList',array('token'=>$token));?>" class="btnGray vm">取消</a>
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
           </td>
         </tbody>
       </table>

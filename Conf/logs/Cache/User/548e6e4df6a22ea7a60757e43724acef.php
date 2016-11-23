@@ -157,6 +157,7 @@ if (!isset($_SESSION['isQcloud'])){ ?>
 <table class="vipInfo" width="100%" border="0" cellpadding="0" cellspacing="0">
 <tr>
 <td><strong>VIP有效期：</strong><?php echo (date("Y-m-d",$thisUser["viptime"])); ?></td>
+<<<<<<< HEAD
 <!-- <td><strong>图文自定义：</strong><?php echo ($thisUser["diynum"]); ?>/<?php echo ($userinfo["diynum"]); ?></td> -->
 <!-- <td><strong>请求数：</strong><?php echo ($thisUser["connectnum"]); ?>/<?php echo ($userinfo["connectnum"]); ?></td> -->
 </tr>
@@ -164,6 +165,15 @@ if (!isset($_SESSION['isQcloud'])){ ?>
 <!-- <td><strong>余：</strong><?php echo ($userinfo['connectnum']-$_SESSION['connectnum']); ?></td> -->
 <!-- <td><strong>已使用：</strong><?php echo $_SESSION['diynum']; ?></td> -->
 <!-- <td><strong>当月剩余请求数：</strong><?php echo $userinfo['connectnum']-$_SESSION['connectnum']; ?></td> -->
+=======
+<td><strong>图文自定义：</strong><?php echo ($thisUser["diynum"]); ?>/<?php echo ($userinfo["diynum"]); ?></td>
+<td><strong>请求数：</strong><?php echo ($thisUser["connectnum"]); ?>/<?php echo ($userinfo["connectnum"]); ?></td>
+</tr>
+<tr>
+<td><strong>余：</strong><?php echo ($userinfo['connectnum']-$_SESSION['connectnum']); ?></td>
+<td><strong>已使用：</strong><?php echo $_SESSION['diynum']; ?></td>
+<td><strong>当月剩余请求数：</strong><?php echo $userinfo['connectnum']-$_SESSION['connectnum']; ?></td>
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
 </tr>
 
 </table>
@@ -259,7 +269,11 @@ if (!isset($_SESSION['isQcloud'])){ ?>
 <div class="catalogList">
 <ul id="menu">
 <?php
+<<<<<<< HEAD
 $menus=array( array( 'name'=>'基础设置', 'iconName'=>'base', 'display'=>0, 'subs'=>array( array('name'=>'关注时回复与帮助','link'=>U('Areply/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Areply')), array('name'=>'微信－文本回复','link'=>U('Text/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Text')), array('name'=>'微信－图文回复','link'=>U('Img/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Img','a'=>'index')), array('name'=>'自定义菜单','link'=>U('Diymen/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Diymen')), array('name'=>'回答不上来的配置','link'=>U('Other/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Other')), )), array( 'name'=>'会员管理', 'iconName'=>'card', 'display'=>0, 'subs'=>array( array('name'=>'账号列表','link'=>U('Distribution/account',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Distribution','a'=>'account')), )), array( 'name'=>'商城系统', 'iconName'=>'store', 'display'=>0, 'subs'=>array( array('name'=>'微信商城系统','link'=>U('Store/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Store')), )), array( 'name'=>'分店系统', 'iconName'=>'site', 'display'=>0, 'subs'=>array( array('name'=>'分店管理','link'=>U('Shop/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Shop')), )), ); ?>
+=======
+$menus=array( array( 'name'=>'基础设置', 'iconName'=>'base', 'display'=>0, 'subs'=>array( array('name'=>'关注时回复与帮助','link'=>U('Areply/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Areply')), array('name'=>'微信－文本回复','link'=>U('Text/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Text')), array('name'=>'微信－图文回复','link'=>U('Img/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Img','a'=>'index')), array('name'=>'自定义LBS回复','link'=>U('Company/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Company')), array('name'=>'自定义菜单','link'=>U('Diymen/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Diymen')), array('name'=>'回答不上来的配置','link'=>U('Other/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Other')), )), array( 'name'=>'分销管理', 'iconName'=>'crm', 'display'=>0, 'subs'=>array( array('name'=>'分销设置','link'=>U('Distribution/set',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Distribution','a'=>'set')), array('name'=>'分销提醒页','link'=>U('Distribution/forwardSet',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Distribution','a'=>'forwardSet')), )), array( 'name'=>'会员管理', 'iconName'=>'card', 'display'=>0, 'subs'=>array( array('name'=>'账号列表','link'=>U('Distribution/account',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Distribution','a'=>'account')), array('name'=>'会员列表','link'=>U('Distribution/member',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Distribution','a'=>'member')), array('name'=>'会员收藏列表','link'=>U('Distribution/collection',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Distribution','a'=>'collection')), array('name'=>'提现记录列表','link'=>U('Distribution/moneylist',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Distribution','a'=>'moneylist')), array('name'=>'收货地址列表','link'=>U('Distribution/address',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Distribution','a'=>'address')), )), array( 'name'=>'分店管理', 'iconName'=>'store', 'display'=>0, 'subs'=>array( array('name'=>'附加时间限制','link'=>U('Branch/additionalTime',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Branch')), )), array( 'name'=>'商城系统', 'iconName'=>'store', 'display'=>0, 'subs'=>array( array('name'=>'微信商城系统','link'=>U('Store/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Store')), )), array( 'name'=>'分店系统', 'iconName'=>'shop', 'display'=>0, 'subs'=>array( array('name'=>'分店管理','link'=>U('Shop/index',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Shop')), )), ); ?>
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
 <?php
 $i=0; $parms=$_SERVER['QUERY_STRING']; $parms1=explode('&',$parms); $parmsArr=array(); if ($parms1){ foreach ($parms1 as $p){ $parms2=explode('=',$p); $parmsArr[$parms2[0]]=$parms2[1]; } } $subMenus=array(); $t=0; $currentMenuID=0; $currentParentMenuID=0; foreach ($menus as $m){ $loopContinue=1; if ($m['subs']){ $st=0; foreach ($m['subs'] as $s){ $includeArr=1; if ($s['selectedCondition']){ foreach ($s['selectedCondition'] as $condition){ if (!in_array($condition,$parmsArr)){ $includeArr=0; break; } } } if ($includeArr){ if ($s['exceptCondition']){ foreach ($s['exceptCondition'] as $epkey=>$eptCondition){ if ($epkey=='a'){ $parm_a_values=explode(',',$eptCondition); if ($parm_a_values){ if (in_array($parmsArr['a'],$parm_a_values)){ $includeArr=0; break; } } }else { if (in_array($eptCondition,$parmsArr)){ $includeArr=0; break; } } } } } if ($includeArr){ $currentMenuID=$st; $currentParentMenuID=$t; $loopContinue=0; break; } $st++; } if ($loopContinue==0){ break; } } $t++; } foreach ($menus as $m){ $displayStr=''; if ($currentParentMenuID!=0||0!=$currentMenuID){ $m['display']=0; } if (!$m['display']){ $displayStr=' style="display:none"'; } if ($currentParentMenuID==$i){ $displayStr=''; } $aClassStr=''; if ($displayStr){ $aClassStr=' nav-header-current'; } if($i == 0){ echo '<a class="nav-header'.$aClassStr.'" style="border-top:none !important;"><b class="'.$m['iconName'].'"></b>'.$m['name'].'</a><ul class="ckit"'.$displayStr.'>'; }else{ echo '<a class="nav-header'.$aClassStr.'"><b class="'.$m['iconName'].'"></b>'.$m['name'].'</a><ul class="ckit"'.$displayStr.'>'; } if ($m['subs']){ $j=0; foreach ($m['subs'] as $s){ $selectedClassStr='subCatalogList'; if ($currentParentMenuID==$i&&$j==$currentMenuID){ $selectedClassStr='selected'; } $newStr=''; if ($s['test']){ $newStr.='<span class="test"></span>'; }else { if ($s['new']){ $newStr.='<span class="new"></span>'; } } if ($s['name']!='微信墙'&&$s['name']!='摇一摇'){ echo '<li class="'.$selectedClassStr.'"> <a href="'.$s['link'].'">'.$s['name'].'</a>'.$newStr.'</li>'; }else { switch ($s['name']){ case '微信墙': case '摇一摇': if (file_exists($_SERVER['DOCUMENT_ROOT'].'/PigCms/Lib/Action/User/WallAction.class.php')&&file_exists($_SERVER['DOCUMENT_ROOT'].'/PigCms/Lib/Action/User/ShakeAction.class.php')){ echo '<li class="'.$selectedClassStr.'"> <a href="'.$s['link'].'">'.$s['name'].'</a>'.$newStr.'</li>'; } break; } } if ($s['name']=='模板管理'&&is_dir($_SERVER['DOCUMENT_ROOT'].'/cms')&&!strpos($_SERVER['HTTP_HOST'],'pigcms')){ echo '<li class="subCatalogList"> <a href="/cms/manage/index.php">高级模板</a><span class="new"></span></li>'; } $j++; } } echo '</ul>'; $i++; } ?>
 
@@ -283,6 +297,7 @@ $i=0; $parms=$_SERVER['QUERY_STRING']; $parms1=explode('&',$parms); $parmsArr=ar
 	});
 
 </script> 
+<<<<<<< HEAD
 <link rel="stylesheet" type="text/css" href="<?php echo RES;?>/diyUpload/css/webuploader.css">
 <link rel="stylesheet" type="text/css" href="<?php echo RES;?>/diyUpload/css/diyUpload.css">
 
@@ -295,6 +310,14 @@ $i=0; $parms=$_SERVER['QUERY_STRING']; $parms1=explode('&',$parms); $parmsArr=ar
    <div class="cLineB"> 
     <h4>展示页设置</h4> 
     <a href="<?php echo U('Store/picDisplay',array('token'=>$token,'cid'=>$_GET['cid']));?>" class="right  btnGreen" style="margin-top:-27px">返回</a> 
+=======
+<script src="<?php echo STATICS;?>/artDialog/jquery.artDialog.js?skin=default"></script>
+<script src="<?php echo STATICS;?>/artDialog/plugins/iframeTools.js"></script>
+  <div class="content"> 
+   <div class="cLineB"> 
+    <h4>展示页设置</h4> 
+    <a href="<?php echo U('Store/picDisplay',array('token'=>$token));?>" class="right  btnGreen" style="margin-top:-27px">返回</a> 
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
    </div> 
    <form class="form" method="post" action="" enctype="multipart/form-data"> 
     <input type="hidden" name="id" value="<?php echo ($set["id"]); ?>" /> 
@@ -307,9 +330,13 @@ $i=0; $parms=$_SERVER['QUERY_STRING']; $parms1=explode('&',$parms); $parmsArr=ar
         <th><span class="red">*</span>分类：</th> 
         <td>
           <select name="cid" id="">
+<<<<<<< HEAD
             <?php if(is_array($classify)): $i = 0; $__LIST__ = $classify;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$list): $mod = ($i % 2 );++$i;?><option value="<?php echo ($list["id"]); ?>" 
            <?php if(($set["cid"]) == $list['id']): ?>selected<?php endif; ?>>
            <?php echo ($list["name"]); ?></option><?php endforeach; endif; else: echo "" ;endif; ?>
+=======
+            <?php if(is_array($classify)): $i = 0; $__LIST__ = $classify;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$list): $mod = ($i % 2 );++$i;?><option value="<?php echo ($list["id"]); ?>" <?php if(($set["cid"]) == $list['id']): ?>selected<?php endif; ?>><?php echo ($list["name"]); ?></option><?php endforeach; endif; else: echo "" ;endif; ?>
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
           </select>
         </td> 
        </tr> 
@@ -348,13 +375,19 @@ $i=0; $parms=$_SERVER['QUERY_STRING']; $parms1=explode('&',$parms); $parmsArr=ar
        <tr> 
         <th>封面图片：</th> 
         <td>
+<<<<<<< HEAD
         <input type="text" name="logo" value="<?php echo ($set["logo"]); ?>" id="logo" class="px" style="width:360px;" /> 
          <script src="<?php echo STATICS;?>/upyun.js"></script><a href="###" onclick="upyunPicUpload('logo',700,420,'<?php echo ($token); ?>')" class="a_upload">上传</a> <a href="###" onclick="viewImg('logo')">预览</a></td> 
+=======
+        <input type="text" name="logo" value="<?php echo ($set["logo"]); ?>" id="pic" class="px" style="width:360px;" /> 
+         <script src="<?php echo STATICS;?>/upyun.js"></script><a href="###" onclick="upyunPicUpload('pic',700,420,'<?php echo ($token); ?>')" class="a_upload">上传</a> <a href="###" onclick="viewImg('pic')">预览</a></td> 
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
        </tr>
 	  
 
        <tr> 
         <th>案例图片：</th> 
+<<<<<<< HEAD
        <!--  <td><input type="text" name="pic" value="<?php echo ($set["pic"]); ?>" id="pic" class="px" style="width:360px;" />  <script src="<?php echo STATICS;?>/upyun.js"></script><a href="###" onclick="upyunPicUpload('pic',700,420,'<?php echo ($token); ?>')" class="a_upload">上传</a> <a href="###" onclick="viewImg('pic')">预览</a></td>  -->
        <td>
          <?php if(!empty($store_pros)): ?><div class="parentFileBox">
@@ -374,6 +407,9 @@ $i=0; $parms=$_SERVER['QUERY_STRING']; $parms1=explode('&',$parms); $parmsArr=ar
           </div><?php endif; ?>
          <div id="as"></div>
        </td>
+=======
+        <td><input type="text" name="pic" value="<?php echo ($set["pic"]); ?>" id="pic" class="px" style="width:360px;" />  <script src="<?php echo STATICS;?>/upyun.js"></script><a href="###" onclick="upyunPicUpload('pic',700,420,'<?php echo ($token); ?>')" class="a_upload">上传</a> <a href="###" onclick="viewImg('pic')">预览</a></td> 
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
        </tr>
 
        <tr>         
@@ -381,7 +417,11 @@ $i=0; $parms=$_SERVER['QUERY_STRING']; $parms1=explode('&',$parms); $parmsArr=ar
        <td>
        <button type="submit" name="button" class="btnGreen">保存</button>
         &nbsp; 
+<<<<<<< HEAD
         <a href="<?php echo U('Store/picDisplay',array('token'=>$token,'cid'=>$_GET['cid']));?>" class="btnGray vm">取消</a></td> 
+=======
+        <a href="<?php echo U('Store/picDisplay',array('token'=>$token));?>" class="btnGray vm">取消</a></td> 
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
        </tr> 
       </tbody> 
      </table> 
@@ -421,6 +461,7 @@ $i=0; $parms=$_SERVER['QUERY_STRING']; $parms1=explode('&',$parms); $parmsArr=ar
  --></div>
 
 </body>
+<<<<<<< HEAD
 </html>
   <script>
     function deletePic(obj){
@@ -486,3 +527,6 @@ $i=0; $parms=$_SERVER['QUERY_STRING']; $parms1=explode('&',$parms); $parmsArr=ar
       $('#store-form').submit();
      })
    </script>
+=======
+</html>
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2

@@ -19,9 +19,14 @@
 <body id="nv_member">
 <div style="line-height:200%;padding:10px 20px;">
 支付状态：<if condition="$thisOrder.paid eq 1">已付款<else/>未付款</if><br>
+<<<<<<< HEAD
 预约人：{wghd:$thisOrder.truename}<br>
 预约时间：{wghd:$thisOrder.rtime|date="Y-m-d H:i:s",###}<br>
 下单时间：{wghd:$thisOrder.time|date="Y-m-d H:i:s",###}<br>
+=======
+<if condition="$thisOrder.paid eq 1">购买状态：<if condition="$thisOrder.beDistri eq 1"><span style="color:green">首次购买</span><else/><span style="color:red">非首次购买</span></if><br></if>
+预约人：{wghd:$thisOrder.truename}<br>
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
 电话：{wghd:$thisOrder.tel}<br>
 <!-- 地址：{wghd:$thisOrder.province}{wghd:$thisOrder.city}{wghd:$thisOrder.county}{wghd:$thisOrder.address}<br> -->
 备注信息：{wghd:$thisOrder.remark}<br>
@@ -51,6 +56,7 @@
         <th><span class="red">*</span>发货状态：</th> 
         <td><select name="sent"><option value="0" <if condition="$thisOrder.sent eq 0">selected</if>>未发货</option><option value="1" <if condition="$thisOrder.sent eq 1">selected</if>>已发货</option></select></td> 
        </tr> -->
+<<<<<<< HEAD
      <!-- <tr> 
         <th><span class="red">*</span>收货状态：</th> 
         <td><select name="receive"><option value="0" <if condition="$thisOrder.receive eq 0">selected</if>>未收货</option><option value="1" <if condition="$thisOrder.receive eq 1">selected</if>>已收货</option></select></td> 
@@ -62,6 +68,15 @@
        <tr> 
         <th><span class="red">*</span>处理状态：</th> 
         <td><select name="handled"><option value="0" <if condition="$thisOrder.handled eq 0">selected</if>>未处理</option><option value="1" <if condition="$thisOrder.handled eq 1">selected</if>>已处理</option></select></td> 
+=======
+	   <!-- <tr> 
+        <th><span class="red">*</span>收货状态：</th> 
+        <td><select name="receive"><option value="0" <if condition="$thisOrder.receive eq 0">selected</if>>未收货</option><option value="1" <if condition="$thisOrder.receive eq 1">selected</if>>已收货</option></select></td> 
+       </tr> -->
+	   <tr> 
+        <th><span class="red">*</span>退款状态：</th> 
+        <td><select name="returnMoney"><option value="0" <if condition="$thisOrder.returnMoney eq 0">selected</if>>未申请</option><option value="1" <if condition="$thisOrder.returnMoney eq 1">selected</if>>未退款</option><option value="2" <if condition="$thisOrder.returnMoney eq 2">selected</if>>已退款</option></select></td> 
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
        </tr> 
        <!-- <tr> 
         <th><span class="red">*</span>快递公司：</th>

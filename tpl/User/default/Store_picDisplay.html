@@ -5,6 +5,7 @@
 <h4 class="left">展示管理</h4>
 <div class="clr"></div>
 </div>
+<<<<<<< HEAD
 
 <div class="cLine">
 
@@ -13,6 +14,15 @@
 <img src="{wghd::RES}/images/product/add.png" class="vm">新增展示
 </a>
 
+=======
+<include file="Store:tab"/>
+<div class="cLine">
+
+<div class="pageNavigator left"> 
+<a href="{wghd::U('Store/addDisplay', array('token' => $token))}" title="新增分类" class="btnGrayS vm bigbtn">
+<img src="{wghd::RES}/images/product/add.png" class="vm">新增展示
+</a>
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
 </div>
 
 <div class="clr"></div>
@@ -26,7 +36,10 @@
 <tr>
 <th width="80">展示类型</th>
 <th width="80">价格</th>
+<<<<<<< HEAD
 <th width="80">分类</th>
+=======
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
 <th width="200">封面图片</th>
 <th width="200" class="norightborder">操作</th>
 </tr>
@@ -40,7 +53,10 @@
 <tr>
 
 <td>{wghd:$hostlist.name}</td>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
 <td>
 
 基本价格：￥{wghd:$hostlist.price1}<br/>
@@ -52,6 +68,7 @@
 
 </td>
 
+<<<<<<< HEAD
 <td>{wghd:$hostlist.name1}</td>
 
 <td><img style="width: 200px;" src="{wghd:$hostlist.logo}" alt="封面图片"></td>
@@ -59,6 +76,13 @@
 
 <td class="norightborder">
 	<a href="{wghd::U('Store/picEdit',array('token'=>$token,'id'=>$hostlist['id'],'cid'=>$_GET['cid']))}">修改</a>
+=======
+<td><img style="width: 200px;" src="{wghd:$hostlist.logo}" alt="封面图片"></td>
+
+<td class="norightborder">
+	<a href="{wghd::U('Store/picEdit',array('token'=>$token,'id'=>$hostlist['id']))}">修改</a>
+
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
 
 <a href="javascript:drop_confirm('您确定要删除吗?', '{wghd::U('Store/delDisplay',
 

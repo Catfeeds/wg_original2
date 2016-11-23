@@ -49,7 +49,10 @@
 <th width="100">城市</th>
 <th width="100">首字母</th>
 <th width="100">分店数</th>
+<<<<<<< HEAD
 <th width="100">热度</th>
+=======
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
 <th width="100" class="norightborder">操作</th>
 </tr>
 </thead>
@@ -61,9 +64,13 @@
 <td>{wghd:$hostlist.name}</td>
 <td>{wghd:$hostlist.char}</td>
 <td>{wghd:$hostlist.snums}</td>
+<<<<<<< HEAD
 <td>{wghd:$hostlist.hot}</td>
 <td class="norightborder">
   <a href="{wghd::U('Shop/departList',array('token'=>$token,'id'=>$hostlist['id']))}">分店列表</a>
+=======
+<td class="norightborder">
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
 	<a href="{wghd::U('Shop/citySet',array('token'=>$token,'id'=>$hostlist['id']))}">修改</a>
 	<a href="javascript:drop_confirm('您确定要删除吗?', '{wghd::U('Store/cityDel',array('id'=>$hostlist['id'],'token'=>$token))}');">删除</a>
 </td>

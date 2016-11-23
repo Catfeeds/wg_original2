@@ -1,4 +1,5 @@
 <include file="Public:head" /> 
+<<<<<<< HEAD
 <link rel="stylesheet" type="text/css" href="{wghd::RES}/diyUpload/css/webuploader.css">
 <link rel="stylesheet" type="text/css" href="{wghd::RES}/diyUpload/css/diyUpload.css">
 
@@ -11,6 +12,14 @@
    <div class="cLineB"> 
     <h4>展示页设置</h4> 
     <a href="{wghd::U('Store/picDisplay',array('token'=>$token,'cid'=>$_GET['cid']))}" class="right  btnGreen" style="margin-top:-27px">返回</a> 
+=======
+<script src="{wghd::STATICS}/artDialog/jquery.artDialog.js?skin=default"></script>
+<script src="{wghd::STATICS}/artDialog/plugins/iframeTools.js"></script>
+  <div class="content"> 
+   <div class="cLineB"> 
+    <h4>展示页设置</h4> 
+    <a href="{wghd::U('Store/picDisplay',array('token'=>$token))}" class="right  btnGreen" style="margin-top:-27px">返回</a> 
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
    </div> 
    <form class="form" method="post" action="" enctype="multipart/form-data"> 
     <input type="hidden" name="id" value="{wghd:$set.id}" /> 
@@ -24,11 +33,15 @@
         <td>
           <select name="cid" id="">
             <volist id="list" name="classify">
+<<<<<<< HEAD
 
           <option value="{wghd:$list.id}" 
            <eq name="set.cid" value="$list['id']" >selected</eq>>
            {wghd:$list.name}</option> 
             
+=======
+            <option value="{wghd:$list.id}" <eq name="set.cid" value="$list['id']" >selected</eq>>{wghd:$list.name}</option>
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
             </volist>
           </select>
         </td> 
@@ -75,6 +88,7 @@
 
        <tr> 
         <th>案例图片：</th> 
+<<<<<<< HEAD
        <td>
          <notempty name="store_pros">
           <div class="parentFileBox">
@@ -97,6 +111,9 @@
          </notempty>
          <div id="as"></div>
        </td>
+=======
+        <td><input type="text" name="pic" value="{wghd:$set.pic}" id="pic" class="px" style="width:360px;" />  <script src="{wghd::STATICS}/upyun.js"></script><a href="###" onclick="upyunPicUpload('pic',700,420,'{wghd:$token}')" class="a_upload">上传</a> <a href="###" onclick="viewImg('pic')">预览</a></td> 
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
        </tr>
 
        <tr>         
@@ -104,13 +121,18 @@
        <td>
        <button type="submit" name="button" class="btnGreen">保存</button>
         &nbsp; 
+<<<<<<< HEAD
         <a href="{wghd::U('Store/picDisplay',array('token'=>$token,'cid'=>$_GET['cid']))}" class="btnGray vm">取消</a></td> 
+=======
+        <a href="{wghd::U('Store/picDisplay',array('token'=>$token))}" class="btnGray vm">取消</a></td> 
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
        </tr> 
       </tbody> 
      </table> 
      </div>
    </form> 
   </div> 
+<<<<<<< HEAD
   <include file="Public:footer" />
   <script>
     function deletePic(obj){
@@ -176,3 +198,6 @@
       $('#store-form').submit();
      })
    </script>
+=======
+  <include file="Public:footer" />
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2

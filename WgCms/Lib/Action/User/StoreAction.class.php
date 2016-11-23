@@ -876,6 +876,7 @@ class StoreAction extends UserAction{
 				$where['truename|address|orderid'] = array('like', "%$key%");
 				if($this->_post('paid')!=''){
 					$where['paid'] = $this->_post('paid');
+<<<<<<< HEAD
 				}
 				if($this->_post('sent')!=''){
 					$where['sent'] = $this->_post('sent');
@@ -883,6 +884,15 @@ class StoreAction extends UserAction{
 				if($this->_post('receive')!=''){
 					$where['receive'] = $this->_post('receive');
 				}
+=======
+				}
+				if($this->_post('sent')!=''){
+					$where['sent'] = $this->_post('sent');
+				}
+				if($this->_post('receive')!=''){
+					$where['receive'] = $this->_post('receive');
+				}
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
 				if($this->_post('handled')!=''){
 					$where['handled'] = $this->_post('handled');
 				}
@@ -959,10 +969,27 @@ class StoreAction extends UserAction{
 			$cart_pics = M('Cart_pics')->where('oid='.$thisOrder['id'])->select();
 			$this->assign('cart_pics',$cart_pics);
 			$this->assign('thisOrder',$thisOrder);
+<<<<<<< HEAD
 
 			$list = unserialize($thisOrder['info']);
 			$this->assign('products', $list);
 
+=======
+			// $carts=unserialize($thisOrder['info']);
+			if($thisOrder['classid']){
+				import ( "@.Org.TypeFile" );
+				$tid = $thisOrder['classid'];
+				$TypeFile = new TypeFile ( 'ClassCity' ); //实例化分类类
+				$result = $TypeFile->getPathName ( $tid ); //获取分类路径
+				$this->assign ( 'typeNumArr', $result );
+			}
+
+			$list = unserialize($thisOrder['info']);
+//			print_r($list);die;
+			$this->assign('products', $list);
+			//
+			//
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
 			$this->display();
 		}
 	}
@@ -1563,8 +1590,11 @@ class StoreAction extends UserAction{
 
 			if($check){
 				$worktime = split(",",$_POST['default_time']);
+<<<<<<< HEAD
 				dump($worktime);
 				exit();
+=======
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
 				$_POST['defaultWorkTime'] = serialize($worktime);
 				if($data->where($where)->save($_POST)){
 					
@@ -1614,11 +1644,17 @@ class StoreAction extends UserAction{
 	public function picDisplay(){
 
 		$Model = M('Product_show');
+<<<<<<< HEAD
 		$where['cid']    = $_GET['cid'];
+=======
+
+		$where['delete'] = 0;
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
 		$count = $Model->where($where)->count();		
 		$Page  = new Page($count,10);				
 		$list  = $Model->order('id desc')->where($where)->limit($Page->firstRow.','.$Page->listRows)->select();
         $show  = $Page->show();
+<<<<<<< HEAD
 
        foreach ($list as $key => $value) {
        		$where1['id'] = $value['cid'];
@@ -1628,6 +1664,8 @@ class StoreAction extends UserAction{
        		$list[$key]['name1']=$class['name'];
        }
         
+=======
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
 		$this->assign('page',$show);
 		$this->assign('list',$list); 
 		$this->display();
@@ -1659,7 +1697,11 @@ class StoreAction extends UserAction{
 			if($check){
 
 				if($data->where($where)->save($_POST)){
+<<<<<<< HEAD
 					$this->success('修改成功',U('Store/picDisplay',array('token'=>session('token'),'cid'=>$this->_get('cid'))));
+=======
+					$this->success('修改成功');
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
 					
 				}else{
 					$this->error('操作失败');
@@ -1669,12 +1711,16 @@ class StoreAction extends UserAction{
 			}		
 		}else{
 		$res = $Model->where('id='.$id)->find();
+<<<<<<< HEAD
 		//获取客户照片
 		if($_GET['id']){
 			$store_pros = M('Products_show_pic')->where('pid='.$_GET['id'])->select();
 			$this->assign('store_pros',$store_pros);
 		}
 
+=======
+		//dump($res);
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
 		$this->assign('set',$res);
 		$this->display();			
 		}
@@ -1684,6 +1730,7 @@ class StoreAction extends UserAction{
 
 	public function addDisplay(){
 		//分类
+<<<<<<< HEAD
 		$where['id'] = $_GET['cid'];
 
 		$classify = M('Product_show_classify')->where($where)->find();
@@ -1704,6 +1751,22 @@ class StoreAction extends UserAction{
 		}
 	}
 
+=======
+		$classify = M('Product_show_classify')->select();
+		$this->assign('classify',$classify);
+		if(IS_POST){
+			$this->insert('Product_show','/picDisplay');
+		}else{
+
+			$this->display('picEdit');
+		}
+	}
+
+	public function picDel(){
+
+		$this->display();
+	}
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
 
 	public function delDisplay(){
 		$res = M('Product_show')->where('id='.$_GET['id'])->delete();
@@ -1713,6 +1776,7 @@ class StoreAction extends UserAction{
 			$this->error('删除失败');
 		}
 	}
+<<<<<<< HEAD
 
 	public function showClass(){
 
@@ -2130,5 +2194,7 @@ class StoreAction extends UserAction{
 		die('{'.$img_src.' : "2.0", "result" : null, "id" : "id"}');
 	}
 	
+=======
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
 }
 ?>

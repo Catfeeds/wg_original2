@@ -1,5 +1,9 @@
 <include file="Public:head"/>
+<<<<<<< HEAD
 <link rel="stylesheet" type="text/css" href="{wghd::RES}/css/cymain.css" />
+=======
+<link rel="stylesheet" type="text/css" href="{wghd::RES}/css/cymain.css" />  
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
  <div class="content">
 <div class="cLineB">
 <h4 class="left">日程列表</h4>
@@ -10,12 +14,20 @@
 <!--tab end-->
 <div class="cLine">
 <div class="pageNavigator left">
+<<<<<<< HEAD
 <a href="{wghd::U('Shop/additionalTime',array('token'=>$token,'sid'=>$_GET['sid']))}" title="添加" class="btnGrayS vm bigbtn">
+=======
+<a href="{wghd::U('Shop/additionalTime',array('token'=>$token,'id'=>$_GET['id'],'storename'=>$storename,'type'=>'add'))}" title="添加" class="btnGrayS vm bigbtn">
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
 <img src="{wghd::RES}/images/product/add.png" width="16" class="vm">添加日程安排</a>
 
 
 </div>
+<<<<<<< HEAD
 <!--
+=======
+<!-- 
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
 <div style="text-align: center; font-size: 15px" float="left">
   <span>
               <form action="" method="post">
@@ -44,16 +56,24 @@
 </thead>
 <tbody>
 <tr></tr>
+<<<<<<< HEAD
 <volist name="list" id="hostlist">
+=======
+<volist name="list" id="hostlist"> 
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
 <tr>
 <td hidden >{wghd:$hostlist.id}</td>
 <td>{wghd:$hostlist.addtime|date="Y-m-d",###}</td>
 <td>{wghd:$storename}</td>
 <td class="norightborder">
 
+<<<<<<< HEAD
 	<a href="{wghd::U('Shop/dataEdit',array('token'=>$token,'id'=>$hostlist['id'],'sid'=>$_GET['sid']))}">详情</a>
 
   <a href="javascript:drop_confirm('您确定要删除吗?', '{wghd::U('Shop/delDtime',array('id'=>$hostlist['id'],'token'=>$token))}');">删除</a>
+=======
+	<a href="{wghd::U('Shop/dataEdit',array('token'=>$token,'id'=>$hostlist['id']))}">详情</a>
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
 </td>
 </tr>
 </volist>
@@ -68,4 +88,8 @@
 <div class="clr"></div>
 </div>
 </div>
+<<<<<<< HEAD
 <include file="Public:footer"/>
+=======
+<include file="Public:footer"/>
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2

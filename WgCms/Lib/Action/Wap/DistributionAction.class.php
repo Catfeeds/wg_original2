@@ -4,12 +4,21 @@
 			parent::_initialize();
 		}
 		function test2(){
+<<<<<<< HEAD
 			//dump(session('bmywecha_id'));
 			setcookie('zxg_login_user',null);
 			dump(cookie('zxg_login_user'));
 		}
 		function test(){
 			session('bmywecha_id','oV52LvzzFN0rrhyNUBTpeDB-eVX0');
+=======
+			dump(session('jump_href'));
+		}
+		function test(){
+			session('bmywecha_id',null);
+			session('bmywecha_id','');
+			dump(session('bmywecha_id'));
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
 		}
 		//授权页面
 		public function authorization(){
@@ -113,6 +122,7 @@
 				$this->ajaxReturn($re,'注册成功',1);
 			}else{
 				$this->ajaxReturn($re,'注册失败',-1);
+<<<<<<< HEAD
 			}
 		}
 		//找回密码
@@ -174,6 +184,8 @@
 				$this->ajaxReturn($re,'重置成功',1);
 			}else{
 				$this->ajaxReturn($re,'重置失败',-1);
+=======
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
 			}
 		}
 		function login(){
@@ -185,6 +197,7 @@
 			if(D('Account')->where($condition)->find()){
 				setcookie("zxg_login_user", $data['username'], time()+3600*24*3);
 				if(session('bmywecha_id')){
+<<<<<<< HEAD
 					$member = M('Distribution_member')->where(array('wecha_id'=>session('bmywecha_id')))->find();
 					$mdata = array(
 						'wecha_id' => $member['wecha_id'],
@@ -193,6 +206,10 @@
 					);
 					
 					D('Account')->where($condition)->save($mdata);
+=======
+					$headimgurl = M('Distribution_member')->where(array('wecha_id'=>session('bmywecha_id')))->getField('headimgurl');
+					D('Account')->where($condition)->setField('headimgurl',$headimgurl);
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
 				}
 				$this->ajaxReturn($_COOKIE['zxg_login_user'],'登陆成功',1);
 			}else{
@@ -257,6 +274,7 @@
 		function myOrders(){
 			$account = $this->checkLogin('account');
 			$db = M('Product_cart');
+<<<<<<< HEAD
 			$orders = $db->where(array('aid'=>$account['id']))->order('id desc')->select();
 			$my_orders = array();
 			foreach ($orders as $k => $v) {
@@ -270,10 +288,18 @@
 			}
 			// dump($my_orders);
 			$this->ajaxReturn($orders,$my_orders,1);
+=======
+			$orders = $db->where(array('aid'=>$account['id']))->select();
+			foreach ($orders as $k => $v) {
+				$orders[$k]['rtime'] = date('Y-m-d H:i',$v['rtime']);
+			}
+			$this->ajaxReturn($orders,'',1);
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
 		}
 		//判断登陆
 		function checkLogin($get = ''){
 			$username = $_COOKIE['zxg_login_user'];
+<<<<<<< HEAD
 			if($username){
 				$account = D('Account')->where(array('username'=>$username))->find();
 			}else{
@@ -285,6 +311,9 @@
 
 				}
 			}
+=======
+			$account = D('Account')->where(array('username'=>$username))->find();
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
 
 			if($account){
 				switch ($get) {
@@ -309,6 +338,7 @@
 				$this->ajaxReturn('needauth','',-1);
 			}else{
 				$this->ajaxReturn('','',1);
+<<<<<<< HEAD
 			}
 		}
 		//意见反馈
@@ -467,6 +497,8 @@
 				}else{
 					$this->ajaxReturn('','取消失败',-1);
 				}
+=======
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
 			}
 		}
 	}

@@ -33,6 +33,7 @@
  [ SQLËØ≠Âè• ] : SELECT `username` FROM `pigcms_distribution_account` WHERE id= LIMIT 1  
 [ 2016-10-25T16:16:09+08:00 ] ERR: (ThinkException) Erreur de syntaxe pr√®s de 'LIMIT 1' √† la ligne 1
  [ SQLËØ≠Âè• ] : SELECT `username` FROM `pigcms_distribution_account` WHERE id= LIMIT 1  
+<<<<<<< HEAD
 [ 2016-10-25T22:11:43+08:00 ] ERR: (ThinkException) AccËs refusÈ pour l'utilisateur: 'root'@'@localhost' (mot de passe: OUI)
 [ 2016-10-25T22:11:50+08:00 ] ERR: (ThinkException) AccËs refusÈ pour l'utilisateur: 'root'@'@localhost' (mot de passe: OUI)
 [ 2016-10-25T22:11:57+08:00 ] ERR: (ThinkException) AccËs refusÈ pour l'utilisateur: 'root'@'@localhost' (mot de passe: OUI)
@@ -47,3 +48,5 @@
  [ SQLËØ≠Âè• ] : SHOW COLUMNS FROM `pigcms_product_show_classify`
 [ 2016-10-25T22:13:29+08:00 ] ERR: (ThinkException) La table 'original2_data.pigcms_product_show_classify' n'existe pas
  [ SQLËØ≠Âè• ] : SHOW COLUMNS FROM `pigcms_product_show_classify`
+=======
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2

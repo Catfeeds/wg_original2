@@ -14,7 +14,11 @@
 <div class="content">
   <div class="cLineB">
     <h4>分店设置</h4>
+<<<<<<< HEAD
     <a href="{wghd::U('Shop/departList',array('cid'=>$_GET['cid'],'token'=>
+=======
+    <a href="{wghd::U('Store/departList',array('token'=>
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
       $token))}" class="right  btnGreen" style="margin-top:-27px">返回
     </a>
   </div>
@@ -60,16 +64,20 @@
             </td>
           </tr>
 
+<<<<<<< HEAD
 
 
           <if condition = "$set.name eq null">
 
+=======
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
           <tr>
             <th>密码：</th>
             <td>
               <input type="text" name="password" value="" class="px" style="width:120px;" />
             </td>
           </tr>
+<<<<<<< HEAD
 
           <else/>
 
@@ -92,6 +100,8 @@
 
 
 
+=======
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
           <input type="hidden" name="default_time" id="work_default_time">
           <tr>
             <th>默认平均预约个数：</th>
@@ -110,13 +120,18 @@
             <td>
               <form action="#" method="post" id="work-form">
                 <dl id="word-time">
+<<<<<<< HEAD
 
+=======
+                 
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
                 </dl>
               </form>
             </td>
           </tr>
           <script>
          var str='';
+<<<<<<< HEAD
          var h = 9.5;
          for (var i = 0; i < 5; i++) {
             str += '<dt>';
@@ -124,6 +139,14 @@
               h += 0.5;
               var mi = j%2 ==0?'00':00+30;
               str += '<span>'+parseInt(h)+':'+mi+'<input type="text" class="px w15 default-time-item"></span>';
+=======
+         for (var i = 0; i < 10; i++) {
+            str += '<dt>';
+            for (var j = 0; j < 4; j++) {
+              var h = 10+1*i;
+              var mi = 00+15*j ==0?'00':00+15*j;
+              str += '<span>'+h+':'+mi+'<input type="text" class="px w15 default-time-item"></span>';
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
             }
             str += '</dt>';
             $('#word-time').html(str);
@@ -135,7 +158,11 @@
            $('.default-time-item').each(function(index){
                 $(this).val(w[index]);
            })
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
           }
 
          $('#default_time').bind('keyup',function(){
@@ -197,7 +224,11 @@
           <td>
             <button type="submit" name="button" class="btnGreen" id="save-btn">保存</button>
             &nbsp;
+<<<<<<< HEAD
             <a href="{wghd::U('Shop/departList',array('token'=>$token,'cid'=>$_GET['cid']))}" class="btnGray vm">取消</a>
+=======
+            <a href="{wghd::U('Store/departList',array('token'=>$token))}" class="btnGray vm">取消</a>
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
           </td>
         </tbody>
       </table>
@@ -214,4 +245,8 @@
      })
    </script>
 </div>
+<<<<<<< HEAD
 <include file="Public:footer" />
+=======
+<include file="Public:footer" />
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2

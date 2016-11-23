@@ -1,6 +1,7 @@
 $(function(){
 	var certification = 1;
 	$(document).ready(function($) {
+<<<<<<< HEAD
 		function onBridgeReady(){
 		 WeixinJSBridge.call('hideOptionMenu');
 		}
@@ -38,6 +39,26 @@ $(function(){
 							}
 						}
 					});
+=======
+		//判断授权
+		$.ajax({
+			url: total_url + 'index.php?g=Wap&m=Distribution&a=checkAuth',
+			dataType: 'json',
+			success: function(data) {
+				if (data.data == 'needauth') {
+					var href = 'http://bmy.tzwg.net/index.php?g=Wap&m=Distribution&a=authorization&bmyquth=1&href='+window.location.href;
+					location.href = href;
+				}
+			}
+		});
+		//判断账号登陆
+		$.ajax({
+			url:total_url+'index.php?g=Wap&m=Distribution&a=checkLogin',
+			dataType:'json',
+			success:function(data){
+				if(!data || data.status == -1){
+					location.href = "login.html";
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
 				}
 			}
 		});
@@ -222,9 +243,16 @@ $(function(){
 				type:'post',
 				success:function(data){
 					console.log(data);
+<<<<<<< HEAD
 					$.alert(data.info,function(){
 						$.router.load('Distribution_index.html');
 					});
+=======
+					$.alert(data.info);
+					if(data.status == 1){
+						$.router.load('Distribution_index.html');
+					}
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
 				}
 			})
 		})
@@ -235,7 +263,64 @@ $(function(){
 	    $(this).addClass('wg_item_icon_input_active').siblings('.wg_form_message_wrap').removeClass('wg_item_icon_input_active');
 
 	})
+<<<<<<< HEAD
 	//输入校验
+=======
+	$(document).on('click','#change_password_submit',function(){
+		if (validation()) {
+			if($('#newPassword').val() != $('#rePassword').val()){
+				$.alert('两次密码输入不相同');
+				return false;
+			}
+			var data = $('#change_password_form').serialize();
+			$.ajax({
+				url:total_url+'index.php?g=Wap&m=Distribution&a=changePasswrod',
+				data:{data:data},
+				dataType:'json',
+				type:'post',
+				success:function(data){
+					console.log(data);
+					$.alert(data.info);
+					if(data.status == 1){
+						$.router.load('Distribution_index.html');
+					}
+				}
+			});
+		}
+	})
+	$(document).on('click','#login_out',function(){
+		var buttons1 = [
+	        {
+	          text: '退出登陆',
+	          bold: true,
+	          color: 'danger',
+	          onClick: function() {
+	            $.ajax({
+	            	url:total_url+'index.php?g=Wap&m=Distribution&a=loginOut',
+	            	dataType:'json',
+	            	success:function(data){
+	            		console.log(data);
+	            		console.log(data.status);
+	            		if(data.status == 1){
+	            			location.href = "login.html";
+	            		}else{
+	            			$.alert('退出失败');
+	            		}
+	            	}
+	            });
+	          }
+	        }
+	      ];
+	      var buttons2 = [
+	        {
+	          text: '取消',
+	          bg: 'danger'
+	        }
+	      ];
+	      var groups = [buttons1, buttons2];
+	      $.actions(groups);
+	})
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
 	function validation(){
 		var validation = $('.validation');
 		var val = 1;

@@ -8,7 +8,10 @@
   <form class="form" method="post" action="" enctype="multipart/form-data" id="store-form">
 
     <input type="hidden" name="id" value="{wghd:$set.id}" />
+<<<<<<< HEAD
     <input type="hidden" name="sid" value="{wghd:$sid}" />
+=======
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
 
     <div class="msgWrap bgfc">
       <table class="userinfoArea" style=" margin:0;" border="0" cellspacing="0" cellpadding="0" width="100%">
@@ -16,11 +19,16 @@
         <tr>
           <th>店铺:</th>
           <td>
+<<<<<<< HEAD
            <p>{wghd:$stores.name}</p>
+=======
+           <p>{wghd:$_GET['storename']}</p>
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
           </td>
         </tr>
           <tr>
             <th>时间选择:</th>
+<<<<<<< HEAD
 
 
 
@@ -36,13 +44,22 @@
 
 
 
+=======
+            <td>
+              <input class="Wdate" id="starttime" name="limittime" value="{wghd:$set.timeNum}" type="text" onClick="WdatePicker()" style="width:190px">
+            </td>
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
           </tr>
 
           <input type="hidden" name="default_time" id="work_default_time">
           <tr>
             <th>设置预约个数：</th>
             <td>
+<<<<<<< HEAD
               <input type="text" name="timeNums" class="px" id="default_time" style="width:120px;" value="{wghd:$set.timeNum}"/>
+=======
+              <input type="text" name="timeNums" class="px" id="default_time" style="width:120px;" value="{wghd:$set.time}"/>
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
             </td>
           </tr>
           <style>
@@ -56,7 +73,11 @@
             <td>
               <form action="#" method="post" id="work-form">
                 <dl id="word-time">
+<<<<<<< HEAD
 
+=======
+                 
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
                 </dl>
               </form>
             </td>
@@ -66,6 +87,7 @@
              <script>
              console.log('defaultWorkTime');
             var str='';
+<<<<<<< HEAD
             var h = 9.5;
            for (var i = 0; i < 5; i++) {
               str += '<dt>';
@@ -77,13 +99,29 @@
               str += '</dt>';
               $('#word-time').html(str);
            }
+=======
+            for (var i = 0; i < 10; i++) {
+               str += '<dt>';
+               for (var j = 0; j < 4; j++) {
+                 var h = 10+1*i;
+                 var mi = 00+15*j ==0?'00':00+15*j;
+                 str += '<span>'+h+':'+mi+'<input type="text" class="px w15 default-time-item"></span>';
+               }
+               str += '</dt>';
+               $('#word-time').html(str);
+            }
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
             var defaultWorkTime = '{wghd:$set.defaultWorkTime}';
             if(defaultWorkTime.length != 0){
              w = eval('('+defaultWorkTime+')');
              $('.default-time-item').each(function(index){
                   $(this).val(w[index]);
              })
+<<<<<<< HEAD
 
+=======
+              
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
             }
 
             $('#default_time').bind('keyup',function(){
@@ -101,7 +139,11 @@
           <td>
             <button type="submit" name="button" class="btnGreen" id="save-btn">保存</button>
             &nbsp;
+<<<<<<< HEAD
             <a href="{wghd::U('Shop/schedule',array('token'=>$token,'sid'=>$_GET['sid']))}" class="btnGray vm">取消</a>
+=======
+            <a href="{wghd::U('Shop/departList',array('token'=>$token))}" class="btnGray vm">取消</a>
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
           </td>
         </tbody>
       </table>
@@ -128,4 +170,8 @@
      })
    </script>
 </div>
+<<<<<<< HEAD
 <include file="Public:footer" />
+=======
+<include file="Public:footer" />
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2

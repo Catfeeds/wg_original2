@@ -123,9 +123,15 @@ if (!isset($_SESSION['isQcloud'])){
 <!-- <td><strong>请求数：</strong>{wghd:$thisUser.connectnum}/{wghd:$userinfo.connectnum}</td> -->
 </tr>
 <tr>
+<<<<<<< HEAD
 <!-- <td><strong>余：</strong><php>echo ($userinfo['connectnum']-$_SESSION['connectnum']);</php></td> -->
 <!-- <td><strong>已使用：</strong><php>echo $_SESSION['diynum'];</php></td> -->
 <!-- <td><strong>当月剩余请求数：</strong><php>echo $userinfo['connectnum']-$_SESSION['connectnum'];</php></td> -->
+=======
+<td><strong>余：</strong><php>echo ($userinfo['connectnum']-$_SESSION['connectnum']);</php></td>
+<td><strong>已使用：</strong><php>echo $_SESSION['diynum'];</php></td>
+<td><strong>当月剩余请求数：</strong><php>echo $userinfo['connectnum']-$_SESSION['connectnum'];</php></td>
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
 </tr>
 
 </table>
@@ -272,6 +278,13 @@ array('name'=>'收货地址列表','link'=>U('Distribution/address',array('token
 array('name'=>'附加时间限制','link'=>U('Branch/additionalTime',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Branch')),
 )),*/
 array(
+'name'=>'分店管理',
+'iconName'=>'store',
+'display'=>0,
+'subs'=>array(
+array('name'=>'附加时间限制','link'=>U('Branch/additionalTime',array('token'=>$token)),'new'=>0,'selectedCondition'=>array('m'=>'Branch')),
+)),
+array(
 'name'=>'商城系统',
 'iconName'=>'store',
 'display'=>0,
@@ -282,7 +295,11 @@ array('name'=>'微信商城系统','link'=>U('Store/index',array('token'=>$token
 
 array(
 'name'=>'分店系统',
+<<<<<<< HEAD
 'iconName'=>'site',
+=======
+'iconName'=>'shop',
+>>>>>>> 01e200e4f8a1295bfce0a15384da812e38d13ba2
 'display'=>0,
 'subs'=>array(
 
